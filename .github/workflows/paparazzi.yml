@@ -1,9 +1,10 @@
-name: 📸 Screenshoting 
+name: 📷 Screenshoting 
 
 on: [ push ]
 
 jobs:
-  pr:
+  step:
+    name: Take screenshots
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

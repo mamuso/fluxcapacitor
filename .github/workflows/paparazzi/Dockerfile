@@ -15,4 +15,4 @@ RUN  apt-get update \
 
 COPY entrypoint.sh .
 
-ENTRYPOINT ["sh", "entrypoint.sh"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
