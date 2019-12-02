@@ -1,4 +1,4 @@
-FROM node:13-slim
+FROM node:slim
 
 RUN  apt-get update \
      # Install latest chrome dev package, which installs the necessary libs to
@@ -12,7 +12,8 @@ RUN  apt-get update \
      && wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh \
      && chmod +x /usr/sbin/wait-for-it.sh
 
-# Install Puppeteer under /node_modules so it's available system-wide
-ADD package.json package-lock.json scrap.js /
+COPY . .
+
 RUN npm install
-RUN node scrap.js
+
+ENTRYPOINT ["node", "/scrap.js"]
