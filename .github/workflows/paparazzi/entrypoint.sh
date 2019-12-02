@@ -14,13 +14,16 @@ REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSIT
 # We need to clone the repo here.
 # Remember, our Docker container is practically pristine at this point
 git clone $REMOTE_REPO repo
-cd repo/lib
 
 # Install all of our dependencies inside the container
 # based on the git repository Gemfile
 echo "⚡️ Installing project dependencies..."
 npm install
 node camera.js
+
+cp github.png repo/gh.png
+
+cd repo
 
 git config user.name "${GITHUB_ACTOR}"
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
