@@ -10,7 +10,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Dockerfile 
+    - name: Build Dockerfile 
       run: docker build . --file lib/Dockerfile --tag screen-tardis:$(date +%s)
-    - name: Run container
-      run: docker run screen-tardis && docker cp screen-tardis:github.png gh.png

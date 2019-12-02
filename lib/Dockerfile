@@ -16,4 +16,4 @@ COPY . .
 
 RUN npm install
 
-ENTRYPOINT ["node", "/scrap.js"]
+ENTRYPOINT ["sh", "entrypoint.sh"]
