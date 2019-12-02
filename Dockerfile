@@ -16,4 +16,4 @@ COPY . .
 
 RUN npm install
 
-RUN node scrap.js
+ENTRYPOINT ["node", "/scrap.js"]
