@@ -20,7 +20,7 @@ cd repo/lib
 # based on the git repository Gemfile
 echo "⚡️ Installing project dependencies..."
 npm install
-node scrap.js
+node camera.js
 
 git config user.name "${GITHUB_ACTOR}"
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
