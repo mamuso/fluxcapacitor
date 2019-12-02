@@ -1,5 +1,13 @@
 {
+  "name": "paparazzi",
+  "private": true,
+  "main": "index.js",
+  "keywords": [],
+  "author": "Manuel Muñoz Solera <mamuso@mamuso.net>",
+  "license": "MIT",
   "dependencies": {
+    "@actions/core": "^1.1.1",
+    "@actions/github": "^1.1.0",
     "puppeteer": "^2.0.0"
   }
 }
