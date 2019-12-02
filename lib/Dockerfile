@@ -13,5 +13,5 @@ RUN  apt-get update \
      && chmod +x /usr/sbin/wait-for-it.sh
 
 COPY entrypoint.sh .
-`
+
 ENTRYPOINT ["sh", "entrypoint.sh"]
