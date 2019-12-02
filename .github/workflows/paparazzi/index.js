@@ -18,5 +18,4 @@ const date = new Date().toISOString().split("T")[0];
   await page.screenshot({path: 'github.png', fullPage: true});
   await browser.close();
   
-  await ()
 })();
