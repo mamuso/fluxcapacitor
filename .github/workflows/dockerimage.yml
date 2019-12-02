@@ -11,4 +11,5 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build Dockerfile 
-      run: docker build . --file lib/Dockerfile --tag screen-tardis:$(date +%s)
+      run: docker build . --file lib/Dockerfile --tag screen-tardis
+    - run: docker run screen-tardis
