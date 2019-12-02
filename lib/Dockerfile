@@ -14,4 +14,4 @@ RUN  apt-get update \
 
 COPY lib/entrypoint.sh .
 
-CMD["sh", "entrypoint.sh"]
+CMD ["sh", "entrypoint.sh"]
