@@ -1,4 +1,4 @@
-# Screen TARDIS
+# Timesled
 
-A time machine for your website
+A time machine for websites
 

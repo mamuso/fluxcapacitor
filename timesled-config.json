@@ -1,0 +1,48 @@
+{
+  "devices": [
+    {
+      "id": "desktop",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "deviceScaleFactor": 2
+      }
+    },
+    {
+      "id": "tablet",
+      "viewport": {
+        "width": 768,
+        "height": 1024,
+        "deviceScaleFactor": 2
+      }
+    },
+    {
+      "id": "mobile",
+      "device": "Pixel 2"
+    }
+  ],
+
+  "screens": [
+    {
+      "id": "home",
+      "url": "https://github.com/",
+      "fullPage": true
+    },
+    {
+      "id": "features",
+      "url": "https://github.com/features",
+      "fullPage": true
+    },
+    {
+      "id": "features/code-review",
+      "url": "https://github.com/features/code-review/",
+      "fullPage": true
+    },
+    {
+      "id": "features/project-management",
+      "url": "https://github.com/features/project-management",
+      "fullPage": true
+    }
+ 
+  ]
+}
