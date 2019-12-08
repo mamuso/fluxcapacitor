@@ -39,9 +39,9 @@ module.exports = async ({ ...options } = {}) => {
     const jMax = options.urls.length;
     for (; j < jMax; j++) {
       const captureData = options.urls[j];
-      const localFilePath = `${options.destination}/${
-        captureDevice.id
-      }-${slugify(captureData.id)}.${options.format}`;
+      const localFilePath = `${options.path}/${captureDevice.id}-${slugify(
+        captureData.id
+      )}.${options.format}`;
       await page.goto(captureData.url);
       await page.screenshot({
         path: localFilePath,

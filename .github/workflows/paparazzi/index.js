@@ -16,7 +16,8 @@ const store = require("./lib/store");
 const utils = require("./lib/utils");
 
 const date = new Date().toISOString().split("T")[0];
-const tmpFolder = "tmp";
+const tmpPath = "tmp";
+const destinationPath = `${tmpPath}/${date}`;
 
 (async () => {
   utils.logHeader(`✨ Paparazzi - ${date}`);
@@ -24,14 +25,14 @@ const tmpFolder = "tmp";
   /**
    * Create tmp infrastructure
    */
-  if (!fs.existsSync(tmpFolder)) {
-    await fs.promises.mkdir(tmpFolder);
+  if (!fs.existsSync(tmpPath)) {
+    await fs.promises.mkdir(tmpPath);
   }
-  if (!fs.existsSync(`${tmpFolder}/${date}`)) {
-    await fs.promises.mkdir(`${tmpFolder}/${date}`);
+  if (!fs.existsSync(destinationPath)) {
+    await fs.promises.mkdir(destinationPath);
   }
-  if (!fs.existsSync(`${tmpFolder}/current`)) {
-    await fs.promises.mkdir(`${tmpFolder}/current`);
+  if (!fs.existsSync(`${tmpPath}/current`)) {
+    await fs.promises.mkdir(`${tmpPath}/current`);
   }
 
   /**
@@ -41,11 +42,20 @@ const tmpFolder = "tmp";
     devices: config.devices,
     urls: config.urls,
     format: config.format,
-    destination: `${tmpFolder}/${date}`
+    path: destinationPath
   });
+
+  /**
+   * Minify
+   */
+  if (config.minify) {
+    await minify({
+      path: destinationPath
+    });
+  }
 
   /**
    * Clean tmp infrastructure
    */
-  await fs.promises.rmdir(tmpFolder, { recursive: true });
+  await fs.promises.rmdir(tmpPath, { recursive: true });
 })();

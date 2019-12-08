@@ -12,7 +12,6 @@ module.exports.logHeader = text => {
   console.log(
     "-----------------------------------------------------------------------"
   );
-  console.log("");
 };
 
 module.exports.logSubheader = text => {
