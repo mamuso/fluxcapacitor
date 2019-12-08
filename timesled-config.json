@@ -1,4 +1,8 @@
 {
+  "format": "png",
+  "minify": false,
+  "storage": "azure",
+
   "devices": [
     {
       "id": "desktop",
@@ -26,7 +30,7 @@
     }
   ],
 
-  "screens": [
+  "urls": [
     {
       "id": "home",
       "url": "https://github.com",
