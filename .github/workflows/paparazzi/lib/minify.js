@@ -11,14 +11,17 @@ const utils = require("./utils");
 module.exports = async ({ ...options } = {}) => {
   utils.logHeader(`📦 Minify captures`);
 
-  const files = await imagemin([`${options.path}/*.{jpg,png}`], {
-    destination: options.path,
-    plugins: [
-      imageminJpegtran(),
-      imageminPngquant({
-        quality: [0.6, 0.8]
-      })
-    ]
-  });
+  const files = await imagemin(
+    [`${options.path}/${options.pattern || "*"}.{jpg,png}`],
+    {
+      destination: options.path,
+      plugins: [
+        imageminJpegtran(),
+        imageminPngquant({
+          quality: [0.6, 0.8]
+        })
+      ]
+    }
+  );
   console.log(`${files.length} files processed`);
 };

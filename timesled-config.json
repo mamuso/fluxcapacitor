@@ -1,6 +1,7 @@
 {
   "format": "png",
   "minify": false,
+  "compare": true,
   "storage": "azure",
 
   "devices": [
