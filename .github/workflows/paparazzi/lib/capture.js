@@ -7,6 +7,8 @@ const puppeteer = require("puppeteer");
 const slugify = require("slugify");
 const utils = require("./utils");
 
+const screens = [];
+
 module.exports = async ({ ...options } = {}) => {
   utils.logHeader(`📷 Capture URLs`);
 
@@ -39,17 +41,27 @@ module.exports = async ({ ...options } = {}) => {
     const jMax = options.urls.length;
     for (; j < jMax; j++) {
       const captureData = options.urls[j];
-      const localFilePath = `${options.path}/${captureDevice.id}-${slugify(
-        captureData.id
-      )}.${options.format}`;
+      const fileName = `${captureDevice.id}-${slugify(captureData.id)}.${
+        options.format
+      }`;
+      const localFilePath = `${options.path}/${fileName}`;
       await page.goto(captureData.url);
       await page.screenshot({
         path: localFilePath,
         fullPage: captureData.fullPage
       });
 
+      await screens.push({
+        id: `${captureDevice.id}-${slugify(captureData.id)}`,
+        screenId: captureData.id,
+        screenName: fileName,
+        screenPath: localFilePath,
+        diff: false
+      });
+
       utils.logCaptureURL(captureData.id);
     }
     await browser.close();
   }
+  return screens;
 };

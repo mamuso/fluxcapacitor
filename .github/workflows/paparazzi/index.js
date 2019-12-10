@@ -39,7 +39,7 @@ const currentPath = `${tmpPath}/current`;
   /**
    * Capture
    */
-  await capture({
+  const screensList = await capture({
     devices: config.devices,
     urls: config.urls,
     format: config.format,
@@ -47,7 +47,7 @@ const currentPath = `${tmpPath}/current`;
   });
 
   /**
-   * TODO: Check current
+   * TODO: Checkout current
    */
 
   /**
@@ -63,7 +63,7 @@ const currentPath = `${tmpPath}/current`;
    * Compare
    */
   if (config.compare) {
-    await compare({
+    const diffList = await compare({
       devices: config.devices,
       urls: config.urls,
       format: config.format,
@@ -76,10 +76,20 @@ const currentPath = `${tmpPath}/current`;
         pattern: "*-diff"
       });
     }
+
+    diffList.forEach(d => {
+      screensList.find(s => s.id === d.id).diff = true;
+    });
+
+    // Write the report
+    fs.writeFileSync(
+      `${destinationPath}/report.json`,
+      JSON.stringify(screensList)
+    );
   }
 
   /**
    * Clean tmp infrastructure
    */
-  await fs.promises.rmdir(tmpPath, { recursive: true });
+  // await fs.promises.rmdir(tmpPath, { recursive: true });
 })();

@@ -62,6 +62,8 @@ const alignImagesToSameSize = (firstImage, secondImage) => {
 };
 
 module.exports = async ({ ...options } = {}) => {
+  utils.logHeader(`🔍 Comparing screens`);
+
   /**
    * Looping through devices
    */
@@ -120,7 +122,12 @@ module.exports = async ({ ...options } = {}) => {
         const diffRatio = diffPixelCount / totalPixels;
 
         if (diffRatio > 0) {
-          diff.push(captureData);
+          utils.logCompareURL(
+            `${captureDevice.id}-${slugify(
+              captureData.id
+            )} changed - ${diffRatio}`
+          );
+          diff.push({ id: `${captureDevice.id}-${slugify(captureData.id)}` });
         }
 
         fs.writeFileSync(
@@ -128,7 +135,10 @@ module.exports = async ({ ...options } = {}) => {
           PNG.sync.write(diffImage)
         );
       } catch (e) {
-        diff.push(captureData);
+        utils.logCompareURL(
+          `${captureDevice.id}-${slugify(captureData.id)} seems to be new!`
+        );
+        diff.push({ id: `${captureDevice.id}-${slugify(captureData.id)}` });
       }
     }
   }

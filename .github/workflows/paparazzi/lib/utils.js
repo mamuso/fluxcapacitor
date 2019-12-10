@@ -25,3 +25,7 @@ module.exports.logSubheader = text => {
 module.exports.logCaptureURL = text => {
   console.log(`  └ 🏙  ${text}`);
 };
+
+module.exports.logCompareURL = text => {
+  console.log(`  └ 🎆  ${text}`);
+};
