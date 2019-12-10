@@ -54,6 +54,7 @@ module.exports = async ({ ...options } = {}) => {
       await screens.push({
         id: `${captureDevice.id}-${slugify(captureData.id)}`,
         screenId: captureData.id,
+        screenIdSlug: slugify(captureData.id),
         screenName: fileName,
         screenPath: localFilePath,
         diff: false

@@ -13,6 +13,7 @@ const capture = require("./lib/capture");
 const compare = require("./lib/compare");
 const minify = require("./lib/minify");
 const store = require("./lib/store");
+const report = require("./lib/report");
 const utils = require("./lib/utils");
 
 const date = new Date().toISOString().split("T")[0];
@@ -80,13 +81,15 @@ const currentPath = `${tmpPath}/current`;
     diffList.forEach(d => {
       screensList.find(s => s.id === d.id).diff = true;
     });
-
-    // Write the report
-    fs.writeFileSync(
-      `${destinationPath}/report.json`,
-      JSON.stringify(screensList)
-    );
   }
+
+  /**
+   * Report
+   */
+  await report(screensList, {
+    date: date,
+    path: destinationPath
+  });
 
   /**
    * Clean tmp infrastructure
