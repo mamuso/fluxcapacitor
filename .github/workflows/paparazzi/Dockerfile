@@ -13,10 +13,8 @@ RUN  apt-get update \
      && wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh \
      && chmod +x /usr/sbin/wait-for-it.sh
 
-COPY package*.json ./
-
-RUN npm ci
-
 COPY . .
+WORKDIR .github/workflows/paparazzi/
+RUN npm ci
 
 ENTRYPOINT ["node", "/index.js"]
