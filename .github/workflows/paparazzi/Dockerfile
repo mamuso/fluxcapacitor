@@ -14,6 +14,7 @@ RUN  apt-get update \
      && chmod +x /usr/sbin/wait-for-it.sh
 
 COPY . .
+RUN ls -la
 WORKDIR .github/workflows/paparazzi/
 RUN npm ci
 
