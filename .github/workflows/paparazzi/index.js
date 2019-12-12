@@ -4,11 +4,20 @@
  * A GitHub action to capture, compare, minify and store screenshots
  */
 
+const fs = require("fs");
+fs.readdir(".", function(err, items) {
+  console.log(items);
+});
+
 const config = require("../../../timesled-config");
 const dotenv = require("dotenv");
 dotenv.config();
 
 const fs = require("fs");
+fs.readdir(".", function(err, items) {
+  console.log(items);
+});
+
 const capture = require("./lib/capture");
 const compare = require("./lib/compare");
 const minify = require("./lib/minify");
@@ -20,10 +29,6 @@ const date = new Date().toISOString().split("T")[0];
 const tmpPath = "tmp";
 const destinationPath = `${tmpPath}/${date}`;
 const currentPath = `${tmpPath}/current`;
-
-fs.readdir(".", function(err, items) {
-  console.log(items);
-});
 
 (async () => {
   utils.logHeader(`✨ Paparazzi - ${date}`);
