@@ -5,9 +5,10 @@
   "keywords": [],
   "author": "Manuel Muñoz Solera <mamuso@mamuso.net>",
   "license": "MIT",
+  "scripts": {
+    "capture": "node index.js"
+  },
   "dependencies": {
-    "@actions/core": "^1.1.1",
-    "@actions/github": "^1.1.0",
     "@azure/storage-file-share": "^12.0.0",
     "dotenv": "^8.2.0",
     "imagemin": "^7.0.1",

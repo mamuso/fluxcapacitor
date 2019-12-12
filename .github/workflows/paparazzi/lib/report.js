@@ -19,9 +19,9 @@ module.exports = async (screensList, { ...options } = {}) => {
   /**
    * TODO: reduce screensList to a list with unique screenIdSlugs
    */
-  uniqueReducedList.forEach(s => {
-    if (!fs.existsSync(indexPath)) {
-      console.log(fs.existsSync(`${indexPath}/${s.screenIdSlug}.json`));
-    }
-  });
+  // uniqueReducedList.forEach(s => {
+  //   if (!fs.existsSync(indexPath)) {
+  //     console.log(fs.existsSync(`${indexPath}/${s.screenIdSlug}.json`));
+  //   }
+  // });
 };

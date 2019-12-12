@@ -94,5 +94,5 @@ const currentPath = `${tmpPath}/current`;
   /**
    * Clean tmp infrastructure
    */
-  // await fs.promises.rmdir(tmpPath, { recursive: true });
+  await fs.promises.rmdir(tmpPath, { recursive: true });
 })();
