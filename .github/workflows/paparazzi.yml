@@ -1,6 +1,6 @@
-name: 📷 Screenshoting 
+name: 📷 Screenshoting
 
-on: [ push ]
+on: [push]
 
 jobs:
   step:
@@ -11,5 +11,5 @@ jobs:
         uses: actions/checkout@master
       - name: Process and screenshot
         uses: ./.github/workflows/paparazzi
-        with:
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
