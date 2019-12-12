@@ -21,6 +21,10 @@ const tmpPath = "tmp";
 const destinationPath = `${tmpPath}/${date}`;
 const currentPath = `${tmpPath}/current`;
 
+fs.readdir(".", function(err, items) {
+  console.log(items);
+});
+
 (async () => {
   utils.logHeader(`✨ Paparazzi - ${date}`);
 
