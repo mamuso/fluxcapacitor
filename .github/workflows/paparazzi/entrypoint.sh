@@ -10,7 +10,7 @@ remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSIT
 git config user.name "Paparazzi"
 git config user.email "Paparazzi-action@users.noreply.github.com"
 git clone "${remote_repo}" repo
-cd r
+cd repo
 git show-ref # useful for debugging
 git branch --verbose
 cd ..
