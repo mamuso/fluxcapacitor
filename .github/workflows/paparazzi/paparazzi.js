@@ -19,6 +19,7 @@ const minify = require("./lib/minify");
 const store = require("./lib/store");
 const report = require("./lib/report");
 const utils = require("./lib/utils");
+const prepare = require("./lib/prepare");
 
 const date = new Date().toISOString().split("T")[0];
 const tmpPath = "tmp";
@@ -96,7 +97,17 @@ const currentPath = `${tmpPath}/current`;
   });
 
   /**
+   * Prepare
+   */
+  await prepare({
+    date: date,
+    tmpPath: tmpPath,
+    basePath: basePath,
+    destinationPath: destinationPath
+  });
+
+  /**
    * Clean tmp infrastructure
    */
-  await fs.promises.rmdir(tmpPath, { recursive: true });
+  // await fs.promises.rmdir(tmpPath, { recursive: true });
 })();

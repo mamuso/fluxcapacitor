@@ -6,15 +6,16 @@
 const fs = require("fs");
 const utils = require("./utils");
 
-const indexPath = "../../../../reports/index/";
-
 module.exports = async (screensList, { ...options } = {}) => {
   utils.logHeader(`📊 Reporting`);
+
+  const reportFilePath = `${options.path}/report.json`;
+  const currentFilePath = `${options.path}/../current.json`;
 
   /**
    * Write the report.json file in the destination folder
    */
-  fs.writeFileSync(`${options.path}/report.json`, JSON.stringify(screensList));
+  fs.writeFileSync(reportFilePath, JSON.stringify(screensList));
 
   /**
    * TODO: reduce screensList to a list with unique screenIdSlugs
@@ -24,8 +25,6 @@ module.exports = async (screensList, { ...options } = {}) => {
   //     console.log(fs.existsSync(`${indexPath}/${s.screenIdSlug}.json`));
   //   }
   // });
-  fs.writeFileSync(
-    `${options.path}/../current.json`,
-    JSON.stringify({ current: options.date })
-  );
+
+  fs.writeFileSync(currentFilePath, JSON.stringify({ current: options.date }));
 };

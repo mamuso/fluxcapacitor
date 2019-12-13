@@ -9,7 +9,7 @@ fi
 remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 git config user.name "Paparazzi"
 git config user.email "paparazzi-action@users.noreply.github.com"
-git clone "${remote_repo}" repo
+git clone "${remote_repo}" /github/workspace/repo
 cd repo
 git show-ref # useful for debugging
 git branch --verbose
@@ -18,4 +18,9 @@ git branch --verbose
 cd /
 GITHUB_ACTIONS=true node paparazzi.js
 
-# Push the result
+# Push files to the repo
+cd /github/workspace/repo
+git add -A
+git commit -m "Publishing report ${timestamp} ${GITHUB_SHA}" || exit 0
+git pull 
+git push
