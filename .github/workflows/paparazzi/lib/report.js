@@ -24,4 +24,8 @@ module.exports = async (screensList, { ...options } = {}) => {
   //     console.log(fs.existsSync(`${indexPath}/${s.screenIdSlug}.json`));
   //   }
   // });
+  fs.writeFileSync(
+    `${options.path}/../current.json`,
+    JSON.stringify({ current: options.date })
+  );
 };
