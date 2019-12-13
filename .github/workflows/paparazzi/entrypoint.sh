@@ -15,6 +15,7 @@ git show-ref # useful for debugging
 git branch --verbose
 cd ..
 
+ls -la
 # Take some pictures
 node capture.js
 
