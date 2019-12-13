@@ -4,11 +4,15 @@
  * A GitHub action to capture, compare, minify and store screenshots
  */
 
-const config = require("/github/workspace/repo/timesled-config");
+const fs = require("fs");
+
+const basePath = fs.existsSync("/github/workspace/repo")
+  ? "/github/workspace/repo"
+  : "../../..";
+const config = require(`${basePath}/timesled-config`);
 const dotenv = require("dotenv");
 dotenv.config();
 
-const fs = require("fs");
 const capture = require("./lib/capture");
 const compare = require("./lib/compare");
 const minify = require("./lib/minify");

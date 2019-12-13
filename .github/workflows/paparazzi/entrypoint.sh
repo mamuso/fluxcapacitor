@@ -14,12 +14,8 @@ cd repo
 git show-ref # useful for debugging
 git branch --verbose
 
-pwd
-
-cd /
-ls -la
-
 # Take some pictures
+cd /
 node capture.js
 
 # Push the result
