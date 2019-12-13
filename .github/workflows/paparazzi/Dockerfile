@@ -17,6 +17,6 @@ WORKDIR /github/workspace
 
 COPY package*.json ./
 RUN npm ci
-COPY . .
+COPY . ./
 
 ENTRYPOINT ["/entrypoint.sh"]
