@@ -13,8 +13,16 @@ git clone "${remote_repo}" repo
 cd repo
 git show-ref # useful for debugging
 git branch --verbose
-cd ..
 
+pwd
+
+cd ..
+ls -la
+
+cd ..
+ls -la
+
+cd ..
 ls -la
 # Take some pictures
 node capture.js
