@@ -16,7 +16,7 @@ git branch --verbose
 
 pwd
 
-cd ..
+cd /
 ls -la
 
 # Take some pictures
