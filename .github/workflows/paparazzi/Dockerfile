@@ -19,4 +19,4 @@ COPY package*.json ./
 RUN npm ci
 COPY . ./
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/github/workspace", "entrypoint.sh"]
