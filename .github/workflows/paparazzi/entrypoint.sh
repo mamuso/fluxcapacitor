@@ -7,8 +7,8 @@ fi
 
 # Clone repo
 remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-git config user.name "Paparazzi"
-git config user.email "paparazzi-action@users.noreply.github.com"
+git config --global user.name "Paparazzi"
+git config --global user.email "paparazzi-action@users.noreply.github.com"
 git clone "${remote_repo}" /github/workspace/repo
 cd repo
 git show-ref # useful for debugging
