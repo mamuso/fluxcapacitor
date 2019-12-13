@@ -4,7 +4,7 @@
  * A GitHub action to capture, compare, minify and store screenshots
  */
 
-const config = require("../../../timesled-config");
+const config = require("repo/timesled-config");
 const dotenv = require("dotenv");
 dotenv.config();
 
