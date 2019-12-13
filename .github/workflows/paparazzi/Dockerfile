@@ -15,7 +15,7 @@ RUN  apt-get update \
 
 WORKDIR /github/workspace
 
-COPY package*.json .
+COPY package*.json ./
 RUN npm ci
 COPY . .
 
