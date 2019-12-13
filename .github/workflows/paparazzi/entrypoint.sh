@@ -19,11 +19,6 @@ pwd
 cd ..
 ls -la
 
-cd ..
-ls -la
-
-cd ..
-ls -la
 # Take some pictures
 node capture.js
 
