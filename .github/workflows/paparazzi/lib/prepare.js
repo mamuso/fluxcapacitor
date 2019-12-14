@@ -9,31 +9,31 @@ const utils = require("./utils");
 module.exports = async ({ ...options } = {}) => {
   utils.logHeader(`📦 Prepare files`);
 
-  const currentPath = `${options.basePath}/reports/current.json`;
-  const destinationPath = `${options.basePath}/reports/reports/${options.date}`;
-  if (!fs.existsSync(destinationPath)) {
-    await fs.promises.mkdir(destinationPath);
+  const currentBasePath = `${options.basePath}/reports/current.json`;
+  const destinationBasePath = `${options.basePath}/reports/reports/${options.date}`;
+  if (!fs.existsSync(destinationBasePath)) {
+    await fs.promises.mkdir(destinationBasePath);
   }
 
   /**
    * Redefining current
    */
-  if (fs.existsSync(currentPath)) {
-    await fs.promises.unlink(currentPath);
+  if (fs.existsSync(currentBasePath)) {
+    await fs.promises.unlink(currentBasePath);
   }
   await fs.promises.copyFile(
     `${options.destinationPath}/../current.json`,
-    currentPath
+    currentBasePath
   );
 
   /**
    * Moving report
    */
-  // if (fs.existsSync(currentPath)) {
-  //   await fs.promises.unlink(currentPath);
-  // }
-  // await fs.promises.copyFile(
-  //   `${options.destinationPath}/../current.json`,
-  //   currentPath
-  // );
+  if (fs.existsSync(`${destinationBasePath}/report.json`)) {
+    await fs.promises.unlink(`${destinationBasePath}/report.json`);
+  }
+  await fs.promises.copyFile(
+    `${options.destinationPath}/report.json`,
+    `${destinationBasePath}/report.json`
+  );
 };

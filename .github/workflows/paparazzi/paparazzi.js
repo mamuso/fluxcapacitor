@@ -5,14 +5,6 @@
  */
 
 const fs = require("fs");
-
-const basePath = fs.existsSync("/github/workspace/repo")
-  ? "/github/workspace/repo"
-  : "../../..";
-const config = require(`${basePath}/timesled-config`);
-const dotenv = require("dotenv");
-dotenv.config();
-
 const capture = require("./lib/capture");
 const compare = require("./lib/compare");
 const minify = require("./lib/minify");
@@ -20,67 +12,55 @@ const store = require("./lib/store");
 const report = require("./lib/report");
 const utils = require("./lib/utils");
 const prepare = require("./lib/prepare");
+const dotenv = require("dotenv");
+dotenv.config();
 
+const basePath = fs.existsSync("/github/workspace/repo")
+  ? "/github/workspace/repo"
+  : "../../..";
+const tmp = "tmp";
 const date = new Date().toISOString().split("T")[0];
-const tmpPath = "tmp";
-const destinationPath = `${tmpPath}/${date}`;
-const currentPath = `${tmpPath}/current`;
+
+const config = {
+  date: date,
+  basePath: basePath,
+  tmpPath: tmp,
+  tmpDatePath: `${tmp}/${date}`,
+  tmpCurrentPath: `${tmp}/current`,
+  ...require(`${basePath}/timesled-config`)
+};
 
 (async () => {
   utils.logHeader(`✨ Paparazzi - ${date}`);
 
-  /**
-   * Create tmp infrastructure
-   */
-  if (!fs.existsSync(tmpPath)) {
-    await fs.promises.mkdir(tmpPath);
+  /** Create tmp folders */
+  if (!fs.existsSync(config.tmpPath)) {
+    await fs.promises.mkdir(config.tmpPath);
   }
-  if (!fs.existsSync(destinationPath)) {
-    await fs.promises.mkdir(destinationPath);
+  if (!fs.existsSync(config.tmpDatePath)) {
+    await fs.promises.mkdir(config.tmpDatePath);
   }
-  if (!fs.existsSync(currentPath)) {
-    await fs.promises.mkdir(currentPath);
+  if (!fs.existsSync(config.tmpCurrentPath)) {
+    await fs.promises.mkdir(config.tmpCurrentPath);
   }
 
-  /**
-   * Capture
-   */
-  const screensList = await capture({
-    devices: config.devices,
-    urls: config.urls,
-    format: config.format,
-    path: destinationPath
-  });
+  /** Capture */
+  const screensList = await capture(config);
 
   /**
    * TODO: Checkout current
    */
 
-  /**
-   * Minify
-   */
+  /** Minify */
   if (config.minify) {
-    await minify({
-      path: destinationPath
-    });
+    await minify(config);
   }
 
-  /**
-   * Compare
-   */
+  /** Compare */
   if (config.compare) {
-    const diffList = await compare({
-      devices: config.devices,
-      urls: config.urls,
-      format: config.format,
-      path: destinationPath,
-      current: currentPath
-    });
+    const diffList = await compare(config);
     if (config.minify) {
-      await minify({
-        path: destinationPath,
-        pattern: "*-diff"
-      });
+      await minify({ pattern: "*-diff", ...config });
     }
 
     diffList.forEach(d => {
@@ -88,26 +68,12 @@ const currentPath = `${tmpPath}/current`;
     });
   }
 
-  /**
-   * Report
-   */
-  await report(screensList, {
-    date: date,
-    path: destinationPath
-  });
+  /** Report */
+  await report({ screensList, ...config });
 
-  /**
-   * Prepare
-   */
-  await prepare({
-    date: date,
-    tmpPath: tmpPath,
-    basePath: basePath,
-    destinationPath: destinationPath
-  });
+  /** Prepare */
+  await prepare(config);
 
-  /**
-   * Clean tmp infrastructure
-   */
-  // await fs.promises.rmdir(tmpPath, { recursive: true });
+  /** Clean tmp folder */
+  await fs.promises.rmdir(config.tmpPath, { recursive: true });
 })();

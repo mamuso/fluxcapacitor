@@ -9,20 +9,21 @@ const utils = require("./utils");
 
 const screens = [];
 
-module.exports = async ({ ...options } = {}) => {
+module.exports = async ({ ...config } = {}) => {
   utils.logHeader(`📷 Capture URLs`);
 
   /**
    * Looping through devices
    */
   let i = 0;
-  const iMax = options.devices.length;
+  const iMax = config.devices.length;
   for (; i < iMax; i++) {
-    const captureDevice = options.devices[i];
+    const captureDevice = config.devices[i];
     const browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
+
     const page = await browser.newPage();
     let device = captureDevice.device
       ? puppeteer.devices[captureDevice.device]
@@ -38,13 +39,14 @@ module.exports = async ({ ...options } = {}) => {
      * Looping through URLs
      */
     let j = 0;
-    const jMax = options.urls.length;
+    const jMax = config.urls.length;
     for (; j < jMax; j++) {
-      const captureData = options.urls[j];
+      const captureData = config.urls[j];
       const fileName = `${captureDevice.id}-${slugify(captureData.id)}.${
-        options.format
+        config.format
       }`;
-      const localFilePath = `${options.path}/${fileName}`;
+
+      const localFilePath = `${config.tmpDatePath}/${fileName}`;
       await page.goto(captureData.url);
       await page.screenshot({
         path: localFilePath,

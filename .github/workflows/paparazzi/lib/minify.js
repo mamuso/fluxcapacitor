@@ -8,13 +8,13 @@ const imageminJpegtran = require("imagemin-jpegtran");
 const imageminPngquant = require("imagemin-pngquant");
 const utils = require("./utils");
 
-module.exports = async ({ ...options } = {}) => {
+module.exports = async ({ ...config } = {}) => {
   utils.logHeader(`📦 Minify captures`);
 
   const files = await imagemin(
-    [`${options.path}/${options.pattern || "*"}.{jpg,png}`],
+    [`${config.tmpDatepath}/${config.pattern || "*"}.{jpg,png}`],
     {
-      destination: options.path,
+      destination: config.tmpDatepath,
       plugins: [
         imageminJpegtran(),
         imageminPngquant({

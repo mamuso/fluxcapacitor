@@ -19,8 +19,9 @@ cd /
 GITHUB_ACTIONS=true node paparazzi.js
 
 # Push files to the repo
-cd /github/workspace/repo
-git add -A
-git commit -m "Publishing report ${timestamp} ${GITHUB_SHA}" || exit 0
-git pull 
-git push
+# cd /github/workspace/repo
+# git add -A
+# timestamp=$(date -u)
+# git commit -m "Publishing report ${timestamp} - ${GITHUB_SHA}" || exit 0
+# git pull 
+# git push
