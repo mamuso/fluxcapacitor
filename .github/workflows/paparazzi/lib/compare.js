@@ -64,17 +64,13 @@ const alignImagesToSameSize = (firstImage, secondImage) => {
 module.exports = async ({ ...options } = {}) => {
   utils.logHeader(`🔍 Comparing screens`);
 
-  /**
-   * Looping through devices
-   */
+  /** Looping through devices */
   let i = 0;
   const iMax = options.devices.length;
   for (; i < iMax; i++) {
     const captureDevice = options.devices[i];
 
-    /**
-     * Looping through URLs
-     */
+    /** Looping through URLs */
     let j = 0;
     const jMax = options.urls.length;
     for (; j < jMax; j++) {
@@ -98,7 +94,7 @@ module.exports = async ({ ...options } = {}) => {
           rawReceivedImage.height !== rawBaselineImage.height ||
           rawReceivedImage.width !== rawBaselineImage.width;
 
-        // Align images in size if different
+        /** Align images in size if different */
         const [receivedImage, baselineImage] = hasSizeMismatch
           ? alignImagesToSameSize(rawReceivedImage, rawBaselineImage)
           : [rawReceivedImage, rawBaselineImage];

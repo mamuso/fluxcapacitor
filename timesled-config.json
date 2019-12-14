@@ -33,6 +33,121 @@
 
   "urls": [
     {
+      "id": "home",
+      "url": "https://github.com",
+      "fullPage": true
+    },
+    {
+      "id": "features",
+      "url": "https://github.com/features",
+      "fullPage": true
+    },
+    {
+      "id": "features/code-review",
+      "url": "https://github.com/features/code-review",
+      "fullPage": true
+    },
+    {
+      "id": "features/project-management",
+      "url": "https://github.com/features/project-management",
+      "fullPage": true
+    },
+    {
+      "id": "features/integrations",
+      "url": "https://github.com/features/integrations",
+      "fullPage": true
+    },
+    {
+      "id": "features/packages",
+      "url": "https://github.com/features/packages",
+      "fullPage": true
+    },
+    {
+      "id": "features/security",
+      "url": "https://github.com/features/security",
+      "fullPage": true
+    },
+    {
+      "id": "customer-stories",
+      "url": "https://github.com/customer-stories",
+      "fullPage": true
+    },
+    {
+      "id": "security",
+      "url": "https://github.com/security",
+      "fullPage": true
+    },
+    {
+      "id": "security/trust",
+      "url": "https://github.com/security/trust",
+      "fullPage": true
+    },
+    {
+      "id": "security/team",
+      "url": "https://github.com/security/team",
+      "fullPage": true
+    },
+    {
+      "id": "security/incident-response",
+      "url": "https://github.com/security/incident-response",
+      "fullPage": true
+    },
+    {
+      "id": "enterprise",
+      "url": "https://github.com/enterprise",
+      "fullPage": true
+    },
+    {
+      "id": "explore",
+      "url": "https://github.com/explore",
+      "fullPage": true
+    },
+    {
+      "id": "topics",
+      "url": "https://github.com/topics",
+      "fullPage": true
+    },
+    {
+      "id": "trending",
+      "url": "https://github.com/trending",
+      "fullPage": true
+    },
+    {
+      "id": "collections",
+      "url": "https://github.com/collections",
+      "fullPage": true
+    },
+    {
+      "id": "events",
+      "url": "https://github.com/events",
+      "fullPage": true
+    },
+    {
+      "id": "sponsors",
+      "url": "https://github.com/sponsors",
+      "fullPage": true
+    },
+    {
+      "id": "sponsors/community",
+      "url": "https://github.com/sponsors/community",
+      "fullPage": true
+    },
+    {
+      "id": "pricing",
+      "url": "https://github.com/pricing",
+      "fullPage": true
+    },
+    {
+      "id": "resources",
+      "url": "https://resources.github.com",
+      "fullPage": true
+    },
+    {
+      "id": "resources/videos",
+      "url": "https://resources.github.com/videos",
+      "fullPage": true
+    },
+    {
       "id": "resources/webcasts",
       "url": "https://resources.github.com/webcasts",
       "fullPage": true

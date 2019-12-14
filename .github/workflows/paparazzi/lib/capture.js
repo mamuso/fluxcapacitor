@@ -12,9 +12,7 @@ const screens = [];
 module.exports = async ({ ...config } = {}) => {
   utils.logHeader(`📷 Capture URLs`);
 
-  /**
-   * Looping through devices
-   */
+  /** Looping through devices */
   let i = 0;
   const iMax = config.devices.length;
   for (; i < iMax; i++) {
@@ -35,9 +33,7 @@ module.exports = async ({ ...config } = {}) => {
       `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
     );
 
-    /**
-     * Looping through URLs
-     */
+    /** Looping through URLs */
     let j = 0;
     const jMax = config.urls.length;
     for (; j < jMax; j++) {

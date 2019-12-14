@@ -47,9 +47,7 @@ const config = {
   /** Capture */
   const screensList = await capture(config);
 
-  /**
-   * TODO: Checkout current
-   */
+  /** TODO: Checkout current */
 
   /** Minify */
   if (config.minify) {
@@ -72,7 +70,7 @@ const config = {
   await report({ screensList, ...config });
 
   /** Prepare */
-  await prepare(config);
+  // await prepare(config);
 
   /** Clean tmp folder */
   await fs.promises.rmdir(config.tmpPath, { recursive: true });
