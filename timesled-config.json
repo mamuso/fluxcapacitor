@@ -31,7 +31,7 @@
     }
   ],
 
-  "urls": [
+  "nodes": [
     {
       "id": "home",
       "url": "https://github.com",
