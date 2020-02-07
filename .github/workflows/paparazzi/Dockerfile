@@ -8,14 +8,6 @@ RUN apt-get update && \
       libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget && \
     rm -rf /var/lib/apt/lists/*
 
-# Add user so we don't need --no-sandbox.
-RUN groupadd -r pwuser && useradd -r -g pwuser -G audio,video pwuser \
-    && mkdir -p /home/pwuser/Downloads \
-    && chown -R pwuser:pwuser /home/pwuser
-
-# Run everything after as non-privileged user.
-USER pwuser
-
 COPY package*.json ./
 RUN npm ci
 COPY . .
