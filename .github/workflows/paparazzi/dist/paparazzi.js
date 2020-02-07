@@ -65,6 +65,6 @@ class Paparazzi {
     }
 }
 const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
-fs.existsSync('/github/workspace/repo') // basePath
-    ? '/github/workspace/repo'
+fs.existsSync(`${process.env.GITHUB_WORKSPACE}`) // basePath
+    ? `${process.env.GITHUB_WORKSPACE}`
     : '../../../..');
