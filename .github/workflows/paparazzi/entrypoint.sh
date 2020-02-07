@@ -16,7 +16,7 @@ git branch --verbose
 
 # Take some pictures
 cd /
-GITHUB_ACTIONS=true node paparazzi.js
+GITHUB_ACTIONS=true node dist/paparazzi.js
 
 # Push files to the repo
 # cd /github/workspace/repo

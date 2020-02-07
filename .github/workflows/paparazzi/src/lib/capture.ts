@@ -4,7 +4,7 @@
  * Capture a list of urls with puppeteer.
  */
 
-import {Config} from './interfaces'
+import {Config} from './types'
 import Printer from './utils'
 import {chromium} from 'playwright'
 
@@ -16,8 +16,6 @@ export default class Capture {
   }
 
   capture = async (): Promise<boolean> => {
-    console.log('2adus')
-
     const browser = await chromium.launch({headless: true})
     const context = await browser.newContext()
     const page = await context.newPage('http://whatsmyuseragent.org/')

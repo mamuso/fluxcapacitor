@@ -1,8 +1,9 @@
-export interface Config {
+export type Config = {
   date: string
   basePath: string
   tmpPath: string
   tmpDatePath: string
+  tmpCurrentPath: string
   format: string
   minify: boolean
   compare: boolean
@@ -11,7 +12,7 @@ export interface Config {
   nodes: [Node]
 }
 
-export interface Device {
+export type Device = {
   id: string
   viewport: {
     width: number
@@ -20,7 +21,7 @@ export interface Device {
   }
 }
 
-export interface Node {
+export type Node = {
   id: string
   url: string
   fullPage: boolean

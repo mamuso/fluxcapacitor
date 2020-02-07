@@ -19,7 +19,6 @@ class Capture {
     constructor(config) {
         this.printer = new utils_1.default();
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
-            console.log('2adus');
             const browser = yield playwright_1.chromium.launch({ headless: true });
             const context = yield browser.newContext();
             const page = yield context.newPage('http://whatsmyuseragent.org/');

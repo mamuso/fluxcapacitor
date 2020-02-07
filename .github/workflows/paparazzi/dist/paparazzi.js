@@ -1,8 +1,5 @@
 "use strict";
-/**
- * Paparazzi:
- * A GitHub action to capture, compare, minify and store screenshots.
- */
+/* eslint-disable no-console */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -23,33 +20,51 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Paparazzi:
+ * A GitHub action to capture, compare, minify and store screenshots.
+ */
 require("./lib/env");
 const utils_1 = __importDefault(require("./lib/utils"));
 const capture_1 = __importDefault(require("./lib/capture"));
 const fs = __importStar(require("fs"));
-const basePath = fs.existsSync('/github/workspace/repo')
-    ? '/github/workspace/repo'
-    : '../../../..';
-const date = new Date().toISOString().split('T')[0];
-const tmp = 'tmp';
-const config = Object.assign({ date: date, basePath: basePath, tmpPath: tmp, tmpDatePath: `${tmp}/${date}`, tmpCurrentPath: `${tmp}/current` }, require(`${basePath}/timesled-config`));
-const printer = new utils_1.default();
-const capture = new capture_1.default(config);
-function paparazzi() {
-    return __awaiter(this, void 0, void 0, function* () {
-        printer.header(`✨ Paparazzi - ${date}`);
-        /** Create tmp folders */
-        // if (!fs.existsSync(config.tmpPath)) {
-        //   await fs.promises.mkdir(config.tmpPath)
-        // }
-        // if (!fs.existsSync(config.tmpDatePath)) {
-        //   await fs.promises.mkdir(config.tmpDatePath)
-        // }
-        // if (!fs.existsSync(config.tmpCurrentPath)) {
-        //   await fs.promises.mkdir(config.tmpCurrentPath)
-        // }
-        /** Capture */
-        const screensList = yield capture.capture();
-    });
+class Paparazzi {
+    constructor(date, basePath, tmpPath = 'tmp') {
+        this.printer = new utils_1.default();
+        this.process = () => __awaiter(this, void 0, void 0, function* () {
+            this.setup();
+            this.printer.header(`✨ Paparazzi - ${this.date}`);
+            const capture = new capture_1.default(this.config);
+            yield capture.capture();
+            this.cleanup();
+        });
+        /**
+         *  Create the folder structure needed for capturing the screens
+         */
+        this.setup = () => __awaiter(this, void 0, void 0, function* () {
+            if (!fs.existsSync(this.config.tmpPath)) {
+                yield fs.promises.mkdir(this.config.tmpPath);
+            }
+            if (!fs.existsSync(this.config.tmpDatePath)) {
+                yield fs.promises.mkdir(this.config.tmpDatePath);
+            }
+            if (!fs.existsSync(this.config.tmpCurrentPath)) {
+                yield fs.promises.mkdir(this.config.tmpCurrentPath);
+            }
+        });
+        /**
+         *  Remove the folder structure needed for capturing the screens
+         */
+        this.cleanup = () => __awaiter(this, void 0, void 0, function* () {
+            yield fs.promises.rmdir(this.config.tmpPath, { recursive: true });
+        });
+        this.date = date;
+        this.basePath = basePath;
+        this.config = Object.assign({ date: this.date, basePath: this.basePath, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${this.date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`${this.basePath}/timesled-config`));
+        this.process();
+    }
 }
-paparazzi();
+const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
+fs.existsSync('/github/workspace/repo') // basePath
+    ? '/github/workspace/repo'
+    : '../../../..');
