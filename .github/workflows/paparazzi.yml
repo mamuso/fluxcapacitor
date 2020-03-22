@@ -26,7 +26,5 @@ jobs:
       - run: npm install
       - name: Process and screenshot
         run: ./.github/workflows/paparazzi/entrypoint.sh
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
