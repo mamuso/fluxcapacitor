@@ -21,8 +21,8 @@ jobs:
           RUNNER_TEMP: '/tmp/'
       - name: install required packages
         run: |
-          apt-get update -y
-          apt-get install -y libgbm-dev xvfb
+          suod apt-get update -y
+          sudo apt-get install -y libgbm-dev xvfb
       - run: npm install
       - name: Process and screenshot
         run: ./.github/workflows/paparazzi/entrypoint.sh
