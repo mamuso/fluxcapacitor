@@ -2,14 +2,31 @@ name: 📷 Paparazzi
 
 on: [push]
 
+env:
+  CI: true
+  FORCE_COLOR: 1
+
 jobs:
   step:
     name: Take screenshots
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.16.1'
+        env:
+          RUNNER_TEMP: '/tmp/'
+      - name: install required packages
+        run: |
+          apt-get update -y
+          apt-get install -y libgbm-dev xvfb
+      - run: npm install
       - name: Process and screenshot
-        uses: ./.github/workflows/paparazzi
+        run: ./.github/workflows/paparazzi/entrypoint.sh
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
