@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:12b
 
 RUN apt-get update && \
     apt-get -y install xvfb gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 \
@@ -8,8 +8,20 @@ RUN apt-get update && \
       libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget && \
     rm -rf /var/lib/apt/lists/*
 
-COPY package*.json ./
-RUN npm ci
-COPY . .
+# Add user so we don't need --no-sandbox.
+RUN groupadd -r pwuser && useradd -r -g pwuser -G audio,video pwuser \
+    && mkdir -p /home/pwuser/Downloads \
+    && mkdir -p /home/pwuser/repo \
+    && chown -R pwuser:pwuser /home/pwuser
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Run everything after as non-privileged user.
+USER pwuser
+
+COPY package*.json /home/pwuser/repo/
+RUN cd /home/pwuser/repo/ && npm ci
+COPY . /home/pwuser/repo/
+RUN cd /home/pwuser/repo/ \
+    && node dist/paparazzi.js \
+    && ls -la
+
+# ENTRYPOINT ["/home/pwuser/repo/entrypoint.sh"]
