@@ -26,7 +26,7 @@ class Paparazzi {
       tmpPath: tmpPath,
       tmpDatePath: `${tmpPath}/${this.date}`,
       tmpCurrentPath: `${tmpPath}/current`,
-      ...require(`${this.basePath}/timesled-config`)
+      ...require(`${this.basePath}/fluxcapacitor-config`)
     }
 
     this.process()

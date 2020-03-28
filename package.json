@@ -1,5 +1,5 @@
 {
-  "name": "timesled",
+  "name": "fluxcapacitor",
   "version": "1.0.0",
   "description": "A time machine for websites",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mamuso/timesled.git"
+    "url": "git+https://github.com/mamuso/fluxcapacitor.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mamuso/timesled/issues"
+    "url": "https://github.com/mamuso/fluxcapacitor/issues"
   },
-  "homepage": "https://github.com/mamuso/timesled#readme",
+  "homepage": "https://github.com/mamuso/fluxcapacitor#readme",
   "dependencies": {
     "next": "^9.1.5",
     "react": "^16.12.0",
