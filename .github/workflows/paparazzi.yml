@@ -11,14 +11,13 @@ jobs:
     name: Take screenshots
     runs-on: ubuntu-latest
     container: mamuso/fluxcapacitor:latest
-    name: Try playwright
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-    - run: "echo $HOME"
-    - run: "stat $HOME"
-    - run: "id"
-    - run: "npm i -g yarn"
-    - run: cd .github/workflows/paparazzi && npm install && node playground.js
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: "echo $HOME"
+      - run: "stat $HOME"
+      - run: "id"
+      - run: "npm i -g yarn"
+      - run: cd .github/workflows/paparazzi && npm install && node playground.js
     with:
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
