@@ -43,8 +43,8 @@ fileService.createDirectoryIfNotExists('fluxshare', 'screenshots', function(
 fileService.createFileFromLocalFile(
   'fluxshare',
   'screenshots',
-  'test.png',
-  'test.png',
+  'test.jpg',
+  'test.jpg',
   function(error, result, response) {
     if (!error) {
       console.log(result)
@@ -57,9 +57,9 @@ fileService.createFileFromLocalFile(
 const token = fileService.generateSharedAccessSignature(
   'fluxshare',
   'screenshots',
-  'test.png',
+  'test.jpg',
   sharedAccessPolicy
 )
-const url = fileService.getUrl('fluxshare', 'screenshots', 'test.png', token)
+const url = fileService.getUrl('fluxshare', 'screenshots', 'test.jpg', token)
 
 console.log(url)
