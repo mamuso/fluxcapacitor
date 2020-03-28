@@ -4,7 +4,8 @@
   "keywords": [],
   "author": "Manuel Muñoz Solera <mamuso@mamuso.net>",
   "license": "MIT",
-  "main": "lib/papparazi.js",
+  "main": "dist/papparazi.js",
+  "description": "",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",
@@ -40,6 +41,5 @@
     "prettier": "^1.19.1",
     "ts-jest": "^25.1.0",
     "typescript": "^3.7.5"
-  },
-  "description": ""
+  }
 }

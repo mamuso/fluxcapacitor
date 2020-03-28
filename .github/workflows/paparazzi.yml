@@ -16,15 +16,16 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: '12.16.1'
+          node-version: "12.16.1"
         env:
-          RUNNER_TEMP: '/tmp/'
-      - name: install required packages
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libgbm-dev xvfb
+          RUNNER_TEMP: "/tmp/"
+      # - name: install required packages
+      #   run: |
+      #     sudo apt-get update -y
+      #     sudo apt-get install -y libgbm-dev xvfb
       - run: npm install
       - name: Process and screenshot
-        run: ./.github/workflows/paparazzi/entrypoint.sh
+        run: node .github/workflows/paparazzi/playground.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
