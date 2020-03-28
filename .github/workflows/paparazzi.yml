@@ -19,5 +19,5 @@ jobs:
       - run: "id"
       - run: "npm i -g yarn"
       - run: cd .github/workflows/paparazzi && npm install && node playground.js
-    with:
-      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      env:
+        AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
