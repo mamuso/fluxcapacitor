@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@azure/storage-file-share": "^12.0.0",
+    "azure-storage": "^2.10.3",
     "dotenv": "^8.2.0",
     "imagemin": "^7.0.1",
     "imagemin-jpegtran": "^6.0.0",
