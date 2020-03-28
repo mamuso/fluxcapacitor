@@ -25,6 +25,6 @@ jobs:
       #     sudo apt-get install -y libgbm-dev xvfb
       - run: npm install
       - name: Process and screenshot
-        uses: ./paparazi
+        uses: ./paparazzi
         with:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
