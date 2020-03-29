@@ -10,14 +10,10 @@ jobs:
   step:
     name: Take screenshots
     runs-on: ubuntu-latest
-    container: mamuso/fluxcapacitor:latest
+    container: aslushnikov/playwright
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - run: "echo $HOME"
-      - run: "stat $HOME"
-      - run: "id"
-      - run: "npm i -g yarn"
       - run: "cd .github/workflows/paparazzi && npm install && node playground.js"
     env:
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
