@@ -21,9 +21,8 @@ async function asyncCall() {
   const page = await browser.newPage()
   await page.goto('http://whatsmyuseragent.org/')
   await page.screenshot({path: `test.png`})
-  await browser.close()
 
-  const share = await fileService.createShareIfNotExists('fluxshare', function(
+  await fileService.createShareIfNotExists('fluxshare', function(
     error,
     result,
     response
@@ -34,8 +33,7 @@ async function asyncCall() {
       console.log(error)
     }
   })
-
-  const directory = await fileService.createDirectoryIfNotExists(
+  await fileService.createDirectoryIfNotExists(
     'fluxshare',
     'screenshots',
     function(error, result, response) {
@@ -46,8 +44,7 @@ async function asyncCall() {
       }
     }
   )
-
-  const file = await fileService.createFileFromLocalFile(
+  await fileService.createFileFromLocalFile(
     'fluxshare',
     'screenshots',
     'test.png',
@@ -60,21 +57,16 @@ async function asyncCall() {
       }
     }
   )
-
-  const token = await fileService.generateSharedAccessSignature(
+  await fileService.generateSharedAccessSignature(
     'fluxshare',
     'screenshots',
     'test.jpg',
     sharedAccessPolicy
   )
-  const url = await fileService.getUrl(
-    'fluxshare',
-    'screenshots',
-    'test.png',
-    token
-  )
+  await fileService.getUrl('fluxshare', 'screenshots', 'test.png', token)
 
-  const test = await console.log(url)
+  await console.log(url)
+  await browser.close()
 }
 
 asyncCall()
