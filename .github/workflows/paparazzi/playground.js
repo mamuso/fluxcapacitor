@@ -22,7 +22,7 @@ async function asyncCall() {
   })
   const page = await browser.newPage()
   await page.setViewport({width: 1920, height: 1080})
-  await page.goto('https://elpais.com/')
+  await page.goto('https://services.github.com/')
   await page.screenshot({path: `test.png`, fullPage: true})
   await fileService.createShareIfNotExists('fluxshare', function(
     error,
