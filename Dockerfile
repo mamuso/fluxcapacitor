@@ -6,30 +6,46 @@ RUN apt-get update && apt-get install -y curl && \
     apt-get install -y nodejs
 
 # Install browser deps, starting with webkit
-RUN apt-get install -y libwoff1 \
-                       libopus0 \
-                       libwebp6 \
-                       libwebpdemux2 \
-                       libenchant1c2a \
-                       libgudev-1.0-0 \
-                       libsecret-1-0 \
-                       libhyphen0 \
-                       libgdk-pixbuf2.0-0 \
-                       libegl1 \
-                       libnotify4 \
-                       libxslt1.1 \
-                       libevent-2.1-6 \
-                       libgles2 \
-                       libgl1 \
-                       libvpx5 \
-                       # for chromium
-                       libnss3 \
-                       libxss1 \
+RUN apt-get install -y gconf-service \
                        libasound2 \
-                       # for firefox
-                       libdbus-glib-1-2 \
-                       libxt6 \
-                       --fix-missing
+                       libatk1.0-0 \
+                       libatk-bridge2.0-0 \
+                       libc6 \
+                       libcairo2 \
+                       libcups2 \
+                       libdbus-1-3 \
+                       libexpat1 \
+                       libfontconfig1 \
+                       libgcc1 \
+                       libgconf-2-4 \
+                       libgdk-pixbuf2.0-0 \
+                       libglib2.0-0 \
+                       libgtk-3-0 \
+                       libnspr4 \
+                       libpango-1.0-0 \
+                       libpangocairo-1.0-0 \
+                       libstdc++6 \
+                       libx11-6 \
+                       libx11-xcb1 \
+                       libxcb1 \
+                       libxcomposite1 \
+                       libxcursor1 \
+                       libxdamage1 \
+                       libxext6 \
+                       libxfixes3 \
+                       libxi6 \
+                       libxrandr2 \
+                       libxrender1 \
+                       libxss1 \
+                       libxtst6 \
+                       ca-certificates \
+                       fonts-liberation \
+                       libappindicator1 \
+                       libnss3 \
+                       lsb-release \
+                       wget \
+                       xdg-utils \
+                       libgbm1
 
 # Use uid 1001 who owns $HOME in GH Actions runtime
 # See why: https://github.com/arjun27/playwright-github-actions/issues/1
