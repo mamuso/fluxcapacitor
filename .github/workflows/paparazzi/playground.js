@@ -17,10 +17,7 @@ const sharedAccessPolicy = {
 const fileService = azure.createFileService()
 
 async function asyncCall() {
-  const browser = await playwright.chromium.launch([
-    '--no-sandbox',
-    '--disable-setuid-sandbox'
-  ])
+  const browser = await playwright.webkit.launch()
   const page = await browser.newPage()
   await page.goto('http://whatsmyuseragent.org/')
   await page.screenshot({path: `test.png`})
