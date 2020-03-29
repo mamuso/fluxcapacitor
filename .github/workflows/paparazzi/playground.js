@@ -16,11 +16,10 @@ const sharedAccessPolicy = {
 
 const fileService = azure.createFileService()
 
-// ---
-(async function() {
+async function asyncCall() {
   const browser = await playwright.chromium.launch([])
   const page = await browser.newPage()
-  await page.goto('https://github.com/')
+  await page.goto('http://github.com/')
   await page.screenshot({path: `test.png`})
 
   await fileService.createShareIfNotExists('fluxshare', function(
@@ -68,6 +67,6 @@ const fileService = azure.createFileService()
 
   await console.log(url)
   await browser.close()
-})().catch(e => {
-  console.error(e)
-})
+}
+
+asyncCall()
