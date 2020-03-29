@@ -1,6 +1,6 @@
 const dotenv = require('dotenv').config()
 const azure = require('azure-storage')
-const playwright = require('playwright')
+const puppeteer = require('puppeteer')
 
 let startDate = new Date()
 let expiryDate = new Date(startDate)
@@ -17,7 +17,7 @@ const sharedAccessPolicy = {
 const fileService = azure.createFileService()
 
 async function asyncCall() {
-  const browser = await playwright.webkit.launch()
+  const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.goto('https://elpais.com/')
   await page.screenshot({path: `test.png`})
