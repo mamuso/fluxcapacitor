@@ -76,7 +76,9 @@ async function asyncCall() {
   await fileService.getUrl('fluxshare', 'screenshots', 'test.png', token)
 
   await console.log(url)
-  await browser.close()
+  await browser.close().catch(e => {
+    throw e
+  })
 }
 
 asyncCall()
