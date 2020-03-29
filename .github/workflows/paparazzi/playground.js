@@ -65,7 +65,12 @@ async function asyncCall() {
     'test.png',
     sharedAccessPolicy
   )
-  await fileService.getUrl('fluxshare', 'screenshots', 'test.png', token)
+  const url = await fileService.getUrl(
+    'fluxshare',
+    'screenshots',
+    'test.png',
+    token
+  )
 
   await console.log(url)
   await browser.close()
