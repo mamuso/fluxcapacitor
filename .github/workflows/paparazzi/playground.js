@@ -19,7 +19,7 @@ const fileService = azure.createFileService()
 async function asyncCall() {
   const browser = await playwright.chromium.launch([])
   const page = await browser.newPage()
-  await page.goto('http://github.com/')
+  await page.goto('https://elpais.com/')
   await page.screenshot({path: `test.png`})
 
   await fileService.createShareIfNotExists('fluxshare', function(
@@ -60,7 +60,7 @@ async function asyncCall() {
   const token = await fileService.generateSharedAccessSignature(
     'fluxshare',
     'screenshots',
-    'test.jpg',
+    'test.png',
     sharedAccessPolicy
   )
   await fileService.getUrl('fluxshare', 'screenshots', 'test.png', token)
