@@ -14,8 +14,8 @@ const sharedAccessPolicy = {
   }
 }
 
-const fileService = azure
-  .createFileService()(async function() {
+const fileService = azure.createFileService();
+  (async function() {
     const browser = await playwright.chromium.launch([])
     const page = await browser.newPage()
     await page.goto('https://github.com/')
