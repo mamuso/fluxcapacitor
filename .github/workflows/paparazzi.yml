@@ -10,7 +10,7 @@ jobs:
   step:
     name: Take screenshots
     runs-on: ubuntu-latest
-    container: aslushnikov/playwright
+    container: mamuso/fluxcapacitor:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
