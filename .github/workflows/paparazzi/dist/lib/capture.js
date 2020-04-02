@@ -1,7 +1,5 @@
 "use strict";
-/**
- * Capture a list of urls with puppeteer.
- */
+/* eslint-disable no-console */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,24 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import {Config} from './types'
 const utils_1 = __importDefault(require("./utils"));
-const playwright_1 = require("playwright");
+// import {chromium} from 'playwright'
 class Capture {
-    constructor() {
+    constructor(config) {
         this.printer = new utils_1.default();
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
-            const browser = yield playwright_1.chromium.launch({
-                args: ['--disable-dev-shm-usage']
-            });
-            const context = yield browser.newContext();
-            const page = yield context.newPage('https://elpais.com/');
-            yield page.screenshot({
-                path: `example.png`
-            });
-            yield browser.close();
+            //   const browser = await chromium.launch({headless: true})
+            //   const context = await browser.newContext()
+            //   const page = await context.newPage('http://whatsmyuseragent.org/')
+            //   await page.screenshot({
+            //     path: `example.png`
+            //   })
+            //   await browser.close()
             return true;
         });
+        // console.log(config)
     }
 }
 exports.default = Capture;

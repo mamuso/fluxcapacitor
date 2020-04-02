@@ -34,7 +34,6 @@ class Paparazzi {
 
   process = async (): Promise<void> => {
     this.setup()
-
     this.printer.header(`✨ Paparazzi - ${this.date}`)
 
     const capture = new Capture(this.config)
@@ -68,7 +67,5 @@ class Paparazzi {
 
 const paparazzi = new Paparazzi(
   new Date().toISOString().split('T')[0], // date
-  fs.existsSync(`${process.env.GITHUB_WORKSPACE}`) // basePath
-    ? `${process.env.GITHUB_WORKSPACE}`
-    : '../../../..'
+  '../../../..' // basepath
 )

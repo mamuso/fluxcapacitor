@@ -6,23 +6,16 @@
 
 import {Config} from './types'
 import Printer from './utils'
-import {chromium} from 'playwright'
+import * as puppeteer from 'puppeteer'
 
 export default class Capture {
   printer = new Printer()
 
   constructor(config: Config) {
-    console.log(config)
+    // console.log(config)
   }
 
   capture = async (): Promise<boolean> => {
-    const browser = await chromium.launch({headless: true})
-    const context = await browser.newContext()
-    const page = await context.newPage('http://whatsmyuseragent.org/')
-    await page.screenshot({
-      path: `example.png`
-    })
-    await browser.close()
     return true
   }
 }
