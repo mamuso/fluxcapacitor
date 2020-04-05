@@ -2,6 +2,7 @@
   "name": "fluxcapacitor",
   "version": "1.0.0",
   "description": "A time machine for your website",
+  "private": true,
   "workspaces": [
     "web",
     "api"
