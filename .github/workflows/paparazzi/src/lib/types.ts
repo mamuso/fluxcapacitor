@@ -9,7 +9,7 @@ export type Config = {
   compare: boolean
   storage: string
   devices: [Device]
-  nodes: [Node]
+  urls: [Urls]
 }
 
 export type Device = {
@@ -23,7 +23,7 @@ export type Device = {
   }
 }
 
-export type Node = {
+export type Urls = {
   id: string
   url: string
   fullPage: boolean

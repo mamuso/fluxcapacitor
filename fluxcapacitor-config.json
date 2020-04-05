@@ -29,7 +29,7 @@
     }
   ],
 
-  "nodes": [
+  "urls": [
     {
       "id": "home",
       "url": "https://github.com",
