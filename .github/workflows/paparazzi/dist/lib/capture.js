@@ -14,21 +14,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = __importDefault(require("./utils"));
-// import {chromium} from 'playwright'
+const puppeteer_1 = __importDefault(require("puppeteer"));
 class Capture {
     constructor(config) {
         this.printer = new utils_1.default();
+        this.config = {};
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
-            //   const browser = await chromium.launch({headless: true})
-            //   const context = await browser.newContext()
-            //   const page = await context.newPage('http://whatsmyuseragent.org/')
-            //   await page.screenshot({
-            //     path: `example.png`
-            //   })
-            //   await browser.close()
+            this.printer.header(`📷 Capture URLs`);
+            /** Looping through devices */
+            let i = 0;
+            const iMax = this.config.devices.length;
+            for (; i < iMax; i++) {
+                const captureDevice = this.config.devices[i];
+                const browser = yield puppeteer_1.default.launch({
+                    headless: true,
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                });
+                const page = yield browser.newPage();
+                let device = (captureDevice.device
+                    ? puppeteer_1.default.devices[captureDevice.device]
+                    : captureDevice);
+                device.userAgent = device.userAgent || (yield browser.userAgent());
+                yield page.emulate(device);
+                this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
+                yield browser.close();
+            }
+            // console.log(this.config)
             return true;
         });
-        // console.log(config)
+        this.config = Object.assign({}, config);
     }
 }
 exports.default = Capture;
