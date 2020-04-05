@@ -1,12 +1,13 @@
 {
   "name": "fluxcapacitor",
   "version": "1.0.0",
-  "description": "A time machine for websites",
-  "main": "index.js",
+  "description": "A time machine for your website",
+  "workspaces": [
+    "web",
+    "api"
+  ],
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "dev": "node lib/commands/dev.js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,5 @@
   "bugs": {
     "url": "https://github.com/mamuso/fluxcapacitor/issues"
   },
-  "homepage": "https://github.com/mamuso/fluxcapacitor#readme",
-  "dependencies": {
-    "next": "^9.3.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  }
+  "homepage": "https://github.com/mamuso/fluxcapacitor#readme"
 }
