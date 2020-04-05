@@ -34,7 +34,7 @@ class Paparazzi {
         this.process = () => __awaiter(this, void 0, void 0, function* () {
             this.setup();
             this.printer.header(`✨ Paparazzi - ${this.date}`);
-            const capture = new capture_1.default();
+            const capture = new capture_1.default(this.config);
             yield capture.capture();
             this.cleanup();
         });
@@ -42,36 +42,28 @@ class Paparazzi {
          *  Create the folder structure needed for capturing the screens
          */
         this.setup = () => __awaiter(this, void 0, void 0, function* () {
-            // if (!fs.existsSync(this.config.tmpPath)) {
-            //   await fs.promises.mkdir(this.config.tmpPath)
-            // }
-            // if (!fs.existsSync(this.config.tmpDatePath)) {
-            //   await fs.promises.mkdir(this.config.tmpDatePath)
-            // }
-            // if (!fs.existsSync(this.config.tmpCurrentPath)) {
-            //   await fs.promises.mkdir(this.config.tmpCurrentPath)
-            // }
+            if (!fs.existsSync(this.config.tmpPath)) {
+                yield fs.promises.mkdir(this.config.tmpPath);
+            }
+            if (!fs.existsSync(this.config.tmpDatePath)) {
+                yield fs.promises.mkdir(this.config.tmpDatePath);
+            }
+            if (!fs.existsSync(this.config.tmpCurrentPath)) {
+                yield fs.promises.mkdir(this.config.tmpCurrentPath);
+            }
         });
         /**
          *  Remove the folder structure needed for capturing the screens
          */
         this.cleanup = () => __awaiter(this, void 0, void 0, function* () {
-            // await fs.promises.rmdir(this.config.tmpPath, {recursive: true})
+            yield fs.promises.rmdir(this.config.tmpPath, { recursive: true });
         });
         this.date = date;
         this.basePath = basePath;
-        // this.config = {
-        //   date: this.date,
-        //   basePath: this.basePath,
-        //   tmpPath: tmpPath,
-        //   tmpDatePath: `${tmpPath}/${this.date}`,
-        //   tmpCurrentPath: `${tmpPath}/current`
-        //   // ...require(`${this.basePath}/fluxcapacitor-config`)
-        // }
+        this.config = Object.assign({ date: this.date, basePath: this.basePath, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${this.date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`${this.basePath}/fluxcapacitor-config`));
         this.process();
     }
 }
 const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
-fs.existsSync(`${process.env.GITHUB_WORKSPACE}`) // basePath
-    ? `${process.env.GITHUB_WORKSPACE}`
-    : '../../../..');
+'../../../..' // basepath
+);

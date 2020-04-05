@@ -1,11 +1,11 @@
 const dotenv = require('dotenv').config()
 const azure = require('azure-storage')
+const puppeteer = require('puppeteer')
 
 let startDate = new Date()
 let expiryDate = new Date(startDate)
 expiryDate.setMinutes(startDate.getMinutes() + 100)
 startDate.setMinutes(startDate.getMinutes() - 100)
-
 const sharedAccessPolicy = {
   AccessPolicy: {
     Permissions: azure.FileUtilities.SharedAccessPermissions.READ,
@@ -17,7 +17,14 @@ const sharedAccessPolicy = {
 const fileService = azure.createFileService()
 
 async function asyncCall() {
-  const share = await fileService.createShareIfNotExists('fluxshare', function(
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  })
+  const page = await browser.newPage()
+  await page.setViewport({width: 1920, height: 1080})
+  await page.goto('https://services.github.com/')
+  await page.screenshot({path: `test.png`, fullPage: true})
+  await fileService.createShareIfNotExists('fluxshare', function(
     error,
     result,
     response
@@ -28,8 +35,7 @@ async function asyncCall() {
       console.log(error)
     }
   })
-
-  const directory = await fileService.createDirectoryIfNotExists(
+  await fileService.createDirectoryIfNotExists(
     'fluxshare',
     'screenshots',
     function(error, result, response) {
@@ -40,12 +46,11 @@ async function asyncCall() {
       }
     }
   )
-
-  const file = await fileService.createFileFromLocalFile(
+  await fileService.createFileFromLocalFile(
     'fluxshare',
     'screenshots',
-    'test.jpg',
-    'test.jpg',
+    'test.png',
+    'test.png',
     function(error, result, response) {
       if (!error) {
         console.log(result)
@@ -54,21 +59,21 @@ async function asyncCall() {
       }
     }
   )
-
   const token = await fileService.generateSharedAccessSignature(
     'fluxshare',
     'screenshots',
-    'test.jpg',
+    'test.png',
     sharedAccessPolicy
   )
   const url = await fileService.getUrl(
     'fluxshare',
     'screenshots',
-    'test.jpg',
+    'test.png',
     token
   )
 
-  const test = await console.log(url)
+  await console.log(url)
+  await browser.close()
 }
 
 asyncCall()
