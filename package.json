@@ -9,6 +9,7 @@
     ".github/workflows/*"
   ],
   "scripts": {
+    "paparazzi": "yarn workspace paparazzi run paparazzi",
     "dev": "node lib/commands/dev.js"
   },
   "repository": {
