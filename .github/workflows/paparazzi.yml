@@ -17,6 +17,6 @@ jobs:
         with:
           node-version: "13.x"
       - run: npm install -g yarn
-      - run: yarn workspace paparazzi install
+      - run: yarn workspace paparazzi install --production
     env:
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
