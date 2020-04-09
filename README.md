@@ -6,4 +6,5 @@ A time machine for websites
 
 #### .env
 
+POSTGRES_URL
 AZURE_STORAGE_CONNECTION_STRING

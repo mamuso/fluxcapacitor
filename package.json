@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "web",
-    "api"
+    "api",
+    ".github/workflows/*"
   ],
   "scripts": {
     "dev": "node lib/commands/dev.js"
