@@ -9,8 +9,7 @@ import Printer from './utils'
 import * as fs from 'fs'
 import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
-import { PrismaClient } from '../../../../../node_modules/@prisma/client'
-
+import {PrismaClient} from '../../../../../node_modules/@prisma/client'
 
 export default class Capture {
   printer = new Printer()
@@ -66,7 +65,6 @@ export default class Capture {
           fullPage: captureData.fullPage
         })
 
-        
         // Compare
 
         // Resize
@@ -74,13 +72,16 @@ export default class Capture {
         // Upload
 
         // Write DB
-        await this.prisma.captures.create({
-          data: {
-            slug: slugify(captureData.id),
-            device: slugify(device.id)
-          }
-        })
-
+        await this.prisma.captures
+          .create({
+            data: {
+              slug: slugify(captureData.id),
+              device: slugify(device.id)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
 
       await browser.close()
