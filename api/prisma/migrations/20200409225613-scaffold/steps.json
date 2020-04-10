@@ -216,6 +216,24 @@
     {
       "tag": "CreateField",
       "model": "Page",
+      "field": "slug",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Page",
+          "field": "slug"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Page",
       "field": "captures",
       "type": "Capture",
       "arity": "List"
@@ -309,6 +327,13 @@
     {
       "tag": "CreateField",
       "model": "Capture",
+      "field": "slug",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Capture",
       "field": "url",
       "type": "String",
       "arity": "Optional"
@@ -363,8 +388,8 @@
       "tag": "CreateField",
       "model": "Capture",
       "field": "device",
-      "type": "Device",
-      "arity": "Optional"
+      "type": "String",
+      "arity": "Required"
     },
     {
       "tag": "CreateField",
@@ -462,6 +487,20 @@
         },
         "directive": "unique"
       }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Device",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Device",
+      "field": "specs",
+      "type": "String",
+      "arity": "Required"
     },
     {
       "tag": "CreateField",

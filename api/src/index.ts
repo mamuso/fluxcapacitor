@@ -57,8 +57,9 @@ export const Device = objectType({
   definition(t) {
     t.model.id()
     t.model.slug()
-    t.model.device()
+    t.model.name()
     t.model.specs()
+    t.model.capture()
     t.model.createdAt()
   },
 })

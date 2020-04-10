@@ -9,10 +9,13 @@ import Printer from './utils'
 import * as fs from 'fs'
 import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
+import { PrismaClient } from '../../../../../node_modules/@prisma/client'
+
 
 export default class Capture {
   printer = new Printer()
   config = {} as Config
+  prisma = new PrismaClient()
 
   constructor(config: Config) {
     this.config = {...config}
@@ -62,6 +65,22 @@ export default class Capture {
           path: localFilePath,
           fullPage: captureData.fullPage
         })
+
+        
+        // Compare
+
+        // Resize
+
+        // Upload
+
+        // Write DB
+        await this.prisma.captures.create({
+          data: {
+            slug: slugify(captureData.id),
+            device: slugify(device.id)
+          }
+        })
+
       }
 
       await browser.close()

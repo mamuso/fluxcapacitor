@@ -24,10 +24,12 @@ const utils_1 = __importDefault(require("./utils"));
 const fs = __importStar(require("fs"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
+const client_1 = require("../../../../../node_modules/@prisma/client");
 class Capture {
     constructor(config) {
         this.printer = new utils_1.default();
         this.config = {};
+        this.prisma = new client_1.PrismaClient();
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             this.printer.header(`📷 Capture URLs`);
             /** Looping through devices */
@@ -44,12 +46,12 @@ class Capture {
                     ? puppeteer_1.default.devices[captureDevice.device]
                     : captureDevice);
                 device.userAgent = device.userAgent || (yield browser.userAgent());
+                this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
                 yield page.emulate(device);
                 /** Make device folder */
                 if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
                     yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
                 }
-                this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
                 /** Looping through URLs */
                 let j = 0;
                 const jMax = this.config.urls.length;
@@ -57,52 +59,28 @@ class Capture {
                     const captureData = this.config.urls[j];
                     const fileName = `${slugify_1.default(captureData.id)}.${this.config.format}`;
                     const localFilePath = `${this.config.tmpDatePath}/${device.id}/${fileName}`;
+                    this.printer.capture(captureData.id);
                     yield page.goto(captureData.url);
                     yield page.screenshot({
                         path: localFilePath,
                         fullPage: captureData.fullPage
                     });
-                    this.printer.capture(captureData.id);
+                    // Compare
+                    // Resize
+                    // Upload
+                    // Write DB
+                    yield this.prisma.captures.create({
+                        data: {
+                            slug: slugify_1.default(captureData.id),
+                            device: slugify_1.default(device.id)
+                        }
+                    });
                 }
                 yield browser.close();
             }
-            // console.log(this.config)
             return true;
         });
         this.config = Object.assign({}, config);
     }
 }
 exports.default = Capture;
-// const puppeteer = require('puppeteer')
-// const slugify = require('slugify')
-// const utils = require('./utils')
-// const screens = []
-// module.exports = async ({...config} = {}) => {
-//     /** Looping through URLs */
-//     let j = 0
-//     const jMax = config.urls.length
-//     for (; j < jMax; j++) {
-//       const captureData = config.urls[j]
-//       const fileName = `${captureDevice.id}-${slugify(captureData.id)}.${
-//         config.format
-//       }`
-//       const localFilePath = `${config.tmpDatePath}/${fileName}`
-//       await page.goto(captureData.url)
-//       await page.screenshot({
-//         path: localFilePath,
-//         fullPage: captureData.fullPage
-//       })
-//       await screens.push({
-//         id: `${captureDevice.id}-${slugify(captureData.id)}`,
-//         screenId: captureData.id,
-//         screenIdSlug: slugify(captureData.id),
-//         screenName: fileName,
-//         screenPath: localFilePath,
-//         diff: false
-//       })
-//       utils.logCaptureURL(captureData.id)
-//     }
-//     await browser.close()
-//   }
-//   return screens
-// }
