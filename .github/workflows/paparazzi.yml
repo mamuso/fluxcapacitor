@@ -22,4 +22,5 @@ jobs:
       - run: node .github/workflows/paparazzi/playground.js
       - run: yarn run paparazzi --production
     env:
+      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}

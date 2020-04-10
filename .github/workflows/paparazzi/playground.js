@@ -1,6 +1,18 @@
 const {PrismaClient} = require('../../../node_modules/@prisma/client')
 const prisma = new PrismaClient()
 
+const test = prisma.capture
+  .create({
+    data: {
+      slug: `test-${Math.random()}`,
+      device: 'test'
+    }
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+console.log(test)
 console.log(prisma.captures.findMany({first: 5}))
 
 // const dotenv = require('dotenv').config()
