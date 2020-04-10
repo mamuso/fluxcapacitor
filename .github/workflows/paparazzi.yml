@@ -18,7 +18,7 @@ jobs:
           node-version: "13.x"
       - run: npm install -g yarn
       - run: yarn workspace paparazzi install --production
-      - run: yarn workspace api run generate --production
+      - run: yarn workspace api run prisma2 generate --production
       - run: yarn run paparazzi --production
     env:
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
