@@ -71,7 +71,7 @@ export default class Capture {
 
         // Upload
 
-        // Write DB
+        // Write capture in the DB
         await this.prisma.captures
           .create({
             data: {
