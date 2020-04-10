@@ -4,7 +4,7 @@
 
 type Capture {
   createdAt: DateTime!
-  device: Device
+  device: Device!
   diff: Boolean!
   id: String!
   url: String
@@ -24,10 +24,11 @@ input CaptureCreateManyWithoutReportInput {
 
 input CaptureCreateWithoutPageInput {
   createdAt: DateTime
-  device: DeviceCreateOneWithoutCapturesInput
+  device: String!
   diff: Boolean
   id: String
   report: ReportCreateOneWithoutCapturesInput
+  slug: String!
   url: String
   urldiff: String
   urlmin: String
@@ -35,10 +36,11 @@ input CaptureCreateWithoutPageInput {
 
 input CaptureCreateWithoutReportInput {
   createdAt: DateTime
-  device: DeviceCreateOneWithoutCapturesInput
+  device: String!
   diff: Boolean
   id: String
   page: PageCreateOneWithoutCapturesInput
+  slug: String!
   url: String
   urldiff: String
   urlmin: String
@@ -52,21 +54,8 @@ scalar DateTime
 
 type Device {
   createdAt: DateTime!
-  device: String!
   id: String!
-  slug: String!
-  specs: String!
-}
-
-input DeviceCreateOneWithoutCapturesInput {
-  connect: DeviceWhereUniqueInput
-  create: DeviceCreateWithoutCapturesInput
-}
-
-input DeviceCreateWithoutCapturesInput {
-  createdAt: DateTime
-  device: String!
-  id: String
+  name: String!
   slug: String!
   specs: String!
 }

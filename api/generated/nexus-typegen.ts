@@ -30,37 +30,28 @@ export interface NexusGenInputs {
   }
   CaptureCreateWithoutPageInput: { // input type
     createdAt?: any | null; // DateTime
-    device?: NexusGenInputs['DeviceCreateOneWithoutCapturesInput'] | null; // DeviceCreateOneWithoutCapturesInput
+    device: string; // String!
     diff?: boolean | null; // Boolean
     id?: string | null; // String
     report?: NexusGenInputs['ReportCreateOneWithoutCapturesInput'] | null; // ReportCreateOneWithoutCapturesInput
+    slug: string; // String!
     url?: string | null; // String
     urldiff?: string | null; // String
     urlmin?: string | null; // String
   }
   CaptureCreateWithoutReportInput: { // input type
     createdAt?: any | null; // DateTime
-    device?: NexusGenInputs['DeviceCreateOneWithoutCapturesInput'] | null; // DeviceCreateOneWithoutCapturesInput
+    device: string; // String!
     diff?: boolean | null; // Boolean
     id?: string | null; // String
     page?: NexusGenInputs['PageCreateOneWithoutCapturesInput'] | null; // PageCreateOneWithoutCapturesInput
+    slug: string; // String!
     url?: string | null; // String
     urldiff?: string | null; // String
     urlmin?: string | null; // String
   }
   CaptureWhereUniqueInput: { // input type
     id?: string | null; // String
-  }
-  DeviceCreateOneWithoutCapturesInput: { // input type
-    connect?: NexusGenInputs['DeviceWhereUniqueInput'] | null; // DeviceWhereUniqueInput
-    create?: NexusGenInputs['DeviceCreateWithoutCapturesInput'] | null; // DeviceCreateWithoutCapturesInput
-  }
-  DeviceCreateWithoutCapturesInput: { // input type
-    createdAt?: any | null; // DateTime
-    device: string; // String!
-    id?: string | null; // String
-    slug: string; // String!
-    specs: string; // String!
   }
   DeviceWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -160,8 +151,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   CaptureCreateWithoutPageInput: NexusGenInputs['CaptureCreateWithoutPageInput'];
   CaptureCreateWithoutReportInput: NexusGenInputs['CaptureCreateWithoutReportInput'];
   CaptureWhereUniqueInput: NexusGenInputs['CaptureWhereUniqueInput'];
-  DeviceCreateOneWithoutCapturesInput: NexusGenInputs['DeviceCreateOneWithoutCapturesInput'];
-  DeviceCreateWithoutCapturesInput: NexusGenInputs['DeviceCreateWithoutCapturesInput'];
   DeviceWhereUniqueInput: NexusGenInputs['DeviceWhereUniqueInput'];
   PageCreateInput: NexusGenInputs['PageCreateInput'];
   PageCreateOneWithoutCapturesInput: NexusGenInputs['PageCreateOneWithoutCapturesInput'];
@@ -180,7 +169,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   Capture: { // field return type
     createdAt: any; // DateTime!
-    device: NexusGenRootTypes['Device'] | null; // Device
+    device: NexusGenRootTypes['Device']; // Device!
     diff: boolean; // Boolean!
     id: string; // String!
     url: string | null; // String
@@ -189,8 +178,8 @@ export interface NexusGenFieldTypes {
   }
   Device: { // field return type
     createdAt: any; // DateTime!
-    device: string; // String!
     id: string; // String!
+    name: string; // String!
     slug: string; // String!
     specs: string; // String!
   }
@@ -278,7 +267,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Capture" | "Device" | "Mutation" | "Page" | "Query" | "Report";
 
-export type NexusGenInputNames = "CaptureCreateManyWithoutPageInput" | "CaptureCreateManyWithoutReportInput" | "CaptureCreateWithoutPageInput" | "CaptureCreateWithoutReportInput" | "CaptureWhereUniqueInput" | "DeviceCreateOneWithoutCapturesInput" | "DeviceCreateWithoutCapturesInput" | "DeviceWhereUniqueInput" | "PageCreateInput" | "PageCreateOneWithoutCapturesInput" | "PageCreateOneWithoutReportsInput" | "PageCreateWithoutCapturesInput" | "PageCreateWithoutReportsInput" | "PageWhereUniqueInput" | "ReportCreateInput" | "ReportCreateManyWithoutPageInput" | "ReportCreateOneWithoutCapturesInput" | "ReportCreateWithoutCapturesInput" | "ReportCreateWithoutPageInput" | "ReportWhereUniqueInput";
+export type NexusGenInputNames = "CaptureCreateManyWithoutPageInput" | "CaptureCreateManyWithoutReportInput" | "CaptureCreateWithoutPageInput" | "CaptureCreateWithoutReportInput" | "CaptureWhereUniqueInput" | "DeviceWhereUniqueInput" | "PageCreateInput" | "PageCreateOneWithoutCapturesInput" | "PageCreateOneWithoutReportsInput" | "PageCreateWithoutCapturesInput" | "PageCreateWithoutReportsInput" | "PageWhereUniqueInput" | "ReportCreateInput" | "ReportCreateManyWithoutPageInput" | "ReportCreateOneWithoutCapturesInput" | "ReportCreateWithoutCapturesInput" | "ReportCreateWithoutPageInput" | "ReportWhereUniqueInput";
 
 export type NexusGenEnumNames = never;
 

@@ -1,6 +1,7 @@
-const { PrismaClient } = require('../../../node_modules/@prisma/client')
+const {PrismaClient} = require('../../../node_modules/@prisma/client')
 const prisma = new PrismaClient()
 
+console.log(prisma.captures.findMany({first: 5}))
 
 // const dotenv = require('dotenv').config()
 // const azure = require('azure-storage')
