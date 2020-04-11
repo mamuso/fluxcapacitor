@@ -87,7 +87,7 @@ export default class Capture {
         // Upload
 
         // Write capture in the DB
-        this.dbcapture = this.db.createcapture(
+        this.dbcapture = await this.db.createcapture(
           this.dbreport,
           this.dbdevice,
           this.dbpage
