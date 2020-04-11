@@ -9,11 +9,13 @@ export type Config = {
   compare: boolean
   storage: string
   devices: [Device]
-  urls: [Urls]
+  pages: [Page]
 }
 
 export type Device = {
   id: string
+  slug: string
+  name: string
   device: string
   userAgent: string
   viewport: {
@@ -23,8 +25,35 @@ export type Device = {
   }
 }
 
-export type Urls = {
+export type Report = {
   id: string
+  slug: string
+  url: string
+  current: boolean
+  pages: [Page]
+  captures: [Capture]
+}
+
+export type Page = {
+  id: string
+  slug: string
   url: string
   fullPage: boolean
+  captures: [Capture]
+  reports: [Report]
+}
+
+export type Capture = {
+  id: string
+  slug: string
+  url: string
+  urlmin: string
+  urldiff: string
+  diff: boolean
+  page: Page
+  pageId: string
+  report: Report
+  reportId: string
+  device: Device
+  devideId: string
 }

@@ -29,7 +29,7 @@
     }
   ],
 
-  "urls": [
+  "pages": [
     {
       "id": "home",
       "url": "https://github.com",
@@ -41,27 +41,27 @@
       "fullPage": true
     },
     {
-      "id": "features/code-review",
+      "id": "features-code-review",
       "url": "https://github.com/features/code-review",
       "fullPage": true
     },
     {
-      "id": "features/project-management",
+      "id": "features-project-management",
       "url": "https://github.com/features/project-management",
       "fullPage": true
     },
     {
-      "id": "features/integrations",
+      "id": "features-integrations",
       "url": "https://github.com/features/integrations",
       "fullPage": true
     },
     {
-      "id": "features/packages",
+      "id": "features-packages",
       "url": "https://github.com/features/packages",
       "fullPage": true
     },
     {
-      "id": "features/security",
+      "id": "features-security",
       "url": "https://github.com/features/security",
       "fullPage": true
     },
@@ -76,17 +76,17 @@
       "fullPage": true
     },
     {
-      "id": "security/trust",
+      "id": "security-trust",
       "url": "https://github.com/security/trust",
       "fullPage": true
     },
     {
-      "id": "security/team",
+      "id": "security-team",
       "url": "https://github.com/security/team",
       "fullPage": true
     },
     {
-      "id": "security/incident-response",
+      "id": "security-incident-response",
       "url": "https://github.com/security/incident-response",
       "fullPage": true
     },
@@ -126,7 +126,7 @@
       "fullPage": true
     },
     {
-      "id": "sponsors/community",
+      "id": "sponsors-community",
       "url": "https://github.com/sponsors/community",
       "fullPage": true
     },
@@ -141,17 +141,17 @@
       "fullPage": true
     },
     {
-      "id": "resources/videos",
+      "id": "resources-videos",
       "url": "https://resources.github.com/videos",
       "fullPage": true
     },
     {
-      "id": "resources/webcasts",
+      "id": "resources-webcasts",
       "url": "https://resources.github.com/webcasts",
       "fullPage": true
     },
     {
-      "id": "resources/whitepapers",
+      "id": "resources-whitepapers",
       "url": "https://resources.github.com/whitepapers",
       "fullPage": true
     }

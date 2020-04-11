@@ -13,6 +13,13 @@ jobs:
     container: mamuso/fluxcapacitor:latest
     steps:
       - uses: actions/checkout@v2
-      - run: "cd .github/workflows/paparazzi && npm install && node playground.js"
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "13.x"
+      - run: npm install -g yarn
+      - run: yarn install --production
+      - run: yarn workspace api run prisma2 generate
+      - run: yarn run paparazzi --production
     env:
+      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
