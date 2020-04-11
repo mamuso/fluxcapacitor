@@ -83,10 +83,12 @@ export default class Capture {
         // Upload
 
         // Write capture in the DB
+        this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
       }
 
       await browser.close()
     }
+    await this.db.prisma.disconnect()
     return true
   }
 }

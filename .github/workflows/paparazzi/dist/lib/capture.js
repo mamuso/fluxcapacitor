@@ -55,7 +55,7 @@ class Capture {
                     yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
                 }
                 /** DB device */
-                this.dbdevice = yield this.db.createdevice(device);
+                // this.dbdevice = await this.db.createdevice(device)
                 /** Looping through URLs */
                 let j = 0;
                 const jMax = this.config.pages.length;
@@ -63,8 +63,7 @@ class Capture {
                     const page = this.config.pages[j];
                     const fileName = `${slugify_1.default(page.id)}.${this.config.format}`;
                     const localFilePath = `${this.config.tmpDatePath}/${device.id}/${fileName}`;
-                    this.dbpage = yield this.db.createpage(page);
-                    console.log(this.dbdevice.id);
+                    // this.dbpage = await this.db.createpage(page)
                     this.printer.capture(page.id);
                     yield puppet.goto(page.url);
                     yield puppet.screenshot({
@@ -75,9 +74,11 @@ class Capture {
                     // Resize
                     // Upload
                     // Write capture in the DB
+                    // this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
                 }
                 yield browser.close();
             }
+            yield this.db.prisma.disconnect();
             return true;
         });
         this.config = Object.assign({}, config);

@@ -79,6 +79,7 @@ export interface NexusGenInputs {
   }
   CaptureWhereUniqueInput: { // input type
     id?: string | null; // String
+    slug?: string | null; // String
   }
   DeviceCreateInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutDeviceInput'] | null; // CaptureCreateManyWithoutDeviceInput

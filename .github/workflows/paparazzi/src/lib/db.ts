@@ -1,6 +1,7 @@
 import {Config, Device, Report, Page, Capture} from './types'
 import slugify from '@sindresorhus/slugify'
 import {PrismaClient} from '../../../../../node_modules/@prisma/client'
+import {connect} from 'http2'
 
 export default class DB {
   config = {} as Config
@@ -70,6 +71,40 @@ export default class DB {
       update: {
         slug: slug,
         url: url
+      }
+    })
+  }
+
+  createcapture = async (report: Report, device: Device, page: Page) => {
+    const slug = slugify(`${report.slug}-${device.slug}-${page.slug}`)
+
+    return await this.prisma.capture.upsert({
+      where: {
+        slug: slug
+      },
+      create: {
+        slug: slug,
+        page: {
+          connect: {id: page.id}
+        },
+        report: {
+          connect: {id: report.id}
+        },
+        device: {
+          connect: {id: device.id}
+        }
+      },
+      update: {
+        slug: slug,
+        page: {
+          connect: {id: page.id}
+        },
+        report: {
+          connect: {id: report.id}
+        },
+        device: {
+          connect: {id: device.id}
+        }
       }
     })
   }

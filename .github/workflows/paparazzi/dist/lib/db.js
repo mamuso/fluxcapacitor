@@ -77,6 +77,38 @@ class DB {
                 }
             });
         });
+        this.createcapture = (report, device, page) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(`${report.slug}-${device.slug}-${page.slug}`);
+            return yield this.prisma.capture.upsert({
+                where: {
+                    slug: slug
+                },
+                create: {
+                    slug: slug,
+                    page: {
+                        connect: { id: page.id }
+                    },
+                    report: {
+                        connect: { id: report.id }
+                    },
+                    device: {
+                        connect: { id: device.id }
+                    }
+                },
+                update: {
+                    slug: slug,
+                    page: {
+                        connect: { id: page.id }
+                    },
+                    report: {
+                        connect: { id: report.id }
+                    },
+                    device: {
+                        connect: { id: device.id }
+                    }
+                }
+            });
+        });
         this.config = Object.assign({}, config);
     }
 }

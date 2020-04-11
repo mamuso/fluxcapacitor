@@ -36,7 +36,7 @@ class Paparazzi {
             this.printer.header(`✨ Paparazzi - ${this.date}`);
             const capture = new capture_1.default(this.config);
             yield capture.capture();
-            this.cleanup();
+            yield this.cleanup();
         });
         /**
          *  Create the folder structure needed for capturing the screens

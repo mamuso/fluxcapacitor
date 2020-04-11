@@ -14,6 +14,8 @@ export type Config = {
 
 export type Device = {
   id: string
+  slug: string
+  name: string
   device: string
   userAgent: string
   viewport: {

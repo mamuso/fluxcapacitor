@@ -81,6 +81,7 @@ input CaptureCreateWithoutReportInput {
 
 input CaptureWhereUniqueInput {
   id: String
+  slug: String
 }
 
 scalar DateTime

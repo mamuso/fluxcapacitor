@@ -39,7 +39,7 @@ class Paparazzi {
     const capture = new Capture(this.config)
     await capture.capture()
 
-    this.cleanup()
+    await this.cleanup()
   }
 
   /**
