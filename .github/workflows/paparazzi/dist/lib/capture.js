@@ -30,8 +30,28 @@ class Capture {
         this.printer = new utils_1.default();
         this.config = {};
         this.prisma = new client_1.PrismaClient();
+        this.report = {};
+        /**
+         * Inserts the report on the database.
+         */
+        this.createreport = () => __awaiter(this, void 0, void 0, function* () {
+            this.report = yield this.prisma.report.upsert({
+                where: {
+                    slug: `${this.config.date}`
+                },
+                create: {
+                    slug: `${this.config.date}`
+                },
+                update: {
+                    slug: `${this.config.date}`
+                }
+            });
+            console.log(this.report);
+        });
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             this.printer.header(`📷 Capture URLs`);
+            /** DB report */
+            yield this.createreport();
             /** Looping through devices */
             let i = 0;
             const iMax = this.config.devices.length;
@@ -68,13 +88,14 @@ class Capture {
                     // Compare
                     // Resize
                     // Upload
-                    // Write DB
-                    yield this.prisma.captures.create({
-                        data: {
-                            slug: slugify_1.default(captureData.id),
-                            device: slugify_1.default(device.id)
-                        }
-                    });
+                    // Write capture in the DB
+                    // await this.prisma.captures
+                    //   .create({
+                    //     data: {
+                    //       slug: slugify(captureData.id),
+                    //       device: slugify(device.id)
+                    //     }
+                    //   })
                 }
                 yield browser.close();
             }

@@ -15,13 +15,36 @@ export default class Capture {
   printer = new Printer()
   config = {} as Config
   prisma = new PrismaClient()
+  report = {}
 
   constructor(config: Config) {
     this.config = {...config}
   }
 
+  /**
+   * Inserts the report on the database.
+   */
+  createreport = async () => {
+    this.report = await this.prisma.report.upsert({
+      where: {
+        slug: `${this.config.date}`
+      },
+      create: {
+        slug: `${this.config.date}`
+      },
+      update: {
+        slug: `${this.config.date}`
+      }
+    })
+
+    console.log(this.report)
+  }
+
   capture = async (): Promise<boolean> => {
     this.printer.header(`📷 Capture URLs`)
+
+    /** DB report */
+    await this.createreport()
 
     /** Looping through devices */
     let i = 0
@@ -72,16 +95,13 @@ export default class Capture {
         // Upload
 
         // Write capture in the DB
-        await this.prisma.captures
-          .create({
-            data: {
-              slug: slugify(captureData.id),
-              device: slugify(device.id)
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
+        // await this.prisma.captures
+        //   .create({
+        //     data: {
+        //       slug: slugify(captureData.id),
+        //       device: slugify(device.id)
+        //     }
+        //   })
       }
 
       await browser.close()

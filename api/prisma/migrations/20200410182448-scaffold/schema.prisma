@@ -10,18 +10,27 @@ generator client {
 model Report {
   id        String    @default(cuid()) @id
   slug      String    @unique
-  createdAt DateTime  @default(now())
-  captures  Capture[]
   url       String?
   current   Boolean   @default(false)
-  pageId    String?
+  pages     Page[]    @relation(references: [id])
+  captures  Capture[]
+  createdAt DateTime  @default(now())
 }
 
 model Page {
   id        String    @default(cuid()) @id
   slug      String    @unique
   captures  Capture[]
-  reports   Report[]
+  reports   Report[]  @relation(references: [id])
+  createdAt DateTime  @default(now())
+}
+
+model Device {
+  id        String    @default(cuid()) @id
+  slug      String    @unique
+  name      String
+  specs     String
+  captures  Capture[]
   createdAt DateTime  @default(now())
 }
 
@@ -32,16 +41,11 @@ model Capture {
   urlmin    String?
   urldiff   String?
   diff      Boolean  @default(false)
-  device    String
-  createdAt DateTime @default(now())
-  reportId  String?
-  pageId    String?
-}
-
-model Device {
-  id        String   @default(cuid()) @id
-  slug      String   @unique
-  name      String
-  specs     String
+  page      Page     @relation(fields: [pageId], references: [id])
+  pageId    String
+  report    Report   @relation(fields: [reportId], references: [id])
+  reportId  String
+  device    Device   @relation(fields: [deviceId], references: [id])
+  deviceId  String
   createdAt DateTime @default(now())
 }
