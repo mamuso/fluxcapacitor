@@ -142,6 +142,7 @@ input PageCreateInput {
   id: String
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
+  url: String!
 }
 
 input PageCreateManyWithoutReportsInput {
@@ -159,6 +160,7 @@ input PageCreateWithoutCapturesInput {
   id: String
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
+  url: String!
 }
 
 input PageCreateWithoutReportsInput {
@@ -166,6 +168,7 @@ input PageCreateWithoutReportsInput {
   createdAt: DateTime
   id: String
   slug: String!
+  url: String!
 }
 
 input PageWhereUniqueInput {

@@ -109,6 +109,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     reports?: NexusGenInputs['ReportCreateManyWithoutPagesInput'] | null; // ReportCreateManyWithoutPagesInput
     slug: string; // String!
+    url: string; // String!
   }
   PageCreateManyWithoutReportsInput: { // input type
     connect?: NexusGenInputs['PageWhereUniqueInput'][] | null; // [PageWhereUniqueInput!]
@@ -123,12 +124,14 @@ export interface NexusGenInputs {
     id?: string | null; // String
     reports?: NexusGenInputs['ReportCreateManyWithoutPagesInput'] | null; // ReportCreateManyWithoutPagesInput
     slug: string; // String!
+    url: string; // String!
   }
   PageCreateWithoutReportsInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutPageInput'] | null; // CaptureCreateManyWithoutPageInput
     createdAt?: any | null; // DateTime
     id?: string | null; // String
     slug: string; // String!
+    url: string; // String!
   }
   PageWhereUniqueInput: { // input type
     id?: string | null; // String

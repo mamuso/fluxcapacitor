@@ -21,87 +21,67 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = __importDefault(require("./utils"));
+const db_1 = __importDefault(require("./db"));
 const fs = __importStar(require("fs"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
-const client_1 = require("../../../../../node_modules/@prisma/client");
 class Capture {
     constructor(config) {
         this.printer = new utils_1.default();
         this.config = {};
-        this.prisma = new client_1.PrismaClient();
-        this.report = {};
-        /**
-         * Inserts the report on the database.
-         */
-        this.createreport = () => __awaiter(this, void 0, void 0, function* () {
-            this.report = yield this.prisma.report.upsert({
-                where: {
-                    slug: `${this.config.date}`
-                },
-                create: {
-                    slug: `${this.config.date}`
-                },
-                update: {
-                    slug: `${this.config.date}`
-                }
-            });
-            console.log(this.report);
-        });
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             this.printer.header(`📷 Capture URLs`);
             /** DB report */
-            yield this.createreport();
+            this.dbreport = yield this.db.createreport();
             /** Looping through devices */
             let i = 0;
             const iMax = this.config.devices.length;
             for (; i < iMax; i++) {
+                /** Configure device */
                 const captureDevice = this.config.devices[i];
                 const browser = yield puppeteer_1.default.launch({
                     headless: true,
                     args: ['--no-sandbox', '--disable-setuid-sandbox']
                 });
-                const page = yield browser.newPage();
+                const puppet = yield browser.newPage();
                 let device = (captureDevice.device
                     ? puppeteer_1.default.devices[captureDevice.device]
                     : captureDevice);
                 device.userAgent = device.userAgent || (yield browser.userAgent());
+                yield puppet.emulate(device);
                 this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
-                yield page.emulate(device);
                 /** Make device folder */
                 if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
                     yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
                 }
+                /** DB device */
+                this.dbdevice = yield this.db.createdevice(device);
                 /** Looping through URLs */
                 let j = 0;
-                const jMax = this.config.urls.length;
+                const jMax = this.config.pages.length;
                 for (; j < jMax; j++) {
-                    const captureData = this.config.urls[j];
-                    const fileName = `${slugify_1.default(captureData.id)}.${this.config.format}`;
+                    const page = this.config.pages[j];
+                    const fileName = `${slugify_1.default(page.id)}.${this.config.format}`;
                     const localFilePath = `${this.config.tmpDatePath}/${device.id}/${fileName}`;
-                    this.printer.capture(captureData.id);
-                    yield page.goto(captureData.url);
-                    yield page.screenshot({
+                    this.dbpage = yield this.db.createpage(page);
+                    console.log(this.dbdevice.id);
+                    this.printer.capture(page.id);
+                    yield puppet.goto(page.url);
+                    yield puppet.screenshot({
                         path: localFilePath,
-                        fullPage: captureData.fullPage
+                        fullPage: page.fullPage
                     });
                     // Compare
                     // Resize
                     // Upload
                     // Write capture in the DB
-                    // await this.prisma.captures
-                    //   .create({
-                    //     data: {
-                    //       slug: slugify(captureData.id),
-                    //       device: slugify(device.id)
-                    //     }
-                    //   })
                 }
                 yield browser.close();
             }
             return true;
         });
         this.config = Object.assign({}, config);
+        this.db = new db_1.default(Object.assign({}, config));
     }
 }
 exports.default = Capture;
