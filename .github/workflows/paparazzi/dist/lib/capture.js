@@ -22,6 +22,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = __importDefault(require("./utils"));
 const db_1 = __importDefault(require("./db"));
+const store_1 = __importDefault(require("./store"));
 const fs = __importStar(require("fs"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
@@ -74,6 +75,7 @@ class Capture {
                     // Compare
                     // Resize
                     // Upload
+                    yield this.store.uploadfile(this.config.date, device.id, fileName, localFilePath);
                     // Write capture in the DB
                     this.dbcapture = yield this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage);
                 }
@@ -84,6 +86,7 @@ class Capture {
         });
         this.config = Object.assign({}, config);
         this.db = new db_1.default(Object.assign({}, config));
+        this.store = new store_1.default(Object.assign({}, config));
     }
 }
 exports.default = Capture;

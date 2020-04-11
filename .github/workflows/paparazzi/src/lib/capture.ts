@@ -7,14 +7,15 @@
 import {Config, Device, Page} from './types'
 import Printer from './utils'
 import DB from './db'
+import store from './store'
 import * as fs from 'fs'
 import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
-import {PrismaClient} from '../../../../../node_modules/@prisma/client'
 
 export default class Capture {
   printer = new Printer()
   config = {} as Config
+  store
   db
   dbdevice
   dbreport
@@ -24,6 +25,7 @@ export default class Capture {
   constructor(config: Config) {
     this.config = {...config}
     this.db = new DB({...config})
+    this.store = new store({...config})
   }
 
   capture = async (): Promise<boolean> => {
@@ -85,6 +87,12 @@ export default class Capture {
         // Resize
 
         // Upload
+        await this.store.uploadfile(
+          this.config.date,
+          device.id,
+          fileName,
+          localFilePath
+        )
 
         // Write capture in the DB
         this.dbcapture = await this.db.createcapture(
