@@ -19,6 +19,7 @@ export default class Capture {
   dbdevice
   dbreport
   dbpage
+  dbcapture
 
   constructor(config: Config) {
     this.config = {...config}
@@ -67,7 +68,10 @@ export default class Capture {
         const page: Page = this.config.pages[j]
         const fileName = `${slugify(page.id)}.${this.config.format}`
         const localFilePath = `${this.config.tmpDatePath}/${device.id}/${fileName}`
+
+        /** DB page */
         this.dbpage = await this.db.createpage(page)
+
         this.printer.capture(page.id)
 
         await puppet.goto(page.url)
@@ -83,7 +87,11 @@ export default class Capture {
         // Upload
 
         // Write capture in the DB
-        this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
+        this.dbcapture = this.db.createcapture(
+          this.dbreport,
+          this.dbdevice,
+          this.dbpage
+        )
       }
 
       await browser.close()

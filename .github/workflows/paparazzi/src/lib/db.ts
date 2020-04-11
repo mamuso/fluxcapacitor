@@ -1,4 +1,4 @@
-import {Config, Device, Report, Page, Capture} from './types'
+import {Config, Device, Report, Page} from './types'
 import slugify from '@sindresorhus/slugify'
 import {PrismaClient} from '../../../../../node_modules/@prisma/client'
 import {connect} from 'http2'
