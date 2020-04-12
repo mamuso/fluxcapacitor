@@ -17,7 +17,7 @@ export default class store {
   }
 
   uploadfile = async (date, device, filename, filepath) => {
-    const upload = await this.blob.createBlockBlobFromLocalFile(
+    await this.blob.createBlockBlobFromLocalFile(
       'fluxcontainer',
       `${date}/${device}/${filename}`,
       filepath,

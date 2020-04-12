@@ -104,7 +104,7 @@ export default class Capture {
           })
           .toFile(localfilepathmin)
 
-        capture.url = await this.store.uploadfile(
+        capture.urlmin = await this.store.uploadfile(
           this.config.date,
           device.id,
           filenamemin,

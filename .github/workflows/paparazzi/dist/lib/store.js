@@ -21,7 +21,7 @@ class store {
     constructor(config) {
         this.config = {};
         this.uploadfile = (date, device, filename, filepath) => __awaiter(this, void 0, void 0, function* () {
-            const upload = yield this.blob.createBlockBlobFromLocalFile('fluxcontainer', `${date}/${device}/${filename}`, filepath, function (error, result, response) { });
+            yield this.blob.createBlockBlobFromLocalFile('fluxcontainer', `${date}/${device}/${filename}`, filepath, function (error, result, response) { });
             return yield this.blob.getUrl('fluxcontainer', `${date}/${device}/${filename}`);
         });
         this.config = Object.assign({}, config);
