@@ -81,7 +81,7 @@ class Capture {
                     capture.page = dbpage.id;
                     /** Upload main image */
                     capture.url = yield this.store.uploadfile(this.config.date, device.id, filename, localfilepath);
-                    /** Resize main image */
+                    /** Resize and upload main image */
                     yield sharp_1.default(localfilepath)
                         .resize({
                         width: 360,
@@ -89,6 +89,7 @@ class Capture {
                         position: 'top'
                     })
                         .toFile(localfilepathmin);
+                    capture.url = yield this.store.uploadfile(this.config.date, device.id, filenamemin, localfilepathmin);
                     capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
                     // Write capture in the DB
                     // await this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
