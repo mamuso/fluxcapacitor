@@ -31,7 +31,7 @@ export type Report = {
   url: string
   current: boolean
   pages: [Page]
-  captures: [Capture]
+  captures: [CaptureType]
 }
 
 export type Page = {
@@ -39,11 +39,11 @@ export type Page = {
   slug: string
   url: string
   fullPage: boolean
-  captures: [Capture]
+  captures: [CaptureType]
   reports: [Report]
 }
 
-export type Capture = {
+export type CaptureType = {
   id: string
   slug: string
   url: string

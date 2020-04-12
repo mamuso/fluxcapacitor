@@ -17,18 +17,15 @@ export default class store {
   }
 
   uploadfile = async (date, device, filename, filepath) => {
-    const upload = this.blob.createBlockBlobFromLocalFile(
+    const upload = await this.blob.createBlockBlobFromLocalFile(
       'fluxcontainer',
       `${date}/${device}/${filename}`,
       filepath,
       function(error, result, response) {}
     )
-    const url = this.blob.gerUrl(
+    return await this.blob.getUrl(
       'fluxcontainer',
-      `${date}/${device}/`,
-      filename,
-      function(error, result, response) {}
+      `${date}/${device}/${filename}`
     )
-    console.log(url)
   }
 }
