@@ -31,6 +31,7 @@ export type Report = {
   url: string
   current: boolean
   pages: [Page]
+  pagecount: number
   captures: [CaptureType]
 }
 
@@ -41,6 +42,9 @@ export type Page = {
   fullPage: boolean
   captures: [CaptureType]
   reports: [Report]
+  reportcount: number
+  startsAt: string
+  endsAt: string
 }
 
 export type CaptureType = {
@@ -50,6 +54,7 @@ export type CaptureType = {
   urlmin: string
   urldiff: string
   diff: boolean
+  diffindex: number
   page: Page
   pageId: string
   report: Report
