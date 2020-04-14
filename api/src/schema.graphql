@@ -6,6 +6,7 @@ type Capture {
   createdAt: DateTime!
   device: Device!
   diff: Boolean!
+  diffindex: Float
   id: String!
   page: Page!
   report: Report!
@@ -136,9 +137,12 @@ type Mutation {
 type Page {
   captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, skip: Int): [Capture!]!
   createdAt: DateTime!
+  endsAt: DateTime
   id: String!
+  reportcount: Int
   reports(after: ReportWhereUniqueInput, before: ReportWhereUniqueInput, first: Int, last: Int, skip: Int): [Report!]!
   slug: String!
+  startsAt: DateTime
 }
 
 input PageCreateInput {
@@ -202,6 +206,7 @@ type Report {
   createdAt: DateTime!
   current: Boolean!
   id: String!
+  pagecount: Int
   pages(after: PageWhereUniqueInput, before: PageWhereUniqueInput, first: Int, last: Int, skip: Int): [Page!]!
   slug: String!
   url: String

@@ -243,6 +243,7 @@ export interface NexusGenFieldTypes {
     createdAt: any; // DateTime!
     device: NexusGenRootTypes['Device']; // Device!
     diff: boolean; // Boolean!
+    diffindex: number | null; // Float
     id: string; // String!
     page: NexusGenRootTypes['Page']; // Page!
     report: NexusGenRootTypes['Report']; // Report!
@@ -268,9 +269,12 @@ export interface NexusGenFieldTypes {
   Page: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
     createdAt: any; // DateTime!
+    endsAt: any | null; // DateTime
     id: string; // String!
+    reportcount: number | null; // Int
     reports: NexusGenRootTypes['Report'][]; // [Report!]!
     slug: string; // String!
+    startsAt: any | null; // DateTime
   }
   Query: { // field return type
     capture: NexusGenRootTypes['Capture'] | null; // Capture
@@ -283,6 +287,7 @@ export interface NexusGenFieldTypes {
     createdAt: any; // DateTime!
     current: boolean; // Boolean!
     id: string; // String!
+    pagecount: number | null; // Int
     pages: NexusGenRootTypes['Page'][]; // [Page!]!
     slug: string; // String!
     url: string | null; // String

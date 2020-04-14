@@ -29,6 +29,7 @@ export const Report = objectType({
     t.model.url();
     t.model.current();
     t.model.pages({ type: "Page" });
+    t.model.pagecount();
     t.model.captures({ type: "Capture" });
     t.model.createdAt();
   },
@@ -41,6 +42,9 @@ export const Page = objectType({
     t.model.slug();
     t.model.captures({ type: "Capture" });
     t.model.reports({ type: "Report" });
+    t.model.reportcount();
+    t.model.startsAt();
+    t.model.endsAt();
     t.model.createdAt();
   },
 });
@@ -54,6 +58,7 @@ export const Capture = objectType({
     t.model.urlmin();
     t.model.urldiff();
     t.model.diff();
+    t.model.diffindex();
     t.model.page({ type: "Page" });
     t.model.report({ type: "Report" });
     t.model.device({ type: "Device" });
