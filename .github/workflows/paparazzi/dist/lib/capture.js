@@ -21,8 +21,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = __importDefault(require("./utils"));
+const store_1 = __importDefault(require("./store"));
+const compress_1 = __importDefault(require("./compress"));
 const db_1 = __importDefault(require("./db"));
 const fs = __importStar(require("fs"));
+const sharp_1 = __importDefault(require("sharp"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
 class Capture {
@@ -61,28 +64,51 @@ class Capture {
                 const jMax = this.config.pages.length;
                 for (; j < jMax; j++) {
                     const page = this.config.pages[j];
-                    const fileName = `${slugify_1.default(page.id)}.${this.config.format}`;
-                    const localFilePath = `${this.config.tmpDatePath}/${device.id}/${fileName}`;
-                    /** DB page */
-                    this.dbpage = yield this.db.createpage(page);
+                    const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
+                    const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+                    const filenamemin = `${slugify_1.default(page.id)}-min.${this.config.format}`;
+                    const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`;
+                    const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
+                    const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
+                    const capture = {};
                     this.printer.capture(page.id);
                     yield puppet.goto(page.url);
                     yield puppet.screenshot({
-                        path: localFilePath,
+                        path: localfilepath,
                         fullPage: page.fullPage
                     });
-                    // Compare
-                    // Resize
-                    // Upload
-                    // Write capture in the DB
-                    this.dbcapture = yield this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage);
+                    /** DB page */
+                    const dbpage = yield this.db.createpage(page);
+                    capture.page = dbpage.id;
+                    /** Upload main image */
+                    capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
+                    /** Resize and upload main image */
+                    yield sharp_1.default(localfilepath)
+                        .resize({
+                        width: 360,
+                        height: 360,
+                        position: 'top'
+                    })
+                        .toFile(localfilepathmin);
+                    capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
+                    capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
+                    /** Write capture in the DB */
+                    // await this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
                 }
                 yield browser.close();
             }
+            /** Compress folder and upload it */
+            this.printer.subheader(`🤐 Zipping screenshots`);
+            const zipname = `${this.config.date}.tgz`;
+            yield this.compress.dir(this.config.tmpDatePath, `${this.config.tmpPath}/${zipname}`);
+            const currentzip = yield this.store.uploadfile(`archive/${zipname}`, `${this.config.tmpPath}/${zipname}`);
+            /** Disconnect from the DB */
             yield this.db.prisma.disconnect();
             return true;
         });
         this.config = Object.assign({}, config);
+        this.compress = new compress_1.default(Object.assign({}, config));
+        this.store = new store_1.default(Object.assign({}, config));
         this.db = new db_1.default(Object.assign({}, config));
     }
 }

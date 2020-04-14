@@ -61,7 +61,9 @@ class Paparazzi {
         this.date = date;
         this.basePath = basePath;
         this.config = Object.assign({ date: this.date, basePath: this.basePath, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${this.date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`${this.basePath}/fluxcapacitor-config`));
-        this.process();
+        this.process().catch(e => {
+            throw e;
+        });
     }
 }
 const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
