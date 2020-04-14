@@ -1,6 +1,6 @@
 import {Config} from './types'
 import * as azure from 'azure-storage'
-export default class store {
+export default class Store {
   config = {} as Config
   blob
 
@@ -16,16 +16,13 @@ export default class store {
     )
   }
 
-  uploadfile = async (date, device, filename, filepath) => {
+  uploadfile = async (filedest, filepath) => {
     await this.blob.createBlockBlobFromLocalFile(
       'fluxcontainer',
-      `${date}/${device}/${filename}`,
+      filedest,
       filepath,
       function(error, result, response) {}
     )
-    return await this.blob.getUrl(
-      'fluxcontainer',
-      `${date}/${device}/${filename}`
-    )
+    return await this.blob.getUrl('fluxcontainer', filedest)
   }
 }

@@ -6,8 +6,9 @@
 
 import {Config, Device, Page, Report, CaptureType} from './types'
 import Printer from './utils'
+import Store from './store'
+import Compress from './compress'
 import DB from './db'
-import store from './store'
 import * as fs from 'fs'
 import sharp from 'sharp'
 import slugify from '@sindresorhus/slugify'
@@ -17,14 +18,16 @@ export default class Capture {
   printer = new Printer()
   config = {} as Config
   store
+  compress
   db
   dbdevice
   dbreport
 
   constructor(config: Config) {
     this.config = {...config}
+    this.compress = new Compress({...config})
+    this.store = new Store({...config})
     this.db = new DB({...config})
-    this.store = new store({...config})
   }
 
   capture = async (): Promise<boolean> => {
@@ -89,9 +92,7 @@ export default class Capture {
 
         /** Upload main image */
         capture.url = await this.store.uploadfile(
-          this.config.date,
-          device.id,
-          filename,
+          `${this.config.date}/${device.id}/${filename}`,
           localfilepath
         )
 
@@ -105,9 +106,7 @@ export default class Capture {
           .toFile(localfilepathmin)
 
         capture.urlmin = await this.store.uploadfile(
-          this.config.date,
-          device.id,
-          filenamemin,
+          `${this.config.date}/${device.id}/${filenamemin}`,
           localfilepathmin
         )
 
@@ -115,13 +114,30 @@ export default class Capture {
           `${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`
         )
 
-        // Write capture in the DB
+        /** Write capture in the DB */
         // await this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
       }
 
       await browser.close()
     }
+
+    /** Compress folder and upload it */
+    this.printer.subheader(`🤐 Zipping screenshots`)
+
+    const zipname = `${this.config.date}.tgz`
+
+    await this.compress.dir(
+      this.config.tmpDatePath,
+      `${this.config.tmpPath}/${zipname}`
+    )
+    const currentzip = await this.store.uploadfile(
+      `archive/${zipname}`,
+      `${this.config.tmpPath}/${zipname}`
+    )
+
+    /** Disconnect from the DB */
     await this.db.prisma.disconnect()
+
     return true
   }
 }

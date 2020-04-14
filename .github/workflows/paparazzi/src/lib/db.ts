@@ -12,6 +12,23 @@ export default class DB {
   }
 
   /**
+   * Sets the new current.
+   */
+  setcurrent = async () => {
+    return await this.prisma.report.upsert({
+      where: {
+        slug: `${this.config.date}`
+      },
+      create: {
+        slug: `${this.config.date}`
+      },
+      update: {
+        slug: `${this.config.date}`
+      }
+    })
+  }
+
+  /**
    * Inserts or updates a report in the database.
    */
   createreport = async () => {
@@ -54,7 +71,7 @@ export default class DB {
   }
 
   /**
-   * Inserts or updates a report in the database.
+   * Inserts or updates a page in the database.
    */
   createpage = async (page: Page) => {
     const slug = slugify(page.id)

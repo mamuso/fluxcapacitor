@@ -19,6 +19,22 @@ class DB {
         this.config = {};
         this.prisma = new client_1.PrismaClient();
         /**
+         * Sets the new current.
+         */
+        this.setcurrent = () => __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.report.upsert({
+                where: {
+                    slug: `${this.config.date}`
+                },
+                create: {
+                    slug: `${this.config.date}`
+                },
+                update: {
+                    slug: `${this.config.date}`
+                }
+            });
+        });
+        /**
          * Inserts or updates a report in the database.
          */
         this.createreport = () => __awaiter(this, void 0, void 0, function* () {
@@ -58,7 +74,7 @@ class DB {
             });
         });
         /**
-         * Inserts or updates a report in the database.
+         * Inserts or updates a page in the database.
          */
         this.createpage = (page) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(page.id);

@@ -16,19 +16,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const azure = __importStar(require("azure-storage"));
-class Store {
+const compressing = __importStar(require("compressing"));
+class Compress {
     constructor(config) {
         this.config = {};
-        this.uploadfile = (filedest, filepath) => __awaiter(this, void 0, void 0, function* () {
-            yield this.blob.createBlockBlobFromLocalFile('fluxcontainer', filedest, filepath, function (error, result, response) { });
-            return yield this.blob.getUrl('fluxcontainer', filedest);
+        /**
+         * Compress folder.
+         */
+        this.dir = (compresspath, destination) => __awaiter(this, void 0, void 0, function* () {
+            yield compressing.tgz.compressDir(compresspath, destination);
         });
         this.config = Object.assign({}, config);
-        this.blob = azure.createBlobService();
-        this.blob.createContainerIfNotExists('fluxcontainer', {
-            publicAccessLevel: 'blob'
-        }, function (error, result, response) { });
     }
 }
-exports.default = Store;
+exports.default = Compress;

@@ -21,8 +21,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = __importDefault(require("./utils"));
-const db_1 = __importDefault(require("./db"));
 const store_1 = __importDefault(require("./store"));
+const compress_1 = __importDefault(require("./compress"));
+const db_1 = __importDefault(require("./db"));
 const fs = __importStar(require("fs"));
 const sharp_1 = __importDefault(require("sharp"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
@@ -80,7 +81,7 @@ class Capture {
                     const dbpage = yield this.db.createpage(page);
                     capture.page = dbpage.id;
                     /** Upload main image */
-                    capture.url = yield this.store.uploadfile(this.config.date, device.id, filename, localfilepath);
+                    capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
                     /** Resize and upload main image */
                     yield sharp_1.default(localfilepath)
                         .resize({
@@ -89,19 +90,26 @@ class Capture {
                         position: 'top'
                     })
                         .toFile(localfilepathmin);
-                    capture.urlmin = yield this.store.uploadfile(this.config.date, device.id, filenamemin, localfilepathmin);
+                    capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
                     capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
-                    // Write capture in the DB
+                    /** Write capture in the DB */
                     // await this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
                 }
                 yield browser.close();
             }
+            /** Compress folder and upload it */
+            this.printer.subheader(`🤐 Zipping screenshots`);
+            const zipname = `${this.config.date}.tgz`;
+            yield this.compress.dir(this.config.tmpDatePath, `${this.config.tmpPath}/${zipname}`);
+            const currentzip = yield this.store.uploadfile(`archive/${zipname}`, `${this.config.tmpPath}/${zipname}`);
+            /** Disconnect from the DB */
             yield this.db.prisma.disconnect();
             return true;
         });
         this.config = Object.assign({}, config);
-        this.db = new db_1.default(Object.assign({}, config));
+        this.compress = new compress_1.default(Object.assign({}, config));
         this.store = new store_1.default(Object.assign({}, config));
+        this.db = new db_1.default(Object.assign({}, config));
     }
 }
 exports.default = Capture;
