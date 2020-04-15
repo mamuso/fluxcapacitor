@@ -75,7 +75,6 @@ class Capture {
                     yield puppet.goto(page.url);
                     yield puppet.screenshot({
                         path: localfilepath,
-                        quality: 85,
                         fullPage: page.fullPage
                     });
                     /** DB page */

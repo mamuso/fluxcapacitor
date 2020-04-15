@@ -128,6 +128,7 @@ export default class DB {
       }
     })
   }
+
   /**
    * Connect pages and reports.
    */
@@ -150,5 +151,20 @@ export default class DB {
         pagecount: r.length
       }
     })
+
+    const p = await this.prisma.page
+      .findOne({
+        where: {id: page.id}
+      })
+      .reports()
+
+    await this.prisma.page.update({
+      where: {id: page.id},
+      data: {
+        reportcount: p.length
+      }
+    })
+
+    console.log(p)
   }
 }

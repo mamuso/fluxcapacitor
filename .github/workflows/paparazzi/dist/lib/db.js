@@ -149,6 +149,18 @@ class DB {
                     pagecount: r.length
                 }
             });
+            const p = yield this.prisma.page
+                .findOne({
+                where: { id: page.id }
+            })
+                .reports();
+            yield this.prisma.page.update({
+                where: { id: page.id },
+                data: {
+                    reportcount: p.length
+                }
+            });
+            console.log(p);
         });
         this.config = Object.assign({}, config);
     }
