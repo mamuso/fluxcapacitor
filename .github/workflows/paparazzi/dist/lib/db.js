@@ -76,23 +76,29 @@ class DB {
         /**
          * Inserts or updates a page in the database.
          */
-        this.createpage = (page) => __awaiter(this, void 0, void 0, function* () {
+        this.createpage = (page, report) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(page.id);
             const url = page.url;
-            return yield this.prisma.page.upsert({
+            const p = yield this.prisma.page.upsert({
                 where: {
                     slug: slug
                 },
                 create: {
                     slug: slug,
-                    url: url
+                    url: url,
+                    startsAt: report.slug
                 },
                 update: {
                     slug: slug,
                     url: url
                 }
             });
+            yield this.addpagetoreport(report, p);
+            return p;
         });
+        /**
+         * Inserts or updates a capture in the database.
+         */
         this.createcapture = (report, device, page) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(`${report.slug}-${device.slug}-${page.slug}`);
             return yield this.prisma.capture.upsert({
@@ -122,6 +128,40 @@ class DB {
                     device: {
                         connect: { id: device.id }
                     }
+                }
+            });
+        });
+        /**
+         * Connect pages and reports.
+         */
+        this.addpagetoreport = (report, page) => __awaiter(this, void 0, void 0, function* () {
+            /** TODO: I'm sure there is a better way of doing this */
+            const r = yield this.prisma.report
+                .update({
+                where: { id: report.id },
+                data: {
+                    pages: {
+                        connect: { id: page.id }
+                    }
+                }
+            })
+                .pages();
+            yield this.prisma.report.update({
+                where: { id: report.id },
+                data: {
+                    pagecount: r.length
+                }
+            });
+            const p = yield this.prisma.page
+                .findOne({
+                where: { id: page.id }
+            })
+                .reports();
+            yield this.prisma.page.update({
+                where: { id: page.id },
+                data: {
+                    reportcount: p.length,
+                    endsAt: report.slug
                 }
             });
         });

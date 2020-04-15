@@ -73,25 +73,33 @@ export default class DB {
   /**
    * Inserts or updates a page in the database.
    */
-  createpage = async (page: Page) => {
+  createpage = async (page: Page, report: Report) => {
     const slug = slugify(page.id)
     const url = page.url
 
-    return await this.prisma.page.upsert({
+    const p = await this.prisma.page.upsert({
       where: {
         slug: slug
       },
       create: {
         slug: slug,
-        url: url
+        url: url,
+        startsAt: report.slug
       },
       update: {
         slug: slug,
         url: url
       }
     })
+
+    await this.addpagetoreport(report, p)
+
+    return p
   }
 
+  /**
+   * Inserts or updates a capture in the database.
+   */
   createcapture = async (report: Report, device: Device, page: Page) => {
     const slug = slugify(`${report.slug}-${device.slug}-${page.slug}`)
 
@@ -122,6 +130,44 @@ export default class DB {
         device: {
           connect: {id: device.id}
         }
+      }
+    })
+  }
+
+  /**
+   * Connect pages and reports.
+   */
+  addpagetoreport = async (report, page) => {
+    /** TODO: I'm sure there is a better way of doing this */
+    const r = await this.prisma.report
+      .update({
+        where: {id: report.id},
+        data: {
+          pages: {
+            connect: {id: page.id}
+          }
+        }
+      })
+      .pages()
+
+    await this.prisma.report.update({
+      where: {id: report.id},
+      data: {
+        pagecount: r.length
+      }
+    })
+
+    const p = await this.prisma.page
+      .findOne({
+        where: {id: page.id}
+      })
+      .reports()
+
+    await this.prisma.page.update({
+      where: {id: page.id},
+      data: {
+        reportcount: p.length,
+        endsAt: report.slug
       }
     })
   }

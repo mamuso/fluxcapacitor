@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  url = "***"
 }
 
 generator client {
@@ -25,8 +25,8 @@ model Page {
   captures    Capture[]
   reports     Report[]  @relation(references: [id])
   reportcount Int?
-  startsAt    String?
-  endsAt      String?
+  startsAt    DateTime? @default(now())
+  endsAt      DateTime? @default(now())
   createdAt   DateTime  @default(now())
 }
 

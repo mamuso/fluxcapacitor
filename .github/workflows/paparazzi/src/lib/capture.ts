@@ -87,7 +87,7 @@ export default class Capture {
         })
 
         /** DB page */
-        const dbpage = await this.db.createpage(page)
+        const dbpage = await this.db.createpage(page, this.dbreport)
         capture.page = dbpage.id
 
         /** Upload main image */
@@ -100,7 +100,6 @@ export default class Capture {
         await sharp(localfilepath)
           .resize({
             width: 360,
-            height: 360,
             position: 'top'
           })
           .toFile(localfilepathmin)
@@ -115,7 +114,7 @@ export default class Capture {
         )
 
         /** Write capture in the DB */
-        // await this.db.createcapture(this.dbreport, this.dbdevice, this.dbpage)
+        await this.db.createcapture(this.dbreport, this.dbdevice, dbpage)
       }
 
       await browser.close()

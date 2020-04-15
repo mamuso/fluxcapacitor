@@ -6,6 +6,7 @@ type Capture {
   createdAt: DateTime!
   device: Device!
   diff: Boolean!
+  diffindex: Float
   id: String!
   page: Page!
   report: Report!
@@ -19,6 +20,7 @@ input CaptureCreateInput {
   createdAt: DateTime
   device: DeviceCreateOneWithoutCapturesInput!
   diff: Boolean
+  diffindex: Float
   id: String
   page: PageCreateOneWithoutCapturesInput!
   report: ReportCreateOneWithoutCapturesInput!
@@ -46,6 +48,7 @@ input CaptureCreateManyWithoutReportInput {
 input CaptureCreateWithoutDeviceInput {
   createdAt: DateTime
   diff: Boolean
+  diffindex: Float
   id: String
   page: PageCreateOneWithoutCapturesInput!
   report: ReportCreateOneWithoutCapturesInput!
@@ -59,6 +62,7 @@ input CaptureCreateWithoutPageInput {
   createdAt: DateTime
   device: DeviceCreateOneWithoutCapturesInput!
   diff: Boolean
+  diffindex: Float
   id: String
   report: ReportCreateOneWithoutCapturesInput!
   slug: String!
@@ -71,6 +75,7 @@ input CaptureCreateWithoutReportInput {
   createdAt: DateTime
   device: DeviceCreateOneWithoutCapturesInput!
   diff: Boolean
+  diffindex: Float
   id: String
   page: PageCreateOneWithoutCapturesInput!
   slug: String!
@@ -132,17 +137,23 @@ type Mutation {
 type Page {
   captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, skip: Int): [Capture!]!
   createdAt: DateTime!
+  endsAt: String
   id: String!
+  reportcount: Int
   reports(after: ReportWhereUniqueInput, before: ReportWhereUniqueInput, first: Int, last: Int, skip: Int): [Report!]!
   slug: String!
+  startsAt: String
 }
 
 input PageCreateInput {
   captures: CaptureCreateManyWithoutPageInput
   createdAt: DateTime
+  endsAt: String
   id: String
+  reportcount: Int
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
+  startsAt: String
   url: String!
 }
 
@@ -158,17 +169,23 @@ input PageCreateOneWithoutCapturesInput {
 
 input PageCreateWithoutCapturesInput {
   createdAt: DateTime
+  endsAt: String
   id: String
+  reportcount: Int
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
+  startsAt: String
   url: String!
 }
 
 input PageCreateWithoutReportsInput {
   captures: CaptureCreateManyWithoutPageInput
   createdAt: DateTime
+  endsAt: String
   id: String
+  reportcount: Int
   slug: String!
+  startsAt: String
   url: String!
 }
 
@@ -189,6 +206,7 @@ type Report {
   createdAt: DateTime!
   current: Boolean!
   id: String!
+  pagecount: Int
   pages(after: PageWhereUniqueInput, before: PageWhereUniqueInput, first: Int, last: Int, skip: Int): [Page!]!
   slug: String!
   url: String
@@ -199,6 +217,7 @@ input ReportCreateInput {
   createdAt: DateTime
   current: Boolean
   id: String
+  pagecount: Int
   pages: PageCreateManyWithoutReportsInput
   slug: String!
   url: String
@@ -218,6 +237,7 @@ input ReportCreateWithoutCapturesInput {
   createdAt: DateTime
   current: Boolean
   id: String
+  pagecount: Int
   pages: PageCreateManyWithoutReportsInput
   slug: String!
   url: String
@@ -228,6 +248,7 @@ input ReportCreateWithoutPagesInput {
   createdAt: DateTime
   current: Boolean
   id: String
+  pagecount: Int
   slug: String!
   url: String
 }
