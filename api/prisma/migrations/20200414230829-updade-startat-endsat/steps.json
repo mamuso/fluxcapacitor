@@ -1,0 +1,39 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Page",
+      "field": "startsAt",
+      "type": "String"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Page",
+          "field": "startsAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Page",
+      "field": "endsAt",
+      "type": "String"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Page",
+          "field": "endsAt"
+        },
+        "directive": "default"
+      }
+    }
+  ]
+}

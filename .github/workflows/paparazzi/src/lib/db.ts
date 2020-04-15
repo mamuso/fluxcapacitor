@@ -73,23 +73,28 @@ export default class DB {
   /**
    * Inserts or updates a page in the database.
    */
-  createpage = async (page: Page) => {
+  createpage = async (page: Page, report: Report) => {
     const slug = slugify(page.id)
     const url = page.url
 
-    return await this.prisma.page.upsert({
+    const p = await this.prisma.page.upsert({
       where: {
         slug: slug
       },
       create: {
         slug: slug,
-        url: url
+        url: url,
+        startsAt: report.slug
       },
       update: {
         slug: slug,
         url: url
       }
     })
+
+    await this.addpagetoreport(report, p)
+
+    return p
   }
 
   /**
@@ -161,10 +166,9 @@ export default class DB {
     await this.prisma.page.update({
       where: {id: page.id},
       data: {
-        reportcount: p.length
+        reportcount: p.length,
+        endsAt: report.slug
       }
     })
-
-    console.log(p)
   }
 }

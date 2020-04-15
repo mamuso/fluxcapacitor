@@ -111,12 +111,12 @@ export interface NexusGenInputs {
   PageCreateInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutPageInput'] | null; // CaptureCreateManyWithoutPageInput
     createdAt?: any | null; // DateTime
-    endsAt?: any | null; // DateTime
+    endsAt?: string | null; // String
     id?: string | null; // String
     reportcount?: number | null; // Int
     reports?: NexusGenInputs['ReportCreateManyWithoutPagesInput'] | null; // ReportCreateManyWithoutPagesInput
     slug: string; // String!
-    startsAt?: any | null; // DateTime
+    startsAt?: string | null; // String
     url: string; // String!
   }
   PageCreateManyWithoutReportsInput: { // input type
@@ -129,22 +129,22 @@ export interface NexusGenInputs {
   }
   PageCreateWithoutCapturesInput: { // input type
     createdAt?: any | null; // DateTime
-    endsAt?: any | null; // DateTime
+    endsAt?: string | null; // String
     id?: string | null; // String
     reportcount?: number | null; // Int
     reports?: NexusGenInputs['ReportCreateManyWithoutPagesInput'] | null; // ReportCreateManyWithoutPagesInput
     slug: string; // String!
-    startsAt?: any | null; // DateTime
+    startsAt?: string | null; // String
     url: string; // String!
   }
   PageCreateWithoutReportsInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutPageInput'] | null; // CaptureCreateManyWithoutPageInput
     createdAt?: any | null; // DateTime
-    endsAt?: any | null; // DateTime
+    endsAt?: string | null; // String
     id?: string | null; // String
     reportcount?: number | null; // Int
     slug: string; // String!
-    startsAt?: any | null; // DateTime
+    startsAt?: string | null; // String
     url: string; // String!
   }
   PageWhereUniqueInput: { // input type
@@ -269,12 +269,12 @@ export interface NexusGenFieldTypes {
   Page: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
     createdAt: any; // DateTime!
-    endsAt: any | null; // DateTime
+    endsAt: string | null; // String
     id: string; // String!
     reportcount: number | null; // Int
     reports: NexusGenRootTypes['Report'][]; // [Report!]!
     slug: string; // String!
-    startsAt: any | null; // DateTime
+    startsAt: string | null; // String
   }
   Query: { // field return type
     capture: NexusGenRootTypes['Capture'] | null; // Capture

@@ -87,8 +87,7 @@ export default class Capture {
         })
 
         /** DB page */
-        const dbpage = await this.db.createpage(page)
-        await this.db.addpagetoreport(this.dbreport, dbpage)
+        const dbpage = await this.db.createpage(page, this.dbreport)
         capture.page = dbpage.id
 
         /** Upload main image */

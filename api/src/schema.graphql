@@ -137,23 +137,23 @@ type Mutation {
 type Page {
   captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, skip: Int): [Capture!]!
   createdAt: DateTime!
-  endsAt: DateTime
+  endsAt: String
   id: String!
   reportcount: Int
   reports(after: ReportWhereUniqueInput, before: ReportWhereUniqueInput, first: Int, last: Int, skip: Int): [Report!]!
   slug: String!
-  startsAt: DateTime
+  startsAt: String
 }
 
 input PageCreateInput {
   captures: CaptureCreateManyWithoutPageInput
   createdAt: DateTime
-  endsAt: DateTime
+  endsAt: String
   id: String
   reportcount: Int
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
-  startsAt: DateTime
+  startsAt: String
   url: String!
 }
 
@@ -169,23 +169,23 @@ input PageCreateOneWithoutCapturesInput {
 
 input PageCreateWithoutCapturesInput {
   createdAt: DateTime
-  endsAt: DateTime
+  endsAt: String
   id: String
   reportcount: Int
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
-  startsAt: DateTime
+  startsAt: String
   url: String!
 }
 
 input PageCreateWithoutReportsInput {
   captures: CaptureCreateManyWithoutPageInput
   createdAt: DateTime
-  endsAt: DateTime
+  endsAt: String
   id: String
   reportcount: Int
   slug: String!
-  startsAt: DateTime
+  startsAt: String
   url: String!
 }
 

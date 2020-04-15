@@ -78,8 +78,7 @@ class Capture {
                         fullPage: page.fullPage
                     });
                     /** DB page */
-                    const dbpage = yield this.db.createpage(page);
-                    yield this.db.addpagetoreport(this.dbreport, dbpage);
+                    const dbpage = yield this.db.createpage(page, this.dbreport);
                     capture.page = dbpage.id;
                     /** Upload main image */
                     capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
