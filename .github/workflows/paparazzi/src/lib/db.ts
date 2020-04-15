@@ -92,6 +92,9 @@ export default class DB {
     })
   }
 
+  /**
+   * Inserts or updates a capture in the database.
+   */
   createcapture = async (report: Report, device: Device, page: Page) => {
     const slug = slugify(`${report.slug}-${device.slug}-${page.slug}`)
 
@@ -122,6 +125,29 @@ export default class DB {
         device: {
           connect: {id: device.id}
         }
+      }
+    })
+  }
+  /**
+   * Connect pages and reports.
+   */
+  addpagetoreport = async (report, page) => {
+    /** TODO: I'm sure there is a better way of doing this */
+    const r = await this.prisma.report
+      .update({
+        where: {id: report.id},
+        data: {
+          pages: {
+            connect: {id: page.id}
+          }
+        }
+      })
+      .pages()
+
+    await this.prisma.report.update({
+      where: {id: report.id},
+      data: {
+        pagecount: r.length
       }
     })
   }

@@ -93,6 +93,9 @@ class DB {
                 }
             });
         });
+        /**
+         * Inserts or updates a capture in the database.
+         */
         this.createcapture = (report, device, page) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(`${report.slug}-${device.slug}-${page.slug}`);
             return yield this.prisma.capture.upsert({
@@ -122,6 +125,28 @@ class DB {
                     device: {
                         connect: { id: device.id }
                     }
+                }
+            });
+        });
+        /**
+         * Connect pages and reports.
+         */
+        this.addpagetoreport = (report, page) => __awaiter(this, void 0, void 0, function* () {
+            /** TODO: I'm sure there is a better way of doing this */
+            const r = yield this.prisma.report
+                .update({
+                where: { id: report.id },
+                data: {
+                    pages: {
+                        connect: { id: page.id }
+                    }
+                }
+            })
+                .pages();
+            yield this.prisma.report.update({
+                where: { id: report.id },
+                data: {
+                    pagecount: r.length
                 }
             });
         });
