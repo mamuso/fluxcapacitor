@@ -16,26 +16,37 @@ const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const client_1 = require("../../../../../node_modules/@prisma/client");
 class DB {
     constructor(config) {
-        this.config = {};
-        this.prisma = new client_1.PrismaClient();
         /**
-         * Sets the new current.
+         * Get current.
          */
-        this.setcurrent = () => __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.report.upsert({
+        this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.report.findMany({
                 where: {
-                    slug: `${this.config.date}`
-                },
-                create: {
-                    slug: `${this.config.date}`
-                },
-                update: {
-                    slug: `${this.config.date}`
+                    current: true
                 }
             });
         });
         /**
-         * Inserts or updates a report in the database.
+         * Sets the new current.
+         */
+        this.setcurrent = (report) => __awaiter(this, void 0, void 0, function* () {
+            yield this.prisma.report.updateMany({
+                where: {
+                    current: true
+                },
+                data: {
+                    current: false
+                }
+            });
+            yield this.prisma.report.update({
+                where: { id: report },
+                data: {
+                    current: true
+                }
+            });
+        });
+        /**
+         * Inserts a report in the database.
          */
         this.createreport = () => __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.report.upsert({
@@ -48,6 +59,12 @@ class DB {
                 update: {
                     slug: `${this.config.date}`
                 }
+            });
+        });
+        this.updatereporturl = (report, url) => __awaiter(this, void 0, void 0, function* () {
+            yield this.prisma.report.update({
+                where: { id: report.id },
+                data: { url: url }
             });
         });
         /**
@@ -165,6 +182,7 @@ class DB {
                 }
             });
         });
+        this.prisma = new client_1.PrismaClient();
         this.config = Object.assign({}, config);
     }
 }

@@ -19,12 +19,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const compressing = __importStar(require("compressing"));
 class Compress {
     constructor(config) {
-        this.config = {};
         /**
          * Compress folder.
          */
         this.dir = (compresspath, destination) => __awaiter(this, void 0, void 0, function* () {
-            yield compressing.tgz.compressDir(compresspath, destination);
+            yield compressing.tar.compressDir(compresspath, destination);
+        });
+        /**
+         * Uncompress folder.
+         */
+        this.uncompress = (compresspath, destination) => __awaiter(this, void 0, void 0, function* () {
+            yield compressing.tar.uncompress(compresspath, destination, {
+                strip: 1
+            });
         });
         this.config = Object.assign({}, config);
     }

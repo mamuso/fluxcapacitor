@@ -10,29 +10,35 @@ import Store from './store'
 import Compress from './compress'
 import DB from './db'
 import * as fs from 'fs'
+import * as urllib from 'urllib'
 import sharp from 'sharp'
 import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
 
 export default class Capture {
-  printer = new Printer()
-  config = {} as Config
+  printer
+  config
   store
   compress
   db
   dbdevice
   dbreport
+  current
 
   constructor(config: Config) {
-    this.config = {...config}
+    this.printer = new Printer()
+    this.config = {...config} as Config
     this.compress = new Compress({...config})
     this.store = new Store({...config})
     this.db = new DB({...config})
   }
 
-  capture = async (): Promise<boolean> => {
+  capture = async () => {
     try {
       this.printer.header(`📷 Capture URLs`)
+
+      /** Set current and download report */
+      await this.setcurrent()
 
       /** DB report */
       this.dbreport = await this.db.createreport()
@@ -73,7 +79,7 @@ export default class Capture {
           const page: Page = this.config.pages[j]
           const filename = `${slugify(page.id)}.${this.config.format}`
           const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`
-          const filenamemin = `${slugify(page.id)}-min.${this.config.format}`
+          const filenamemin = `${slugify(page.id)}-min.jpg`
           const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`
           const filenamediff = `${slugify(page.id)}-diff.${this.config.format}`
           const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
@@ -100,7 +106,8 @@ export default class Capture {
           /** Resize and upload main image */
           await sharp(localfilepath)
             .resize({
-              width: 360,
+              width: 600,
+              height: 800,
               position: 'top'
             })
             .toFile(localfilepathmin)
@@ -121,27 +128,43 @@ export default class Capture {
         await browser.close()
       }
 
-      /** Compress folder and upload it */
+      /** Compress folder, upload it, and updates the db */
       this.printer.subheader(`🤐 Zipping screenshots`)
 
-      const zipname = `${this.config.date}.tgz`
-
+      const zipname = `${this.config.date}.tar`
       await this.compress.dir(
         this.config.tmpDatePath,
         `${this.config.tmpPath}/${zipname}`
       )
-      const currentzip = await this.store.uploadfile(
+      const zipurl = await this.store.uploadfile(
         `archive/${zipname}`,
         `${this.config.tmpPath}/${zipname}`
       )
+      await this.db.updatereporturl(this.dbreport, zipurl)
+
+      /** Update the current report */
+      await this.db.setcurrent(this.dbreport.id)
 
       /** Disconnect from the DB */
       await this.db.prisma.disconnect()
-
-      return true
     } catch (e) {
       console.log(e)
-      return false
+    }
+  }
+
+  setcurrent = async () => {
+    const current = await this.db.getcurrent()
+    this.current = current[0] ? current[0] : null
+
+    if (this.current) {
+      await urllib
+        .request(this.current.url, {
+          streaming: true,
+          followRedirect: true
+        })
+        .then(res => {
+          this.compress.uncompress(res.res, this.config.tmpCurrentPath)
+        })
     }
   }
 }

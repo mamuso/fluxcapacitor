@@ -1,20 +1,51 @@
 import {Config, Device, Report, Page} from './types'
 import slugify from '@sindresorhus/slugify'
 import {PrismaClient} from '../../../../../node_modules/@prisma/client'
-import {connect} from 'http2'
 
 export default class DB {
-  config = {} as Config
-  prisma = new PrismaClient()
+  config
+  prisma
 
   constructor(config: Config) {
-    this.config = {...config}
+    this.prisma = new PrismaClient()
+    this.config = {...config} as Config
+  }
+
+  /**
+   * Get current.
+   */
+  getcurrent = async () => {
+    return await this.prisma.report.findMany({
+      where: {
+        current: true
+      }
+    })
   }
 
   /**
    * Sets the new current.
    */
-  setcurrent = async () => {
+  setcurrent = async report => {
+    await this.prisma.report.updateMany({
+      where: {
+        current: true
+      },
+      data: {
+        current: false
+      }
+    })
+    await this.prisma.report.update({
+      where: {id: report},
+      data: {
+        current: true
+      }
+    })
+  }
+
+  /**
+   * Inserts a report in the database.
+   */
+  createreport = async () => {
     return await this.prisma.report.upsert({
       where: {
         slug: `${this.config.date}`
@@ -28,20 +59,10 @@ export default class DB {
     })
   }
 
-  /**
-   * Inserts or updates a report in the database.
-   */
-  createreport = async () => {
-    return await this.prisma.report.upsert({
-      where: {
-        slug: `${this.config.date}`
-      },
-      create: {
-        slug: `${this.config.date}`
-      },
-      update: {
-        slug: `${this.config.date}`
-      }
+  updatereporturl = async (report, url) => {
+    await this.prisma.report.update({
+      where: {id: report.id},
+      data: {url: url}
     })
   }
 
