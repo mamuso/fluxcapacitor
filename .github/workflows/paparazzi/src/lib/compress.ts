@@ -1,5 +1,5 @@
 import {Config} from './types'
-import * as tar from 'tar '
+import * as tar from 'tar'
 
 export default class Compress {
   config
@@ -12,15 +12,23 @@ export default class Compress {
    * Compress folder.
    */
   dir = async (compresspath: string, destination: string) => {
-    await compressing.tar.compressDir(compresspath, destination)
+    await tar.c(
+      {
+        gzip: true,
+        file: destination
+      },
+      [compresspath]
+    )
   }
 
   /**
    * Uncompress folder.
    */
-  uncompress = async (compresspath: string, destination: string) => {
-    await compressing.tar.uncompress(compresspath, destination, {
-      strip: 1
+  extract = async (compresspath: string, destination: string) => {
+    await tar.x({
+      file: compresspath,
+      strip: 2,
+      cwd: destination
     })
   }
 }

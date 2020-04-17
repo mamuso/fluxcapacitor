@@ -10,7 +10,7 @@ import Store from './store'
 import Compress from './compress'
 import DB from './db'
 import * as fs from 'fs'
-import * as urllib from 'urllib'
+import * as rp from 'request-promise'
 import sharp from 'sharp'
 import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
@@ -38,7 +38,7 @@ export default class Capture {
       this.printer.header(`📷 Capture URLs`)
 
       /** Set current and download report */
-      await this.setcurrent()
+      await this.getcurrent()
 
       /** DB report */
       this.dbreport = await this.db.createreport()
@@ -131,7 +131,7 @@ export default class Capture {
       /** Compress folder, upload it, and updates the db */
       this.printer.subheader(`🤐 Zipping screenshots`)
 
-      const zipname = `${this.config.date}.tar`
+      const zipname = `${this.config.date}.tgz`
       await this.compress.dir(
         this.config.tmpDatePath,
         `${this.config.tmpPath}/${zipname}`
@@ -140,6 +140,7 @@ export default class Capture {
         `archive/${zipname}`,
         `${this.config.tmpPath}/${zipname}`
       )
+
       await this.db.updatereporturl(this.dbreport, zipurl)
 
       /** Update the current report */
@@ -152,19 +153,20 @@ export default class Capture {
     }
   }
 
-  setcurrent = async () => {
+  getcurrent = async () => {
     const current = await this.db.getcurrent()
     this.current = current[0] ? current[0] : null
 
     if (this.current) {
-      await urllib
-        .request(this.current.url, {
-          streaming: true,
-          followRedirect: true
-        })
-        .then(res => {
-          this.compress.uncompress(res.res, this.config.tmpCurrentPath)
-        })
+      const res = await rp.get({uri: this.current.url, encoding: null})
+      fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
+        encoding: null
+      })
+
+      await this.compress.extract(
+        `${this.config.tmpPath}/current.tgz`,
+        this.config.tmpCurrentPath
+      )
     }
   }
 }

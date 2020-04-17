@@ -25,7 +25,7 @@ const store_1 = __importDefault(require("./store"));
 const compress_1 = __importDefault(require("./compress"));
 const db_1 = __importDefault(require("./db"));
 const fs = __importStar(require("fs"));
-const urllib = __importStar(require("urllib"));
+const rp = __importStar(require("request-promise"));
 const sharp_1 = __importDefault(require("sharp"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
@@ -35,7 +35,7 @@ class Capture {
             try {
                 this.printer.header(`📷 Capture URLs`);
                 /** Set current and download report */
-                yield this.setcurrent();
+                yield this.getcurrent();
                 /** DB report */
                 this.dbreport = yield this.db.createreport();
                 /** Looping through devices */
@@ -68,7 +68,7 @@ class Capture {
                         const page = this.config.pages[j];
                         const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
                         const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
-                        const filenamemin = `${slugify_1.default(page.id)}-min.${this.config.format}`;
+                        const filenamemin = `${slugify_1.default(page.id)}-min.jpg`;
                         const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`;
                         const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
@@ -101,7 +101,7 @@ class Capture {
                 }
                 /** Compress folder, upload it, and updates the db */
                 this.printer.subheader(`🤐 Zipping screenshots`);
-                const zipname = `${this.config.date}.tar`;
+                const zipname = `${this.config.date}.tgz`;
                 yield this.compress.dir(this.config.tmpDatePath, `${this.config.tmpPath}/${zipname}`);
                 const zipurl = yield this.store.uploadfile(`archive/${zipname}`, `${this.config.tmpPath}/${zipname}`);
                 yield this.db.updatereporturl(this.dbreport, zipurl);
@@ -114,18 +114,15 @@ class Capture {
                 console.log(e);
             }
         });
-        this.setcurrent = () => __awaiter(this, void 0, void 0, function* () {
+        this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
             const current = yield this.db.getcurrent();
             this.current = current[0] ? current[0] : null;
             if (this.current) {
-                yield urllib
-                    .request(this.current.url, {
-                    streaming: true,
-                    followRedirect: true
-                })
-                    .then(res => {
-                    this.compress.uncompress(res.res, this.config.tmpCurrentPath);
+                const res = yield rp.get({ uri: this.current.url, encoding: null });
+                fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
+                    encoding: null
                 });
+                yield this.compress.extract(`${this.config.tmpPath}/current.tgz`, this.config.tmpCurrentPath);
             }
         });
         this.printer = new utils_1.default();
