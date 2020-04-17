@@ -30,17 +30,19 @@ class Paparazzi {
       ...require(`${this.basePath}/fluxcapacitor-config`)
     } as Config
 
-    this.process().catch(e => {
-      throw e
-    })
+    this.process()
   }
 
   process = async (): Promise<void> => {
-    this.setup()
-    this.printer.header(`✨ Paparazzi - ${this.date}`)
-    const capture = new Capture(this.config)
-    await capture.capture()
-    await this.cleanup()
+    try {
+      this.setup()
+      this.printer.header(`✨ Paparazzi - ${this.date}`)
+      const capture = new Capture(this.config)
+      await capture.capture()
+      // await this.cleanup()
+    } catch (e) {
+      throw e
+    }
   }
 
   /**

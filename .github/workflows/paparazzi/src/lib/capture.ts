@@ -7,6 +7,7 @@
 import {Config, Device, Page, Report, CaptureType} from './types'
 import Printer from './utils'
 import Store from './store'
+import Compare from './compare'
 import Compress from './compress'
 import DB from './db'
 import * as fs from 'fs'
@@ -19,6 +20,7 @@ export default class Capture {
   printer
   config
   store
+  compare
   compress
   db
   dbdevice
@@ -28,6 +30,7 @@ export default class Capture {
   constructor(config: Config) {
     this.printer = new Printer()
     this.config = {...config} as Config
+    this.compare = new Compare({...config})
     this.compress = new Compress({...config})
     this.store = new Store({...config})
     this.db = new DB({...config})
@@ -76,16 +79,16 @@ export default class Capture {
         let j = 0
         const jMax = this.config.pages.length
         for (; j < jMax; j++) {
+          /** Setting all the variables */
           const page: Page = this.config.pages[j]
           const filename = `${slugify(page.id)}.${this.config.format}`
           const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`
+          const currentfilepath = `${this.config.tmpCurrentPath}/${device.id}/${filename}`
           const filenamemin = `${slugify(page.id)}-min.jpg`
           const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`
           const filenamediff = `${slugify(page.id)}-diff.${this.config.format}`
           const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
           const capture = {} as CaptureType
-
-          this.printer.capture(page.id)
 
           await puppet.goto(page.url)
           await puppet.screenshot({
@@ -112,6 +115,14 @@ export default class Capture {
             })
             .toFile(localfilepathmin)
 
+          const diff = await this.compare.compare(
+            localfilepath,
+            currentfilepath,
+            localfilepathdiff
+          )
+
+          console.log(diff)
+
           capture.urlmin = await this.store.uploadfile(
             `${this.config.date}/${device.id}/${filenamemin}`,
             localfilepathmin
@@ -123,6 +134,9 @@ export default class Capture {
 
           /** Write capture in the DB */
           await this.db.createcapture(this.dbreport, this.dbdevice, dbpage)
+
+          /** Print output */
+          this.printer.capture(page.id)
         }
 
         await browser.close()
@@ -149,7 +163,7 @@ export default class Capture {
       /** Disconnect from the DB */
       await this.db.prisma.disconnect()
     } catch (e) {
-      console.log(e)
+      throw e
     }
   }
 

@@ -1,4 +1,4 @@
 name: Paparazzi
 description: ''
 runs: using: 'node12'
-main: 'playground.js'
+main: 'dist/paparazzi.js'

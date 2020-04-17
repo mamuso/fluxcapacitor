@@ -22,6 +22,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = __importDefault(require("./utils"));
 const store_1 = __importDefault(require("./store"));
+const compare_1 = __importDefault(require("./compare"));
 const compress_1 = __importDefault(require("./compress"));
 const db_1 = __importDefault(require("./db"));
 const fs = __importStar(require("fs"));
@@ -65,15 +66,16 @@ class Capture {
                     let j = 0;
                     const jMax = this.config.pages.length;
                     for (; j < jMax; j++) {
+                        /** Setting all the variables */
                         const page = this.config.pages[j];
                         const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
                         const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+                        const currentfilepath = `${this.config.tmpCurrentPath}/${device.id}/${filename}`;
                         const filenamemin = `${slugify_1.default(page.id)}-min.jpg`;
                         const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`;
                         const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
                         const capture = {};
-                        this.printer.capture(page.id);
                         yield puppet.goto(page.url);
                         yield puppet.screenshot({
                             path: localfilepath,
@@ -92,10 +94,14 @@ class Capture {
                             position: 'top'
                         })
                             .toFile(localfilepathmin);
+                        const diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
+                        console.log(diff);
                         capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
                         capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
                         /** Write capture in the DB */
                         yield this.db.createcapture(this.dbreport, this.dbdevice, dbpage);
+                        /** Print output */
+                        this.printer.capture(page.id);
                     }
                     yield browser.close();
                 }
@@ -111,7 +117,7 @@ class Capture {
                 yield this.db.prisma.disconnect();
             }
             catch (e) {
-                console.log(e);
+                throw e;
             }
         });
         this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
@@ -127,6 +133,7 @@ class Capture {
         });
         this.printer = new utils_1.default();
         this.config = Object.assign({}, config);
+        this.compare = new compare_1.default(Object.assign({}, config));
         this.compress = new compress_1.default(Object.assign({}, config));
         this.store = new store_1.default(Object.assign({}, config));
         this.db = new db_1.default(Object.assign({}, config));
