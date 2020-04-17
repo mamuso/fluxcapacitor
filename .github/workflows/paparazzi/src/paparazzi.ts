@@ -12,12 +12,13 @@ import Capture from './lib/capture'
 import * as fs from 'fs'
 
 class Paparazzi {
-  date: string
-  basePath: string
-  config: Config
-  printer = new Printer()
+  date
+  basePath
+  config
+  printer
 
   constructor(date: string, basePath: string, tmpPath: string = 'tmp') {
+    this.printer = new Printer()
     this.date = date
     this.basePath = basePath
     this.config = {
@@ -27,7 +28,7 @@ class Paparazzi {
       tmpDatePath: `${tmpPath}/${this.date}`,
       tmpCurrentPath: `${tmpPath}/current`,
       ...require(`${this.basePath}/fluxcapacitor-config`)
-    }
+    } as Config
 
     this.process().catch(e => {
       throw e

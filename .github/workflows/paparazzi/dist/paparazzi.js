@@ -30,13 +30,12 @@ const capture_1 = __importDefault(require("./lib/capture"));
 const fs = __importStar(require("fs"));
 class Paparazzi {
     constructor(date, basePath, tmpPath = 'tmp') {
-        this.printer = new utils_1.default();
         this.process = () => __awaiter(this, void 0, void 0, function* () {
             this.setup();
             this.printer.header(`✨ Paparazzi - ${this.date}`);
             const capture = new capture_1.default(this.config);
             yield capture.capture();
-            yield this.cleanup();
+            // await this.cleanup()
         });
         /**
          *  Create the folder structure needed for capturing the screens
@@ -58,6 +57,7 @@ class Paparazzi {
         this.cleanup = () => __awaiter(this, void 0, void 0, function* () {
             yield fs.promises.rmdir(this.config.tmpPath, { recursive: true });
         });
+        this.printer = new utils_1.default();
         this.date = date;
         this.basePath = basePath;
         this.config = Object.assign({ date: this.date, basePath: this.basePath, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${this.date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`${this.basePath}/fluxcapacitor-config`));
