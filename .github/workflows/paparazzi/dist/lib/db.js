@@ -116,7 +116,7 @@ class DB {
         /**
          * Inserts or updates a capture in the database.
          */
-        this.createcapture = (report, device, page) => __awaiter(this, void 0, void 0, function* () {
+        this.createcapture = (report, device, page, capture) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(`${report.slug}-${device.slug}-${page.slug}`);
             return yield this.prisma.capture.upsert({
                 where: {
@@ -132,7 +132,12 @@ class DB {
                     },
                     device: {
                         connect: { id: device.id }
-                    }
+                    },
+                    url: capture.url,
+                    urlmin: capture.urlmin,
+                    urldiff: capture.urldiff,
+                    diff: capture.diff,
+                    diffindex: capture.diffindex
                 },
                 update: {
                     slug: slug,
@@ -144,7 +149,12 @@ class DB {
                     },
                     device: {
                         connect: { id: device.id }
-                    }
+                    },
+                    url: capture.url,
+                    urlmin: capture.urlmin,
+                    urldiff: capture.urldiff,
+                    diff: capture.diff,
+                    diffindex: capture.diffindex
                 }
             });
         });

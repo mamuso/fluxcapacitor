@@ -84,9 +84,7 @@ class Capture {
                         /** DB page */
                         const dbpage = yield this.db.createpage(page, this.dbreport);
                         capture.page = dbpage.id;
-                        /** Upload main image */
-                        capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
-                        /** Resize and upload main image */
+                        /** Resize main image */
                         yield sharp_1.default(localfilepath)
                             .resize({
                             width: 600,
@@ -94,12 +92,24 @@ class Capture {
                             position: 'top'
                         })
                             .toFile(localfilepathmin);
+                        /** Compare */
                         const diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
-                        console.log(diff);
+                        if (diff != 0) {
+                            capture.diff = true;
+                            capture.diffindex = diff;
+                        }
+                        else {
+                            capture.diff = false;
+                        }
+                        /** Upload images */
+                        capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
                         capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
+                        if (diff > 0) {
+                            capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamediff}`, localfilepathdiff);
+                        }
                         capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
                         /** Write capture in the DB */
-                        yield this.db.createcapture(this.dbreport, this.dbdevice, dbpage);
+                        yield this.db.createcapture(this.dbreport, this.dbdevice, dbpage, capture);
                         /** Print output */
                         this.printer.capture(page.id);
                     }

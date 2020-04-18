@@ -39,7 +39,7 @@ class Paparazzi {
       this.printer.header(`✨ Paparazzi - ${this.date}`)
       const capture = new Capture(this.config)
       await capture.capture()
-      // await this.cleanup()
+      await this.cleanup()
     } catch (e) {
       throw e
     }

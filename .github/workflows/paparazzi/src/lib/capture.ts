@@ -100,13 +100,7 @@ export default class Capture {
           const dbpage = await this.db.createpage(page, this.dbreport)
           capture.page = dbpage.id
 
-          /** Upload main image */
-          capture.url = await this.store.uploadfile(
-            `${this.config.date}/${device.id}/${filename}`,
-            localfilepath
-          )
-
-          /** Resize and upload main image */
+          /** Resize main image */
           await sharp(localfilepath)
             .resize({
               width: 600,
@@ -115,25 +109,49 @@ export default class Capture {
             })
             .toFile(localfilepathmin)
 
+          /** Compare */
           const diff = await this.compare.compare(
             localfilepath,
             currentfilepath,
             localfilepathdiff
           )
 
-          console.log(diff)
+          if (diff != 0) {
+            capture.diff = true
+            capture.diffindex = diff
+          } else {
+            capture.diff = false
+          }
+
+          /** Upload images */
+          capture.url = await this.store.uploadfile(
+            `${this.config.date}/${device.id}/${filename}`,
+            localfilepath
+          )
 
           capture.urlmin = await this.store.uploadfile(
             `${this.config.date}/${device.id}/${filenamemin}`,
             localfilepathmin
           )
 
+          if (diff > 0) {
+            capture.urldiff = await this.store.uploadfile(
+              `${this.config.date}/${device.id}/${filenamediff}`,
+              localfilepathdiff
+            )
+          }
+
           capture.slug = slugify(
             `${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`
           )
 
           /** Write capture in the DB */
-          await this.db.createcapture(this.dbreport, this.dbdevice, dbpage)
+          await this.db.createcapture(
+            this.dbreport,
+            this.dbdevice,
+            dbpage,
+            capture
+          )
 
           /** Print output */
           this.printer.capture(page.id)
