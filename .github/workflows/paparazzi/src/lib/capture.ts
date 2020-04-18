@@ -9,6 +9,7 @@ import Printer from './utils'
 import Store from './store'
 import Compare from './compare'
 import Compress from './compress'
+import Notify from './notify'
 import DB from './db'
 import * as fs from 'fs'
 import * as rp from 'request-promise'
@@ -26,6 +27,7 @@ export default class Capture {
   dbdevice
   dbreport
   current
+  notify
 
   constructor(config: Config) {
     this.printer = new Printer()
@@ -34,14 +36,16 @@ export default class Capture {
     this.compress = new Compress({...config})
     this.store = new Store({...config})
     this.db = new DB({...config})
+    this.notify = new Notify({...config})
   }
 
   capture = async () => {
     try {
-      this.printer.header(`📷 Capture URLs`)
-
       /** Set current and download report */
+      this.printer.subheader(`🔍 Checking out the previous capture session`)
       await this.getcurrent()
+
+      this.printer.header(`📷 Capture URLs`)
 
       /** DB report */
       this.dbreport = await this.db.createreport()
@@ -177,6 +181,8 @@ export default class Capture {
 
       /** Update the current report */
       await this.db.setcurrent(this.dbreport.id)
+
+      // await this.notify.send()
 
       /** Disconnect from the DB */
       await this.db.prisma.disconnect()

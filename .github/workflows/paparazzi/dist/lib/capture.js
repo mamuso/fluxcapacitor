@@ -24,6 +24,7 @@ const utils_1 = __importDefault(require("./utils"));
 const store_1 = __importDefault(require("./store"));
 const compare_1 = __importDefault(require("./compare"));
 const compress_1 = __importDefault(require("./compress"));
+const notify_1 = __importDefault(require("./notify"));
 const db_1 = __importDefault(require("./db"));
 const fs = __importStar(require("fs"));
 const rp = __importStar(require("request-promise"));
@@ -34,9 +35,10 @@ class Capture {
     constructor(config) {
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                this.printer.header(`📷 Capture URLs`);
                 /** Set current and download report */
+                this.printer.subheader(`🔍 Checking out the previous capture session`);
                 yield this.getcurrent();
+                this.printer.header(`📷 Capture URLs`);
                 /** DB report */
                 this.dbreport = yield this.db.createreport();
                 /** Looping through devices */
@@ -123,6 +125,7 @@ class Capture {
                 yield this.db.updatereporturl(this.dbreport, zipurl);
                 /** Update the current report */
                 yield this.db.setcurrent(this.dbreport.id);
+                // await this.notify.send()
                 /** Disconnect from the DB */
                 yield this.db.prisma.disconnect();
             }
@@ -147,6 +150,7 @@ class Capture {
         this.compress = new compress_1.default(Object.assign({}, config));
         this.store = new store_1.default(Object.assign({}, config));
         this.db = new db_1.default(Object.assign({}, config));
+        this.notify = new notify_1.default(Object.assign({}, config));
     }
 }
 exports.default = Capture;
