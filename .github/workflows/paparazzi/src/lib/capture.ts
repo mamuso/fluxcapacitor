@@ -42,13 +42,14 @@ export default class Capture {
   capture = async () => {
     try {
       /** Set current and download report */
-      this.printer.subheader(`🔍 Checking out the previous capture session`)
+      this.printer.subheader(`🔍 Checking out the last capture session`)
       await this.getcurrent()
 
-      this.printer.header(`📷 Capture URLs`)
-
       /** DB report */
+      this.printer.subheader(`🤓 Creating a new caputre session`)
       this.dbreport = await this.db.createreport()
+
+      this.printer.header(`📷 Capture URLs`)
 
       /** Looping through devices */
       let i = 0
