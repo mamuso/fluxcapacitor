@@ -95,7 +95,23 @@ export default class Capture {
           const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
           const capture = {} as CaptureType
 
-          await puppet.goto(page.url)
+          await puppet.goto(page.url, {waitUntil: 'load'})
+
+          // Scrolling through the page
+          const vheight = await puppet.viewport().height
+          const pheight = await puppet.evaluate(_ => {
+            return document.body.scrollHeight
+          })
+          let v
+          while (v + vheight < pheight) {
+            await puppet.evaluate(_ => {
+              window.scrollBy(0, v)
+            })
+            await puppet.waitFor(500)
+            v = v + vheight
+          }
+          await puppet.waitFor(1000)
+
           await puppet.screenshot({
             path: localfilepath,
             fullPage: page.fullPage
@@ -109,8 +125,9 @@ export default class Capture {
           await sharp(localfilepath)
             .resize({
               width: 600,
-              height: 800,
-              position: 'top'
+              height: 600,
+              position: sharp.position.top,
+              withoutEnlargement: true
             })
             .toFile(localfilepathmin)
 

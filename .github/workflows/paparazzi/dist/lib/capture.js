@@ -36,11 +36,12 @@ class Capture {
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 /** Set current and download report */
-                this.printer.subheader(`🔍 Checking out the previous capture session`);
+                this.printer.subheader(`🔍 Checking out the last capture session`);
                 yield this.getcurrent();
-                this.printer.header(`📷 Capture URLs`);
                 /** DB report */
+                this.printer.subheader(`🤓 Creating a new caputre session`);
                 this.dbreport = yield this.db.createreport();
+                this.printer.header(`📷 Capture URLs`);
                 /** Looping through devices */
                 let i = 0;
                 const iMax = this.config.devices.length;
@@ -78,7 +79,21 @@ class Capture {
                         const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
                         const capture = {};
-                        yield puppet.goto(page.url);
+                        yield puppet.goto(page.url, { waitUntil: 'load' });
+                        // Scrolling through the page
+                        const vheight = yield puppet.viewport().height;
+                        const pheight = yield puppet.evaluate(_ => {
+                            return document.body.scrollHeight;
+                        });
+                        let v;
+                        while (v + vheight < pheight) {
+                            yield puppet.evaluate(_ => {
+                                window.scrollBy(0, v);
+                            });
+                            yield puppet.waitFor(500);
+                            v = v + vheight;
+                        }
+                        yield puppet.waitFor(1000);
                         yield puppet.screenshot({
                             path: localfilepath,
                             fullPage: page.fullPage
@@ -90,8 +105,9 @@ class Capture {
                         yield sharp_1.default(localfilepath)
                             .resize({
                             width: 600,
-                            height: 800,
-                            position: 'top'
+                            height: 600,
+                            position: sharp_1.default.position.top,
+                            withoutEnlargement: true
                         })
                             .toFile(localfilepathmin);
                         /** Compare */
