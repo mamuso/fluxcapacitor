@@ -1,6 +1,7 @@
 name: 📷 Paparazzi
-
-on: [push]
+on:
+  schedule:
+    - cron: 0 0 */3 * *
 
 env:
   CI: true
