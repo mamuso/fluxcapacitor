@@ -22,7 +22,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = __importDefault(require("./utils"));
 const store_1 = __importDefault(require("./store"));
+const compare_1 = __importDefault(require("./compare"));
 const compress_1 = __importDefault(require("./compress"));
+const notify_1 = __importDefault(require("./notify"));
 const db_1 = __importDefault(require("./db"));
 const fs = __importStar(require("fs"));
 const rp = __importStar(require("request-promise"));
@@ -33,11 +35,13 @@ class Capture {
     constructor(config) {
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                this.printer.header(`📷 Capture URLs`);
                 /** Set current and download report */
+                this.printer.subheader(`🔍 Checking out the last capture session`);
                 yield this.getcurrent();
                 /** DB report */
+                this.printer.subheader(`🤓 Creating a new caputre session`);
                 this.dbreport = yield this.db.createreport();
+                this.printer.header(`📷 Capture URLs`);
                 /** Looping through devices */
                 let i = 0;
                 const iMax = this.config.devices.length;
@@ -65,16 +69,41 @@ class Capture {
                     let j = 0;
                     const jMax = this.config.pages.length;
                     for (; j < jMax; j++) {
+                        /** Setting all the variables */
                         const page = this.config.pages[j];
                         const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
                         const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+                        const currentfilepath = `${this.config.tmpCurrentPath}/${device.id}/${filename}`;
                         const filenamemin = `${slugify_1.default(page.id)}-min.jpg`;
                         const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`;
                         const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
                         const capture = {};
-                        this.printer.capture(page.id);
-                        yield puppet.goto(page.url);
+                        if (page.auth && !this.cookies) {
+                            yield puppet.goto(this.config.auth.url, { waitUntil: 'load' });
+                            // Login
+                            console.log(this.config.auth.username);
+                            yield puppet.type(this.config.auth.username, `${process.env.FLUX_LOGIN}`);
+                            yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
+                            yield puppet.click(this.config.auth.submit);
+                            // Get cookies
+                            this.cookies = yield puppet.cookies();
+                        }
+                        yield puppet.goto(page.url, { waitUntil: 'load' });
+                        // Scrolling through the page
+                        const vheight = yield puppet.viewport().height;
+                        const pheight = yield puppet.evaluate(_ => {
+                            return document.body.scrollHeight;
+                        });
+                        let v;
+                        while (v + vheight < pheight) {
+                            yield puppet.evaluate(_ => {
+                                window.scrollBy(0, v);
+                            });
+                            yield puppet.waitFor(500);
+                            v = v + vheight;
+                        }
+                        yield puppet.waitFor(1000);
                         yield puppet.screenshot({
                             path: localfilepath,
                             fullPage: page.fullPage
@@ -82,20 +111,35 @@ class Capture {
                         /** DB page */
                         const dbpage = yield this.db.createpage(page, this.dbreport);
                         capture.page = dbpage.id;
-                        /** Upload main image */
-                        capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
-                        /** Resize and upload main image */
+                        /** Resize main image */
                         yield sharp_1.default(localfilepath)
                             .resize({
                             width: 600,
-                            height: 800,
-                            position: 'top'
+                            height: 600,
+                            position: sharp_1.default.position.top,
+                            withoutEnlargement: true
                         })
                             .toFile(localfilepathmin);
+                        /** Compare */
+                        const diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
+                        if (diff != 0) {
+                            capture.diff = true;
+                            capture.diffindex = diff;
+                        }
+                        else {
+                            capture.diff = false;
+                        }
+                        /** Upload images */
+                        capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
                         capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
+                        if (diff > 0) {
+                            capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamediff}`, localfilepathdiff);
+                        }
                         capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
                         /** Write capture in the DB */
-                        yield this.db.createcapture(this.dbreport, this.dbdevice, dbpage);
+                        yield this.db.createcapture(this.dbreport, this.dbdevice, dbpage, capture);
+                        /** Print output */
+                        this.printer.capture(page.id);
                     }
                     yield browser.close();
                 }
@@ -107,11 +151,12 @@ class Capture {
                 yield this.db.updatereporturl(this.dbreport, zipurl);
                 /** Update the current report */
                 yield this.db.setcurrent(this.dbreport.id);
+                // await this.notify.send()
                 /** Disconnect from the DB */
                 yield this.db.prisma.disconnect();
             }
             catch (e) {
-                console.log(e);
+                throw e;
             }
         });
         this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
@@ -127,9 +172,11 @@ class Capture {
         });
         this.printer = new utils_1.default();
         this.config = Object.assign({}, config);
+        this.compare = new compare_1.default(Object.assign({}, config));
         this.compress = new compress_1.default(Object.assign({}, config));
         this.store = new store_1.default(Object.assign({}, config));
         this.db = new db_1.default(Object.assign({}, config));
+        this.notify = new notify_1.default(Object.assign({}, config));
     }
 }
 exports.default = Capture;

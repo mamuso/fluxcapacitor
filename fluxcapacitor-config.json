@@ -29,10 +29,31 @@
     }
   ],
 
+  "auth": {
+    "url": "https://github.com/login",
+    "username": "#login_field",
+    "password": "#password",
+    "submit": "input[type='submit']"
+  },
   "pages": [
     {
       "id": "home",
       "url": "https://github.com",
+      "fullPage": true
+    },
+    {
+      "id": "team",
+      "url": "https://github.com/team",
+      "fullPage": true
+    },
+    {
+      "id": "security-advisories",
+      "url": "https://github.com/advisories",
+      "fullPage": true
+    },
+    {
+      "id": "security-advisories-advisory",
+      "url": "https://github.com/advisories/GHSA-h9rv-jmmf-4pgx",
       "fullPage": true
     },
     {
@@ -71,6 +92,11 @@
       "fullPage": true
     },
     {
+      "id": "customer-stories-story",
+      "url": "https://github.com/customer-stories/arduino",
+      "fullPage": true
+    },
+    {
       "id": "security",
       "url": "https://github.com/security",
       "fullPage": true
@@ -96,8 +122,19 @@
       "fullPage": true
     },
     {
+      "id": "enterprise-contact",
+      "url": "https://enterprise.github.com/contact",
+      "fullPage": true
+    },
+
+    {
       "id": "explore",
       "url": "https://github.com/explore",
+      "fullPage": true
+    },
+    {
+      "id": "explore-email",
+      "url": "https://github.com/explore/email",
       "fullPage": true
     },
     {
@@ -106,13 +143,28 @@
       "fullPage": true
     },
     {
-      "id": "trending",
+      "id": "topics-topic",
+      "url": "https://github.com/topics/awesome",
+      "fullPage": true
+    },
+    {
+      "id": "trending-repos",
       "url": "https://github.com/trending",
+      "fullPage": true
+    },
+    {
+      "id": "trending-developers",
+      "url": "https://github.com/trending/developers",
       "fullPage": true
     },
     {
       "id": "collections",
       "url": "https://github.com/collections",
+      "fullPage": true
+    },
+    {
+      "id": "collections-collection",
+      "url": "https://github.com/collections/made-in-africa",
       "fullPage": true
     },
     {
@@ -146,13 +198,353 @@
       "fullPage": true
     },
     {
+      "id": "resources-videos-video",
+      "url": "https://resources.github.com/videos/github-best-practices/",
+      "fullPage": true
+    },
+    {
       "id": "resources-webcasts",
       "url": "https://resources.github.com/webcasts",
       "fullPage": true
     },
     {
+      "id": "resources-webcasts-webcast",
+      "url": "https://resources.github.com/webcasts/Culture-matters-CET/",
+      "fullPage": true
+    },
+    {
       "id": "resources-whitepapers",
       "url": "https://resources.github.com/whitepapers",
+      "fullPage": true
+    },
+    {
+      "id": "resources-whitepapers-whitepaper",
+      "url": "https://resources.github.com/whitepapers/How-GitHub-secures-open-source-software/",
+      "fullPage": true
+    },
+    {
+      "id": "octodex",
+      "url": "https://octodex.github.com/",
+      "fullPage": true
+    },
+    {
+      "id": "octodex-octocat",
+      "url": "https://octodex.github.com/baracktocat/",
+      "fullPage": true
+    },
+    {
+      "id": "logos",
+      "url": "https://github.com/logos/",
+      "fullPage": true
+    },
+    {
+      "id": "auth-login",
+      "url": "https://github.com/login",
+      "fullPage": true
+    },
+    {
+      "id": "auth-forgot-password",
+      "url": "https://github.com/password_reset",
+      "fullPage": true
+    },
+    {
+      "id": "gist",
+      "url": "https://gist.github.com/",
+      "fullPage": true
+    },
+    {
+      "id": "gist-user",
+      "url": "https://gist.github.com/adrianmg",
+      "fullPage": true
+    },
+    {
+      "id": "gist-gist",
+      "url": "https://gist.github.com/adrianmg/1d6927c508c787cc8f13e63b5949aaf3",
+      "fullPage": true
+    },
+
+    {
+      "id": "repo",
+      "url": "https://github.com/babel/babel",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-commits",
+      "url": "https://github.com/babel/babel/commits/master",
+      "fullPage": true
+    },
+    {
+      "id": "repo-commits-commit",
+      "url": "https://github.com/babel/babel/commit/6b8f6ab2dece33e50fd9f9e6ad9b0d5f4d8e35ef",
+      "fullPage": true
+    },
+    {
+      "id": "repo-commits-commit-split",
+      "url": "https://github.com/babel/babel/commit/6b8f6ab2dece33e50fd9f9e6ad9b0d5f4d8e35ef?diff=split",
+      "fullPage": true
+    },
+    {
+      "id": "repo-branches",
+      "url": "https://github.com/babel/babel/branches",
+      "fullPage": true
+    },
+    {
+      "id": "repo-packages-empty",
+      "url": "https://github.com/babel/babel/packages",
+      "fullPage": true
+    },
+    {
+      "id": "repo-packages",
+      "url": "https://github.com/orgs/github/packages",
+      "fullPage": true
+    },
+    {
+      "id": "repo-packages-package",
+      "url": "https://github.com/github/mini-throttle/packages/14778",
+      "fullPage": true
+    },
+    {
+      "id": "repo-releases",
+      "url": "https://github.com/babel/babel/releases",
+      "fullPage": true
+    },
+
+    {
+      "id": "repo-tags",
+      "url": "https://github.com/babel/babel/tags",
+      "fullPage": true
+    },
+    {
+      "id": "repo-file-search",
+      "url": "https://github.com/babel/babel/find/master",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues",
+      "url": "https://github.com/babel/babel/issues",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues-issue-open",
+      "url": "https://github.com/babel/babel/issues/2025",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues-issue-closed",
+      "url": "https://github.com/babel/babel/issues/11336",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues-labels",
+      "url": "https://github.com/babel/babel/labels",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues-milestones",
+      "url": "https://github.com/babel/babel/milestones",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues-new-choose",
+      "url": "https://github.com/zeit/next.js/issues/new/choose",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues-new",
+      "url": "https://github.com/mamuso/fluxcapacitor/issues/new",
+      "fullPage": true
+    },
+    {
+      "id": "repo-prs",
+      "url": "https://github.com/zeit/next.js/pulls",
+      "fullPage": true
+    },
+    {
+      "id": "repo-prs-pr",
+      "url": "https://github.com/zeit/next.js/pull/8848",
+      "fullPage": true
+    },
+    {
+      "id": "repo-discussions",
+      "url": "https://github.com/zeit/next.js/discussions",
+      "fullPage": true
+    },
+    {
+      "id": "repo-discussions-discussion",
+      "url": "https://github.com/zeit/next.js/discussions/10436",
+      "fullPage": true
+    },
+    {
+      "id": "repo-actions",
+      "url": "https://github.com/zeit/next.js/actions",
+      "fullPage": true
+    },
+    {
+      "id": "repo-actions-with-artifacts",
+      "url": "https://github.com/actions/upload-artifact/actions/runs/54927452",
+      "fullPage": true
+    },
+    {
+      "id": "repo-actions-run",
+      "url": "https://github.com/zeit/next.js/actions/runs/81796431",
+      "fullPage": true
+    },
+    {
+      "id": "repo-actions-run-logs",
+      "url": "https://github.com/zeit/next.js/runs/598636432?check_suite_focus=true",
+      "fullPage": true
+    },
+    {
+      "id": "repo-security",
+      "url": "https://github.com/mamuso/fluxcapacitor/security",
+      "fullPage": true
+    },
+    {
+      "id": "repo-security-policy",
+      "url": "https://github.com/mamuso/fluxcapacitor/security/policy",
+      "fullPage": true
+    },
+    {
+      "id": "repo-security-advisories",
+      "url": "https://github.com/mamuso/fluxcapacitor/security/advisories",
+      "fullPage": true
+    },
+    {
+      "id": "repo-security-alerts",
+      "url": "https://github.com/mamuso/fluxcapacitor/network/alerts",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-pulse",
+      "url": "https://github.com/zeit/next.js/pulse",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-contributors",
+      "url": "https://github.com/zeit/next.js/graphs/contributors",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-community",
+      "url": "https://github.com/zeit/next.js/community",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-commits-activity",
+      "url": "https://github.com/zeit/next.js/graphs/commit-activity",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-code-frequency",
+      "url": "https://github.com/zeit/next.js/graphs/code-frequency",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-dependency-graph",
+      "url": "https://github.com/zeit/next.js/network/dependencies",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-network",
+      "url": "https://github.com/zeit/next.js/network",
+      "fullPage": true
+    },
+    {
+      "id": "repo-insights-forks",
+      "url": "https://github.com/zeit/next.js/network/members",
+      "fullPage": true
+    },
+    {
+      "id": "repo-watchers",
+      "url": "https://github.com/zeit/next.js/watchers",
+      "fullPage": true
+    },
+    {
+      "id": "repo-stargazers",
+      "url": "https://github.com/zeit/next.js/stargazers",
+      "fullPage": true
+    },
+    {
+      "id": "user",
+      "url": "https://github.com/sindresorhus",
+      "fullPage": true
+    },
+    {
+      "id": "user-repositories",
+      "url": "https://github.com/sindresorhus?tab=repositories",
+      "fullPage": true
+    },
+    {
+      "id": "user-projects-empty",
+      "url": "https://github.com/sindresorhus?tab=projects",
+      "fullPage": true
+    },
+    {
+      "id": "user-stars",
+      "url": "https://github.com/sindresorhus?tab=stars",
+      "fullPage": true
+    },
+    {
+      "id": "user-followers",
+      "url": "https://github.com/sindresorhus?tab=followers",
+      "fullPage": true
+    },
+    {
+      "id": "user-following",
+      "url": "https://github.com/sindresorhus?tab=following",
+      "fullPage": true
+    },
+    {
+      "id": "user-sponsors",
+      "url": "https://github.com/sponsors/sindresorhus",
+      "fullPage": true
+    },
+
+    {
+      "id": "org",
+      "url": "https://github.com/babel",
+      "fullPage": true
+    },
+    {
+      "id": "org-packages-empty",
+      "url": "https://github.com/orgs/babel/packages",
+      "fullPage": true
+    },
+    {
+      "id": "org-people",
+      "url": "https://github.com/orgs/babel/people",
+      "fullPage": true
+    },
+    {
+      "id": "org-projects-empty",
+      "url": "https://github.com/orgs/babel/projects",
+      "fullPage": true
+    },
+    {
+      "id": "org-sponsor",
+      "url": "https://github.com/sponsors/babel",
+      "fullPage": true
+    },
+    {
+      "id": "notifications-beta",
+      "url": "https://github.com/notifications/beta",
+      "fullPage": true
+    },
+    {
+      "id": "settings-profile",
+      "url": "https://github.com/settings/profile",
+      "fullPage": true
+    },
+    {
+      "id": "settings-account",
+      "url": "https://github.com/settings/admin",
+      "fullPage": true
+    },
+
+    {
+      "id": "home-logged-in",
+      "url": "https://github.com/",
       "fullPage": true
     }
   ]

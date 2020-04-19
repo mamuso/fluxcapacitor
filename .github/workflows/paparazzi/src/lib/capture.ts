@@ -7,7 +7,9 @@
 import {Config, Device, Page, Report, CaptureType} from './types'
 import Printer from './utils'
 import Store from './store'
+import Compare from './compare'
 import Compress from './compress'
+import Notify from './notify'
 import DB from './db'
 import * as fs from 'fs'
 import * as rp from 'request-promise'
@@ -19,29 +21,36 @@ export default class Capture {
   printer
   config
   store
+  compare
   compress
   db
   dbdevice
   dbreport
   current
+  notify
+  cookies
 
   constructor(config: Config) {
     this.printer = new Printer()
     this.config = {...config} as Config
+    this.compare = new Compare({...config})
     this.compress = new Compress({...config})
     this.store = new Store({...config})
     this.db = new DB({...config})
+    this.notify = new Notify({...config})
   }
 
   capture = async () => {
     try {
-      this.printer.header(`📷 Capture URLs`)
-
       /** Set current and download report */
+      this.printer.subheader(`🔍 Checking out the last capture session`)
       await this.getcurrent()
 
       /** DB report */
+      this.printer.subheader(`🤓 Creating a new caputre session`)
       this.dbreport = await this.db.createreport()
+
+      this.printer.header(`📷 Capture URLs`)
 
       /** Looping through devices */
       let i = 0
@@ -76,18 +85,52 @@ export default class Capture {
         let j = 0
         const jMax = this.config.pages.length
         for (; j < jMax; j++) {
+          /** Setting all the variables */
           const page: Page = this.config.pages[j]
           const filename = `${slugify(page.id)}.${this.config.format}`
           const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`
+          const currentfilepath = `${this.config.tmpCurrentPath}/${device.id}/${filename}`
           const filenamemin = `${slugify(page.id)}-min.jpg`
           const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`
           const filenamediff = `${slugify(page.id)}-diff.${this.config.format}`
           const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
           const capture = {} as CaptureType
 
-          this.printer.capture(page.id)
+          if (page.auth && !this.cookies) {
+            await puppet.goto(this.config.auth.url, {waitUntil: 'load'})
+            // Login
+            console.log(this.config.auth.username)
+            await puppet.type(
+              this.config.auth.username,
+              `${process.env.FLUX_LOGIN}`
+            )
+            await puppet.type(
+              this.config.auth.password,
+              `${process.env.FLUX_PASSWORD}`
+            )
+            await puppet.click(this.config.auth.submit)
 
-          await puppet.goto(page.url)
+            // Get cookies
+            this.cookies = await puppet.cookies()
+          }
+
+          await puppet.goto(page.url, {waitUntil: 'load'})
+
+          // Scrolling through the page
+          const vheight = await puppet.viewport().height
+          const pheight = await puppet.evaluate(_ => {
+            return document.body.scrollHeight
+          })
+          let v
+          while (v + vheight < pheight) {
+            await puppet.evaluate(_ => {
+              window.scrollBy(0, v)
+            })
+            await puppet.waitFor(500)
+            v = v + vheight
+          }
+          await puppet.waitFor(1000)
+
           await puppet.screenshot({
             path: localfilepath,
             fullPage: page.fullPage
@@ -97,32 +140,62 @@ export default class Capture {
           const dbpage = await this.db.createpage(page, this.dbreport)
           capture.page = dbpage.id
 
-          /** Upload main image */
+          /** Resize main image */
+          await sharp(localfilepath)
+            .resize({
+              width: 600,
+              height: 600,
+              position: sharp.position.top,
+              withoutEnlargement: true
+            })
+            .toFile(localfilepathmin)
+
+          /** Compare */
+          const diff = await this.compare.compare(
+            localfilepath,
+            currentfilepath,
+            localfilepathdiff
+          )
+
+          if (diff != 0) {
+            capture.diff = true
+            capture.diffindex = diff
+          } else {
+            capture.diff = false
+          }
+
+          /** Upload images */
           capture.url = await this.store.uploadfile(
             `${this.config.date}/${device.id}/${filename}`,
             localfilepath
           )
-
-          /** Resize and upload main image */
-          await sharp(localfilepath)
-            .resize({
-              width: 600,
-              height: 800,
-              position: 'top'
-            })
-            .toFile(localfilepathmin)
 
           capture.urlmin = await this.store.uploadfile(
             `${this.config.date}/${device.id}/${filenamemin}`,
             localfilepathmin
           )
 
+          if (diff > 0) {
+            capture.urldiff = await this.store.uploadfile(
+              `${this.config.date}/${device.id}/${filenamediff}`,
+              localfilepathdiff
+            )
+          }
+
           capture.slug = slugify(
             `${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`
           )
 
           /** Write capture in the DB */
-          await this.db.createcapture(this.dbreport, this.dbdevice, dbpage)
+          await this.db.createcapture(
+            this.dbreport,
+            this.dbdevice,
+            dbpage,
+            capture
+          )
+
+          /** Print output */
+          this.printer.capture(page.id)
         }
 
         await browser.close()
@@ -146,10 +219,12 @@ export default class Capture {
       /** Update the current report */
       await this.db.setcurrent(this.dbreport.id)
 
+      // await this.notify.send()
+
       /** Disconnect from the DB */
       await this.db.prisma.disconnect()
     } catch (e) {
-      console.log(e)
+      throw e
     }
   }
 

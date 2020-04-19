@@ -10,6 +10,14 @@ export type Config = {
   storage: string
   devices: [Device]
   pages: [Page]
+  auth: [Auth]
+}
+
+export type Auth = {
+  url: string
+  username: string
+  password: string
+  submit: string
 }
 
 export type Device = {
@@ -45,6 +53,7 @@ export type Page = {
   reportcount: number
   startsAt: string
   endsAt: string
+  auth: boolean
 }
 
 export type CaptureType = {

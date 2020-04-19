@@ -31,11 +31,16 @@ const fs = __importStar(require("fs"));
 class Paparazzi {
     constructor(date, basePath, tmpPath = 'tmp') {
         this.process = () => __awaiter(this, void 0, void 0, function* () {
-            this.setup();
-            this.printer.header(`✨ Paparazzi - ${this.date}`);
-            const capture = new capture_1.default(this.config);
-            yield capture.capture();
-            // await this.cleanup()
+            try {
+                this.setup();
+                this.printer.header(`✨ Paparazzi - ${this.date}`);
+                const capture = new capture_1.default(this.config);
+                yield capture.capture();
+                yield this.cleanup();
+            }
+            catch (e) {
+                throw e;
+            }
         });
         /**
          *  Create the folder structure needed for capturing the screens
@@ -61,9 +66,7 @@ class Paparazzi {
         this.date = date;
         this.basePath = basePath;
         this.config = Object.assign({ date: this.date, basePath: this.basePath, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${this.date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`${this.basePath}/fluxcapacitor-config`));
-        this.process().catch(e => {
-            throw e;
-        });
+        this.process();
     }
 }
 const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
