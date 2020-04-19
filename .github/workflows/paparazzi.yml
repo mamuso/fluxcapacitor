@@ -1,5 +1,5 @@
 name: 📷 Paparazzi
-on:[push]
+on: push
 
 env:
   CI: true
@@ -22,3 +22,7 @@ jobs:
     env:
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      FLUX_LOGIN: ${{ secrets.FLUX_LOGIN }}
+      FLUX_PASSWORD: ${{ secrets.FLUX_PASSWORD }}
+      
