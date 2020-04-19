@@ -79,7 +79,7 @@ class Capture {
                         const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
                         const capture = {};
-                        if (page.auth && !this.cookies) {
+                        if (page.auth) {
                             if (this.config.auth.cookie) {
                                 yield puppet.setCookie({
                                     value: 'yes',
@@ -93,7 +93,6 @@ class Capture {
                                     expires: Date.now() / 1000 + 100,
                                     name: 'user_session'
                                 });
-                                this.cookies = true;
                             }
                             else {
                                 yield puppet.goto(this.config.auth.url, {
@@ -104,7 +103,7 @@ class Capture {
                                 yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
                                 yield puppet.click(this.config.auth.submit);
                                 // Get cookies
-                                this.cookies = yield puppet.cookies();
+                                // this.cookies = await puppet.cookies()
                             }
                         }
                         yield puppet.goto(page.url, { waitUntil: 'load' });
