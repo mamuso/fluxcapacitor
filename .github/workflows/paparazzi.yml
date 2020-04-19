@@ -1,4 +1,5 @@
 name: 📷 Paparazzi
+
 on: push
 
 env:
