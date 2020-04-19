@@ -28,6 +28,7 @@ export default class Capture {
   dbreport
   current
   notify
+  cookies
 
   constructor(config: Config) {
     this.printer = new Printer()
@@ -94,6 +95,24 @@ export default class Capture {
           const filenamediff = `${slugify(page.id)}-diff.${this.config.format}`
           const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
           const capture = {} as CaptureType
+
+          if (page.auth && !this.cookies) {
+            await puppet.goto(this.config.auth.url, {waitUntil: 'load'})
+            // Login
+            console.log(this.config.auth.username)
+            await puppet.type(
+              this.config.auth.username,
+              `${process.env.FLUX_LOGIN}`
+            )
+            await puppet.type(
+              this.config.auth.password,
+              `${process.env.FLUX_PASSWORD}`
+            )
+            await puppet.click(this.config.auth.submit)
+
+            // Get cookies
+            this.cookies = await puppet.cookies()
+          }
 
           await puppet.goto(page.url, {waitUntil: 'load'})
 
