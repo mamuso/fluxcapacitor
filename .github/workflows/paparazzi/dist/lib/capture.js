@@ -57,6 +57,7 @@ class Capture {
                         ? puppeteer_1.default.devices[captureDevice.device]
                         : captureDevice);
                     device.userAgent = device.userAgent || (yield browser.userAgent());
+                    device.id = captureDevice.id;
                     yield puppet.emulate(device);
                     this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
                     /** Make device folder */

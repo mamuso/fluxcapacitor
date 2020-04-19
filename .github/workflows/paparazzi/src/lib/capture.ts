@@ -66,6 +66,8 @@ export default class Capture {
           ? puppeteer.devices[captureDevice.device]
           : captureDevice) as Device
         device.userAgent = device.userAgent || (await browser.userAgent())
+        device.id = captureDevice.id
+
         await puppet.emulate(device)
 
         this.printer.subheader(

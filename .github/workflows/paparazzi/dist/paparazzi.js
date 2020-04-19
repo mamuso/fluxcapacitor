@@ -38,9 +38,7 @@ class Paparazzi {
                 yield capture.capture();
                 yield this.cleanup();
             }
-            catch (e) {
-                throw e;
-            }
+            catch (e) { }
         });
         /**
          *  Create the folder structure needed for capturing the screens
