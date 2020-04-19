@@ -36,6 +36,108 @@
       "fullPage": true
     },
     {
+      "id": "org",
+      "url": "https://github.com/babel",
+      "fullPage": true
+    },
+    {
+      "id": "org-packages-empty",
+      "url": "https://github.com/orgs/babel/packages",
+      "fullPage": true
+    },
+    {
+      "id": "org-people",
+      "url": "https://github.com/orgs/babel/people",
+      "fullPage": true
+    },
+    {
+      "id": "org-projects-empty",
+      "url": "https://github.com/orgs/babel/projects",
+      "fullPage": true
+    },
+    {
+      "id": "org-sponsor",
+      "url": "https://github.com/sponsors/babel",
+      "fullPage": true
+    },
+    {
+      "id": "repo",
+      "url": "https://github.com/babel/babel",
+      "fullPage": true
+    },
+    {
+      "id": "repo-commits",
+      "url": "https://github.com/babel/babel/commits/master",
+      "fullPage": true
+    },
+    {
+      "id": "repo-commits-commit",
+      "url": "https://github.com/babel/babel/commit/6b8f6ab2dece33e50fd9f9e6ad9b0d5f4d8e35ef",
+      "fullPage": true
+    },
+    {
+      "id": "repo-commits-commit-split",
+      "url": "https://github.com/babel/babel/commit/6b8f6ab2dece33e50fd9f9e6ad9b0d5f4d8e35ef?diff=split",
+      "fullPage": true
+    },
+    {
+      "id": "repo-branches",
+      "url": "https://github.com/babel/babel/branches",
+      "fullPage": true
+    },
+    {
+      "id": "repo-packages-empty",
+      "url": "https://github.com/babel/babel/packages",
+      "fullPage": true
+    },
+    {
+      "id": "repo-releases",
+      "url": "https://github.com/babel/babel/releases",
+      "fullPage": true
+    },
+
+    {
+      "id": "repo-tags",
+      "url": "https://github.com/babel/babel/tags",
+      "fullPage": true
+    },
+
+    {
+      "id": "repo-file-search",
+      "url": "https://github.com/babel/babel/find/master",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issues",
+      "url": "https://github.com/babel/babel/issues",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issue-open",
+      "url": "https://github.com/babel/babel/issues/2025",
+      "fullPage": true
+    },
+    {
+      "id": "repo-issue-closed",
+      "url": "https://github.com/babel/babel/issues/11336",
+      "fullPage": true
+    },
+    {
+      "id": "team",
+      "url": "https://github.com/team",
+      "fullPage": true
+    },
+    {
+      "id": "security-advisories",
+      "url": "https://github.com/advisories",
+      "fullPage": true
+    },
+    {
+      "id": "security-advisories-advisory",
+      "url": "https://github.com/advisories/GHSA-h9rv-jmmf-4pgx",
+      "fullPage": true
+    },
+    {
       "id": "features",
       "url": "https://github.com/features",
       "fullPage": true
@@ -71,6 +173,11 @@
       "fullPage": true
     },
     {
+      "id": "customer-stories-story",
+      "url": "https://github.com/customer-stories/arduino",
+      "fullPage": true
+    },
+    {
       "id": "security",
       "url": "https://github.com/security",
       "fullPage": true
@@ -96,8 +203,19 @@
       "fullPage": true
     },
     {
+      "id": "enterprise-contact",
+      "url": "https://enterprise.github.com/contact",
+      "fullPage": true
+    },
+
+    {
       "id": "explore",
       "url": "https://github.com/explore",
+      "fullPage": true
+    },
+    {
+      "id": "explore-email",
+      "url": "https://github.com/explore/email",
       "fullPage": true
     },
     {
@@ -106,13 +224,28 @@
       "fullPage": true
     },
     {
-      "id": "trending",
+      "id": "topics-topic",
+      "url": "https://github.com/topics/awesome",
+      "fullPage": true
+    },
+    {
+      "id": "trending-repos",
       "url": "https://github.com/trending",
+      "fullPage": true
+    },
+    {
+      "id": "trending-developers",
+      "url": "https://github.com/trending/developers",
       "fullPage": true
     },
     {
       "id": "collections",
       "url": "https://github.com/collections",
+      "fullPage": true
+    },
+    {
+      "id": "collections-collection",
+      "url": "https://github.com/collections/made-in-africa",
       "fullPage": true
     },
     {
@@ -146,13 +279,43 @@
       "fullPage": true
     },
     {
+      "id": "resources-videos-video",
+      "url": "https://resources.github.com/videos/github-best-practices/",
+      "fullPage": true
+    },
+    {
       "id": "resources-webcasts",
       "url": "https://resources.github.com/webcasts",
       "fullPage": true
     },
     {
+      "id": "resources-webcasts-webcast",
+      "url": "https://resources.github.com/webcasts/Culture-matters-CET/",
+      "fullPage": true
+    },
+    {
       "id": "resources-whitepapers",
       "url": "https://resources.github.com/whitepapers",
+      "fullPage": true
+    },
+    {
+      "id": "resources-whitepapers-whitepaper",
+      "url": "https://resources.github.com/whitepapers/How-GitHub-secures-open-source-software/",
+      "fullPage": true
+    },
+    {
+      "id": "octodex",
+      "url": "https://octodex.github.com/",
+      "fullPage": true
+    },
+    {
+      "id": "octodex-octocat",
+      "url": "https://octodex.github.com/baracktocat/",
+      "fullPage": true
+    },
+    {
+      "id": "logos",
+      "url": "https://github.com/logos/",
       "fullPage": true
     }
   ]
