@@ -97,20 +97,38 @@ export default class Capture {
           const capture = {} as CaptureType
 
           if (page.auth && !this.cookies) {
-            await puppet.goto(this.config.auth.url, {waitUntil: 'load'})
-            // Login
-            await puppet.type(
-              this.config.auth.username,
-              `${process.env.FLUX_LOGIN}`
-            )
-            await puppet.type(
-              this.config.auth.password,
-              `${process.env.FLUX_PASSWORD}`
-            )
-            await puppet.click(this.config.auth.submit)
+            if (this.config.auth.cookie) {
+              await puppet.setCookie({
+                value: 'yes',
+                domain: `${process.env.FLUX_DOMAIN}`,
+                expires: Date.now() / 1000 + 100,
+                name: 'logged_in'
+              })
+              await puppet.setCookie({
+                value: `${process.env.FLUX_COOKIE}`,
+                domain: `${process.env.FLUX_DOMAIN}`,
+                expires: Date.now() / 1000 + 100,
+                name: 'user_session'
+              })
+              this.cookies = true
+            } else {
+              await puppet.goto(this.config.auth.url, {
+                waitUntil: 'load'
+              })
+              // Login
+              await puppet.type(
+                this.config.auth.username,
+                `${process.env.FLUX_LOGIN}`
+              )
+              await puppet.type(
+                this.config.auth.password,
+                `${process.env.FLUX_PASSWORD}`
+              )
+              await puppet.click(this.config.auth.submit)
 
-            // Get cookies
-            this.cookies = await puppet.cookies()
+              // Get cookies
+              this.cookies = await puppet.cookies()
+            }
           }
 
           await puppet.goto(page.url, {waitUntil: 'load'})

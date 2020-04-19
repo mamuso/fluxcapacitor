@@ -18,6 +18,7 @@ export type Auth = {
   username: string
   password: string
   submit: string
+  cookie: boolean
 }
 
 export type Device = {

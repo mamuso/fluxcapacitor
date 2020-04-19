@@ -33,7 +33,8 @@
     "url": "https://github.com/login",
     "username": "#login_field",
     "password": "#password",
-    "submit": "input[type='submit']"
+    "submit": "input[type='submit']",
+    "cookie": true
   },
   "pages": [
     {
@@ -59,7 +60,8 @@
     {
       "id": "team",
       "url": "https://github.com/team",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "security-advisories",

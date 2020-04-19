@@ -80,13 +80,32 @@ class Capture {
                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
                         const capture = {};
                         if (page.auth && !this.cookies) {
-                            yield puppet.goto(this.config.auth.url, { waitUntil: 'load' });
-                            // Login
-                            yield puppet.type(this.config.auth.username, `${process.env.FLUX_LOGIN}`);
-                            yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
-                            yield puppet.click(this.config.auth.submit);
-                            // Get cookies
-                            this.cookies = yield puppet.cookies();
+                            if (this.config.auth.cookie) {
+                                yield puppet.setCookie({
+                                    value: 'yes',
+                                    domain: `${process.env.FLUX_DOMAIN}`,
+                                    expires: Date.now() / 1000 + 100,
+                                    name: 'logged_in'
+                                });
+                                yield puppet.setCookie({
+                                    value: `${process.env.FLUX_COOKIE}`,
+                                    domain: `${process.env.FLUX_DOMAIN}`,
+                                    expires: Date.now() / 1000 + 100,
+                                    name: 'user_session'
+                                });
+                                this.cookies = true;
+                            }
+                            else {
+                                yield puppet.goto(this.config.auth.url, {
+                                    waitUntil: 'load'
+                                });
+                                // Login
+                                yield puppet.type(this.config.auth.username, `${process.env.FLUX_LOGIN}`);
+                                yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
+                                yield puppet.click(this.config.auth.submit);
+                                // Get cookies
+                                this.cookies = yield puppet.cookies();
+                            }
                         }
                         yield puppet.goto(page.url, { waitUntil: 'load' });
                         // Scrolling through the page

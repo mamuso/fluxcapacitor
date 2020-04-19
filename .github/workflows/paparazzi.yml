@@ -1,8 +1,6 @@
 name: 📷 Paparazzi
 
-on:
-  schedule:
-    - cron: 0 0 */3 * *
+on: push
 
 env:
   CI: true
@@ -28,3 +26,5 @@ jobs:
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
       FLUX_LOGIN: ${{ secrets.FLUX_LOGIN }}
       FLUX_PASSWORD: ${{ secrets.FLUX_PASSWORD }}
+      FLUX_COOKIE: ${{ secrets.FLUX_COOKIE }}
+      FLUX_DOMAIN: ${{ secrets.FLUX_DOMAIN }}
