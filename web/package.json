@@ -1,0 +1,22 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "generate": "gql-gen --config codegen.yml"
+  },
+  "dependencies": {
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^9.3.5",
+    "react": "^16.13.1",
+    "react-apollo": "^3.1.5"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.2",
+    "graphql": "^15.0.0",
+    "webpack": "^4.42.1"
+  }
+}
