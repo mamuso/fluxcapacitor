@@ -35,12 +35,11 @@ class Capture {
     constructor(config) {
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                /** Set current and download report */
-                this.printer.subheader(`🔍 Checking out the last capture session`);
-                yield this.getcurrent();
                 /** DB report */
-                this.printer.subheader(`🤓 Creating a new caputre session`);
+                this.printer.subheader(`🤓 Checking out the last capture session and creating a new one`);
                 this.dbreport = yield this.db.createreport();
+                /** Set current and download report */
+                yield this.getcurrent();
                 this.printer.header(`📷 Capture URLs`);
                 /** Looping through devices */
                 let i = 0;

@@ -42,13 +42,14 @@ export default class Capture {
 
   capture = async () => {
     try {
-      /** Set current and download report */
-      this.printer.subheader(`🔍 Checking out the last capture session`)
-      await this.getcurrent()
-
       /** DB report */
-      this.printer.subheader(`🤓 Creating a new caputre session`)
+      this.printer.subheader(
+        `🤓 Checking out the last capture session and creating a new one`
+      )
       this.dbreport = await this.db.createreport()
+
+      /** Set current and download report */
+      await this.getcurrent()
 
       this.printer.header(`📷 Capture URLs`)
 
