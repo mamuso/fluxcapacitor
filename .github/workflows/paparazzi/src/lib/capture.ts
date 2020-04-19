@@ -99,7 +99,6 @@ export default class Capture {
           if (page.auth && !this.cookies) {
             await puppet.goto(this.config.auth.url, {waitUntil: 'load'})
             // Login
-            console.log(this.config.auth.username)
             await puppet.type(
               this.config.auth.username,
               `${process.env.FLUX_LOGIN}`

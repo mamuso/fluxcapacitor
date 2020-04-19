@@ -37,6 +37,21 @@
   },
   "pages": [
     {
+      "id": "error-404",
+      "url": "https://github.com/404",
+      "fullPage": true
+    },
+    {
+      "id": "error-500",
+      "url": "https://github.com/500",
+      "fullPage": true
+    },
+    {
+      "id": "error-502",
+      "url": "https://github.com/502",
+      "fullPage": true
+    },
+    {
       "id": "home",
       "url": "https://github.com",
       "fullPage": true

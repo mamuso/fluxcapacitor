@@ -82,7 +82,6 @@ class Capture {
                         if (page.auth && !this.cookies) {
                             yield puppet.goto(this.config.auth.url, { waitUntil: 'load' });
                             // Login
-                            console.log(this.config.auth.username);
                             yield puppet.type(this.config.auth.username, `${process.env.FLUX_LOGIN}`);
                             yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
                             yield puppet.click(this.config.auth.submit);
