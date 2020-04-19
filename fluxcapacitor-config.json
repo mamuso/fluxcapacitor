@@ -57,11 +57,17 @@
       "url": "https://github.com",
       "fullPage": true
     },
+
+    {
+      "id": "home-logged-in",
+      "url": "https://github.com/",
+      "fullPage": true,
+      "auth": true
+    },
     {
       "id": "team",
       "url": "https://github.com/team",
-      "fullPage": true,
-      "auth": true
+      "fullPage": true
     },
     {
       "id": "security-advisories",
@@ -143,7 +149,6 @@
       "url": "https://enterprise.github.com/contact",
       "fullPage": true
     },
-
     {
       "id": "explore",
       "url": "https://github.com/explore",
@@ -279,12 +284,10 @@
       "url": "https://gist.github.com/adrianmg/1d6927c508c787cc8f13e63b5949aaf3",
       "fullPage": true
     },
-
     {
       "id": "repo",
       "url": "https://github.com/babel/babel",
-      "fullPage": true,
-      "auth": true
+      "fullPage": true
     },
     {
       "id": "repo-commits",
@@ -326,7 +329,6 @@
       "url": "https://github.com/babel/babel/releases",
       "fullPage": true
     },
-
     {
       "id": "repo-tags",
       "url": "https://github.com/babel/babel/tags",
@@ -517,7 +519,6 @@
       "url": "https://github.com/sponsors/sindresorhus",
       "fullPage": true
     },
-
     {
       "id": "org",
       "url": "https://github.com/babel",
@@ -556,12 +557,6 @@
     {
       "id": "settings-account",
       "url": "https://github.com/settings/admin",
-      "fullPage": true
-    },
-
-    {
-      "id": "home-logged-in",
-      "url": "https://github.com/",
       "fullPage": true
     }
   ]
