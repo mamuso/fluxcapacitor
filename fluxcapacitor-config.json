@@ -7,7 +7,7 @@
       "id": "desktop",
       "viewport": {
         "width": 1920,
-        "height": 1080,
+        "height": 1440,
         "deviceScaleFactor": 2
       }
     },
@@ -457,7 +457,7 @@
     },
     {
       "id": "repo-insights-dependency-graph",
-      "url": "https://github.com/zeit/next.js/network/dependencies",
+      "url": "https://github.com/mamuso/papercups/network/dependencies",
       "fullPage": true
     },
     {

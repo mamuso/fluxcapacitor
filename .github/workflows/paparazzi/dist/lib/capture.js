@@ -113,7 +113,7 @@ class Capture {
                         /** Resize main image */
                         yield sharp_1.default(localfilepath)
                             .resize({
-                            width: 600,
+                            width: 800,
                             height: 600,
                             position: sharp_1.default.position.top,
                             withoutEnlargement: true

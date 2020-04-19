@@ -142,7 +142,7 @@ export default class Capture {
           /** Resize main image */
           await sharp(localfilepath)
             .resize({
-              width: 600,
+              width: 800,
               height: 600,
               position: sharp.position.top,
               withoutEnlargement: true
