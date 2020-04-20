@@ -174,7 +174,7 @@ export default class Capture {
             localfilepathdiff
           )
 
-          if (diff != 0) {
+          if (diff !== 0) {
             capture.diff = true
             capture.diffindex = diff
           } else {

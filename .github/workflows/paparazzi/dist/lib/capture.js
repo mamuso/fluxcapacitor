@@ -140,7 +140,7 @@ class Capture {
                             .toFile(localfilepathmin);
                         /** Compare */
                         const diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
-                        if (diff != 0) {
+                        if (diff !== 0) {
                             capture.diff = true;
                             capture.diffindex = diff;
                         }
