@@ -9,7 +9,7 @@ function HomePage({ pages }) {
       <ul>
         {pages.map((page) => (
           <li>
-            <Link href="/capture/[slug]" as={`/capture/${page.slug}`}>
+            <Link href="/page/[slug]" as={`/page/${page.slug}`}>
               <a>{page.slug}</a>
             </Link>
             {page.reportcount} {pluralize("capture", page.reportcount)} from{" "}
