@@ -270,7 +270,7 @@ interface NexusPrismaInputs {
 }
     captures: {
   filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'createdAt'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
 
   },
@@ -281,13 +281,13 @@ interface NexusPrismaInputs {
 }
     captures: {
   filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'createdAt'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
 
   },  Page: {
     captures: {
   filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'createdAt'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
     reports: {
   filtering: 'id' | 'slug' | 'url' | 'current' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
@@ -297,7 +297,7 @@ interface NexusPrismaInputs {
   },  Device: {
     captures: {
   filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'createdAt'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
 
   },  Capture: {
