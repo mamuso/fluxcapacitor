@@ -28,7 +28,6 @@ export default class Capture {
   dbreport
   current
   notify
-  cookies
 
   constructor(config: Config) {
     this.printer = new Printer()
@@ -67,6 +66,8 @@ export default class Capture {
           ? puppeteer.devices[captureDevice.device]
           : captureDevice) as Device
         device.userAgent = device.userAgent || (await browser.userAgent())
+        device.id = captureDevice.id
+
         await puppet.emulate(device)
 
         this.printer.subheader(
@@ -96,7 +97,7 @@ export default class Capture {
           const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
           const capture = {} as CaptureType
 
-          if (page.auth && !this.cookies) {
+          if (page.auth) {
             if (this.config.auth.cookie) {
               await puppet.setCookie({
                 value: 'yes',
@@ -110,7 +111,6 @@ export default class Capture {
                 expires: Date.now() / 1000 + 100,
                 name: 'user_session'
               })
-              this.cookies = true
             } else {
               await puppet.goto(this.config.auth.url, {
                 waitUntil: 'load'
@@ -127,7 +127,7 @@ export default class Capture {
               await puppet.click(this.config.auth.submit)
 
               // Get cookies
-              this.cookies = await puppet.cookies()
+              // this.cookies = await puppet.cookies()
             }
           }
 
@@ -174,7 +174,7 @@ export default class Capture {
             localfilepathdiff
           )
 
-          if (diff != 0) {
+          if (diff !== 0) {
             capture.diff = true
             capture.diffindex = diff
           } else {

@@ -13,19 +13,11 @@
     },
     {
       "id": "tablet",
-      "viewport": {
-        "width": 768,
-        "height": 1024,
-        "deviceScaleFactor": 2
-      }
+      "device": "iPad"
     },
     {
       "id": "mobile",
-      "viewport": {
-        "width": 411,
-        "height": 731,
-        "deviceScaleFactor": 2
-      }
+      "device": "iPhone X"
     }
   ],
 

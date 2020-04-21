@@ -1,8 +1,6 @@
 import {Config, Device, Report, Page, CaptureType} from './types'
 import slugify from '@sindresorhus/slugify'
 import {PrismaClient} from '../../../../../node_modules/@prisma/client'
-import Capture from './capture'
-import {callbackify} from 'util'
 
 export default class DB {
   config

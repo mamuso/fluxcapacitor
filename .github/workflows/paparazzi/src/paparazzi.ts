@@ -40,9 +40,7 @@ class Paparazzi {
       const capture = new Capture(this.config)
       await capture.capture()
       await this.cleanup()
-    } catch (e) {
-      throw e
-    }
+    } catch (e) {}
   }
 
   /**
