@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "paparazzi": "yarn workspace paparazzi run paparazzi",
-    "dev": "node lib/commands/dev.js"
+    "dev": "now dev"
   },
   "repository": {
     "type": "git",
