@@ -26,9 +26,7 @@
     {
       "src": "/(.*)",
       "dest": "/web/$1",
-      "headers": {
-        "x-request-path": "$1"
-      }
+      "continue": true
     }
   ]
 }
