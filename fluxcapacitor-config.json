@@ -45,6 +45,11 @@
       "fullPage": true
     },
     {
+      "id": "gh-cli",
+      "url": "https://cli.github.com/",
+      "fullPage": true
+    },
+    {
       "id": "home",
       "url": "https://github.com",
       "fullPage": true
@@ -56,6 +61,7 @@
       "fullPage": true,
       "auth": true
     },
+
     {
       "id": "team",
       "url": "https://github.com/team",
@@ -517,6 +523,16 @@
       "fullPage": true
     },
     {
+      "id": "org-empty",
+      "url": "https://github.com/mamusorg/",
+      "fullPage": true
+    },
+    {
+      "id": "org-invitation",
+      "url": "https://github.com/orgs/mamusorg/invitation",
+      "fullPage": true
+    },
+    {
       "id": "org-packages-empty",
       "url": "https://github.com/orgs/babel/packages",
       "fullPage": true
@@ -537,18 +553,193 @@
       "fullPage": true
     },
     {
+      "id": "org-teams",
+      "url": "https://github.com/orgs/pluginbakery/teams",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-profile",
+      "url": "https://github.com/organizations/pluginbakery/settings/profile",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-member-privileges",
+      "url": "https://github.com/organizations/pluginbakery/settings/member_privileges",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-billing",
+      "url": "https://github.com/organizations/pluginbakery/settings/billing",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-security",
+      "url": "https://github.com/organizations/pluginbakery/settings/security",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-verified-domains",
+      "url": "https://github.com/organizations/pluginbakery/settings/domains",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-audit-log",
+      "url": "https://github.com/organizations/pluginbakery/settings/audit-log",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-webhooks",
+      "url": "https://github.com/organizations/pluginbakery/settings/hooks",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-third-party-access-policy",
+      "url": "https://github.com/organizations/pluginbakery/settings/oauth_application_policy",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-installed-github-apps",
+      "url": "https://github.com/organizations/pluginbakery/settings/installations",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-scheduled-reminders",
+      "url": "https://github.com/organizations/pluginbakery/settings/reminders",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-repository-topics",
+      "url": "https://github.com/orgs/pluginbakery/topics",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-repository-labels",
+      "url": "https://github.com/organizations/pluginbakery/settings/labels",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-deleted-repositories",
+      "url": "https://github.com/organizations/pluginbakery/settings/deleted_repositories",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-projects",
+      "url": "https://github.com/organizations/pluginbakery/settings/projects",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-team-discussions",
+      "url": "https://github.com/organizations/pluginbakery/settings/teams",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-actions",
+      "url": "https://github.com/organizations/pluginbakery/settings/actions",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-oauth-apps",
+      "url": "https://github.com/organizations/pluginbakery/settings/applications",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-github-apps",
+      "url": "https://github.com/organizations/pluginbakery/settings/apps",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-blocked-users",
+      "url": "https://github.com/organizations/pluginbakery/settings/user_blocks",
+      "fullPage": true
+    },
+    {
+      "id": "org-settings-interaction-limits",
+      "url": "https://github.com/organizations/pluginbakery/settings/interaction_limits",
+      "fullPage": true
+    },
+    {
       "id": "notifications-beta",
       "url": "https://github.com/notifications/beta",
       "fullPage": true
     },
     {
-      "id": "settings-profile",
+      "id": "user-settings-profile",
       "url": "https://github.com/settings/profile",
       "fullPage": true
     },
     {
-      "id": "settings-account",
+      "id": "user-settings-account",
       "url": "https://github.com/settings/admin",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-security",
+      "url": "https://github.com/settings/security",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-security-log",
+      "url": "https://github.com/settings/security-log",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-notifications",
+      "url": "https://github.com/settings/notifications",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-scheduled-reminders",
+      "url": "https://github.com/settings/reminders",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-billing",
+      "url": "https://github.com/settings/billing",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-keys",
+      "url": "https://github.com/settings/keys",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-blocked-users",
+      "url": "https://github.com/settings/blocked_users",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-repositories",
+      "url": "https://github.com/settings/repositories",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-organizations",
+      "url": "https://github.com/settings/organizations",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-saved-replies",
+      "url": "https://github.com/settings/replies",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-applications",
+      "url": "https://github.com/settings/installations",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-github-apps",
+      "url": "https://github.com/settings/apps",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-oauth-apps",
+      "url": "https://github.com/settings/developers",
+      "fullPage": true
+    },
+    {
+      "id": "user-settings-personal-access-tokens",
+      "url": "https://github.com/settings/tokens",
       "fullPage": true
     }
   ]
