@@ -194,6 +194,7 @@ export default class Capture {
               currentfilepath,
               localfilepathdiff
             )
+            console.log(diff)
           }
 
           if (diff && diff !== 0) {

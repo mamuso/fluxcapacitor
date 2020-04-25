@@ -32,10 +32,6 @@ class Compare {
                 if (!fs.existsSync(currentpath)) {
                     // return -1
                 }
-                capturepath =
-                    '/Users/mamuso/Code/fluxcapacitor/.github/workflows/paparazzi/img1.png';
-                currentpath =
-                    '/Users/mamuso/Code/fluxcapacitor/.github/workflows/paparazzi/img2.png';
                 const captureimgraw = this.png.sync.read(fs.readFileSync(capturepath));
                 const currentimgraw = this.png.sync.read(fs.readFileSync(currentpath));
                 const hasSizeMismatch = currentimgraw.height !== captureimgraw.height ||
