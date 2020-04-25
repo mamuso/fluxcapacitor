@@ -51,16 +51,17 @@ export default class Capture {
 
       this.printer.header(`📷 Capture URLs`)
 
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      })
+
       /** Looping through devices */
       let i = 0
       const iMax = this.config.devices.length
       for (; i < iMax; i++) {
         /** Configure device */
         const captureDevice = this.config.devices[i]
-        const browser = await puppeteer.launch({
-          headless: true,
-          args: ['--no-sandbox', '--disable-setuid-sandbox']
-        })
         const puppet = await browser.newPage()
         let device = (captureDevice.device
           ? puppeteer.devices[captureDevice.device]
@@ -126,9 +127,6 @@ export default class Capture {
                 `${process.env.FLUX_PASSWORD}`
               )
               await puppet.click(this.config.auth.submit)
-
-              // Get cookies
-              // this.cookies = await puppet.cookies()
             }
           }
 
@@ -144,10 +142,10 @@ export default class Capture {
             await puppet.evaluate(_ => {
               window.scrollBy(0, v)
             })
-            await puppet.waitFor(500)
+            await puppet.waitFor(350)
             v = v + vheight
           }
-          await puppet.waitFor(1000)
+          await puppet.waitFor(800)
 
           await puppet.screenshot({
             path: localfilepath,
@@ -157,16 +155,6 @@ export default class Capture {
           /** DB page */
           const dbpage = await this.db.createpage(page, this.dbreport)
           capture.page = dbpage.id
-
-          /** Resize main image */
-          await sharp(localfilepath)
-            .resize({
-              width: 800,
-              height: 600,
-              position: sharp.position.top,
-              withoutEnlargement: true
-            })
-            .toFile(localfilepathmin)
 
           if (this.current) {
             const currentpath = `${this.config.tmpCurrentPath}/${device.id}`
@@ -203,6 +191,16 @@ export default class Capture {
             capture.diff = false
           }
 
+          /** Resize main image */
+          await sharp(localfilepath)
+            .resize({
+              width: 800,
+              height: 600,
+              position: sharp.position.top,
+              withoutEnlargement: true
+            })
+            .toFile(localfilepathmin)
+
           /** Upload images */
           capture.url = await this.store.uploadfile(
             `${this.config.date}/${device.id}/${filename}`,
@@ -236,7 +234,6 @@ export default class Capture {
           /** Print output */
           this.printer.capture(page.id)
         }
-
         await browser.close()
       }
 

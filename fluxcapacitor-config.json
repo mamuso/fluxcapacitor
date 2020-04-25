@@ -65,697 +65,836 @@
     {
       "id": "team",
       "url": "https://github.com/team",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "security-advisories",
       "url": "https://github.com/advisories",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "security-advisories-advisory",
       "url": "https://github.com/advisories/GHSA-h9rv-jmmf-4pgx",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "features",
       "url": "https://github.com/features",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "features-code-review",
       "url": "https://github.com/features/code-review",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "features-project-management",
       "url": "https://github.com/features/project-management",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "features-integrations",
       "url": "https://github.com/features/integrations",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "features-packages",
       "url": "https://github.com/features/packages",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "features-security",
       "url": "https://github.com/features/security",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "customer-stories",
       "url": "https://github.com/customer-stories",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "customer-stories-story",
       "url": "https://github.com/customer-stories/arduino",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "security",
       "url": "https://github.com/security",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "security-trust",
       "url": "https://github.com/security/trust",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "security-team",
       "url": "https://github.com/security/team",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "security-incident-response",
       "url": "https://github.com/security/incident-response",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "enterprise",
       "url": "https://github.com/enterprise",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "enterprise-contact",
       "url": "https://enterprise.github.com/contact",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "explore",
       "url": "https://github.com/explore",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "explore-email",
       "url": "https://github.com/explore/email",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "topics",
       "url": "https://github.com/topics",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "topics-topic",
       "url": "https://github.com/topics/awesome",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "trending-repos",
       "url": "https://github.com/trending",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "trending-developers",
       "url": "https://github.com/trending/developers",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "collections",
       "url": "https://github.com/collections",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "collections-collection",
       "url": "https://github.com/collections/made-in-africa",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "events",
       "url": "https://github.com/events",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "sponsors",
       "url": "https://github.com/sponsors",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "sponsors-community",
       "url": "https://github.com/sponsors/community",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "pricing",
       "url": "https://github.com/pricing",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "resources",
       "url": "https://resources.github.com",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "resources-videos",
       "url": "https://resources.github.com/videos",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "resources-videos-video",
       "url": "https://resources.github.com/videos/github-best-practices/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "resources-webcasts",
       "url": "https://resources.github.com/webcasts",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "resources-webcasts-webcast",
       "url": "https://resources.github.com/webcasts/Culture-matters-CET/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "resources-whitepapers",
       "url": "https://resources.github.com/whitepapers",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "resources-whitepapers-whitepaper",
       "url": "https://resources.github.com/whitepapers/How-GitHub-secures-open-source-software/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "octodex",
       "url": "https://octodex.github.com/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "octodex-octocat",
       "url": "https://octodex.github.com/baracktocat/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "logos",
       "url": "https://github.com/logos/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "auth-login",
       "url": "https://github.com/login",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "auth-forgot-password",
       "url": "https://github.com/password_reset",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "gist",
       "url": "https://gist.github.com/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "gist-user",
       "url": "https://gist.github.com/adrianmg",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "gist-gist",
       "url": "https://gist.github.com/adrianmg/1d6927c508c787cc8f13e63b5949aaf3",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo",
       "url": "https://github.com/babel/babel",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-commits",
       "url": "https://github.com/babel/babel/commits/master",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-commits-commit",
       "url": "https://github.com/babel/babel/commit/6b8f6ab2dece33e50fd9f9e6ad9b0d5f4d8e35ef",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-commits-commit-split",
       "url": "https://github.com/babel/babel/commit/6b8f6ab2dece33e50fd9f9e6ad9b0d5f4d8e35ef?diff=split",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-branches",
       "url": "https://github.com/babel/babel/branches",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-packages-empty",
       "url": "https://github.com/babel/babel/packages",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-packages",
       "url": "https://github.com/orgs/github/packages",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-packages-package",
       "url": "https://github.com/github/mini-throttle/packages/14778",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-releases",
       "url": "https://github.com/babel/babel/releases",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-tags",
       "url": "https://github.com/babel/babel/tags",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-file-search",
       "url": "https://github.com/babel/babel/find/master",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-issues",
       "url": "https://github.com/babel/babel/issues",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-issues-issue-open",
       "url": "https://github.com/babel/babel/issues/2025",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-issues-issue-closed",
       "url": "https://github.com/babel/babel/issues/11336",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-issues-labels",
       "url": "https://github.com/babel/babel/labels",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-issues-milestones",
       "url": "https://github.com/babel/babel/milestones",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-issues-new-choose",
       "url": "https://github.com/zeit/next.js/issues/new/choose",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-issues-new",
       "url": "https://github.com/mamuso/fluxcapacitor/issues/new",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-prs",
       "url": "https://github.com/zeit/next.js/pulls",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-prs-pr",
       "url": "https://github.com/zeit/next.js/pull/8848",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-discussions",
       "url": "https://github.com/zeit/next.js/discussions",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-discussions-discussion",
       "url": "https://github.com/zeit/next.js/discussions/10436",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-actions",
       "url": "https://github.com/zeit/next.js/actions",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-actions-with-artifacts",
       "url": "https://github.com/actions/upload-artifact/actions/runs/54927452",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-actions-run",
       "url": "https://github.com/zeit/next.js/actions/runs/81796431",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-actions-run-logs",
       "url": "https://github.com/zeit/next.js/runs/598636432?check_suite_focus=true",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-security",
       "url": "https://github.com/mamuso/fluxcapacitor/security",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-security-policy",
       "url": "https://github.com/mamuso/fluxcapacitor/security/policy",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-security-advisories",
       "url": "https://github.com/mamuso/fluxcapacitor/security/advisories",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-security-alerts",
       "url": "https://github.com/mamuso/fluxcapacitor/network/alerts",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-pulse",
       "url": "https://github.com/zeit/next.js/pulse",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-contributors",
       "url": "https://github.com/zeit/next.js/graphs/contributors",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-community",
       "url": "https://github.com/zeit/next.js/community",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-commits-activity",
       "url": "https://github.com/zeit/next.js/graphs/commit-activity",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-code-frequency",
       "url": "https://github.com/zeit/next.js/graphs/code-frequency",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-dependency-graph",
       "url": "https://github.com/mamuso/papercups/network/dependencies",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-network",
       "url": "https://github.com/zeit/next.js/network",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-insights-forks",
       "url": "https://github.com/zeit/next.js/network/members",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-watchers",
       "url": "https://github.com/zeit/next.js/watchers",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "repo-stargazers",
       "url": "https://github.com/zeit/next.js/stargazers",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user",
       "url": "https://github.com/sindresorhus",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-repositories",
       "url": "https://github.com/sindresorhus?tab=repositories",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-projects-empty",
       "url": "https://github.com/sindresorhus?tab=projects",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-stars",
       "url": "https://github.com/sindresorhus?tab=stars",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-followers",
       "url": "https://github.com/sindresorhus?tab=followers",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-following",
       "url": "https://github.com/sindresorhus?tab=following",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-sponsors",
       "url": "https://github.com/sponsors/sindresorhus",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org",
       "url": "https://github.com/babel",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-empty",
       "url": "https://github.com/mamusorg/",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-invitation",
       "url": "https://github.com/orgs/mamusorg/invitation",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-packages-empty",
       "url": "https://github.com/orgs/babel/packages",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-people",
       "url": "https://github.com/orgs/babel/people",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-projects-empty",
       "url": "https://github.com/orgs/babel/projects",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-sponsor",
       "url": "https://github.com/sponsors/babel",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-teams",
       "url": "https://github.com/orgs/pluginbakery/teams",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-profile",
       "url": "https://github.com/organizations/pluginbakery/settings/profile",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-member-privileges",
       "url": "https://github.com/organizations/pluginbakery/settings/member_privileges",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-billing",
       "url": "https://github.com/organizations/pluginbakery/settings/billing",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-security",
       "url": "https://github.com/organizations/pluginbakery/settings/security",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-verified-domains",
       "url": "https://github.com/organizations/pluginbakery/settings/domains",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-audit-log",
       "url": "https://github.com/organizations/pluginbakery/settings/audit-log",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-webhooks",
       "url": "https://github.com/organizations/pluginbakery/settings/hooks",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-third-party-access-policy",
       "url": "https://github.com/organizations/pluginbakery/settings/oauth_application_policy",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-installed-github-apps",
       "url": "https://github.com/organizations/pluginbakery/settings/installations",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-scheduled-reminders",
       "url": "https://github.com/organizations/pluginbakery/settings/reminders",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-repository-topics",
       "url": "https://github.com/orgs/pluginbakery/topics",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-repository-labels",
       "url": "https://github.com/organizations/pluginbakery/settings/labels",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-deleted-repositories",
       "url": "https://github.com/organizations/pluginbakery/settings/deleted_repositories",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-projects",
       "url": "https://github.com/organizations/pluginbakery/settings/projects",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-team-discussions",
       "url": "https://github.com/organizations/pluginbakery/settings/teams",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-actions",
       "url": "https://github.com/organizations/pluginbakery/settings/actions",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-oauth-apps",
       "url": "https://github.com/organizations/pluginbakery/settings/applications",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-github-apps",
       "url": "https://github.com/organizations/pluginbakery/settings/apps",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-blocked-users",
       "url": "https://github.com/organizations/pluginbakery/settings/user_blocks",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "org-settings-interaction-limits",
       "url": "https://github.com/organizations/pluginbakery/settings/interaction_limits",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "notifications-beta",
       "url": "https://github.com/notifications/beta",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-profile",
       "url": "https://github.com/settings/profile",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-account",
       "url": "https://github.com/settings/admin",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-security",
       "url": "https://github.com/settings/security",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-security-log",
       "url": "https://github.com/settings/security-log",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-notifications",
       "url": "https://github.com/settings/notifications",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-scheduled-reminders",
       "url": "https://github.com/settings/reminders",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-billing",
       "url": "https://github.com/settings/billing",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-keys",
       "url": "https://github.com/settings/keys",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-blocked-users",
       "url": "https://github.com/settings/blocked_users",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-repositories",
       "url": "https://github.com/settings/repositories",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-organizations",
       "url": "https://github.com/settings/organizations",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-saved-replies",
       "url": "https://github.com/settings/replies",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-applications",
       "url": "https://github.com/settings/installations",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-github-apps",
       "url": "https://github.com/settings/apps",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-oauth-apps",
       "url": "https://github.com/settings/developers",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "user-settings-personal-access-tokens",
       "url": "https://github.com/settings/tokens",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "marketplace-home",
       "url": "https://github.com/marketplace",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "marketplace-category",
       "url": "https://github.com/marketplace?category=continuous-integration&type=actions",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     },
     {
       "id": "marketplace-detail",
       "url": "https://github.com/marketplace/actions/lighthouse-audit",
-      "fullPage": true
+      "fullPage": true,
+      "auth": true
     }
   ]
 }

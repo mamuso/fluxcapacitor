@@ -23,6 +23,9 @@ class DB {
             return yield this.prisma.report.findMany({
                 where: {
                     current: true
+                },
+                include: {
+                    captures: true
                 }
             });
         });

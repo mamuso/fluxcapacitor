@@ -42,16 +42,16 @@ class Capture {
                 this.printer.subheader(`🤓 Creating a new caputre session`);
                 this.dbreport = yield this.db.createreport();
                 this.printer.header(`📷 Capture URLs`);
+                const browser = yield puppeteer_1.default.launch({
+                    headless: true,
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                });
                 /** Looping through devices */
                 let i = 0;
                 const iMax = this.config.devices.length;
                 for (; i < iMax; i++) {
                     /** Configure device */
                     const captureDevice = this.config.devices[i];
-                    const browser = yield puppeteer_1.default.launch({
-                        headless: true,
-                        args: ['--no-sandbox', '--disable-setuid-sandbox']
-                    });
                     const puppet = yield browser.newPage();
                     let device = (captureDevice.device
                         ? puppeteer_1.default.devices[captureDevice.device]
@@ -104,8 +104,6 @@ class Capture {
                                 yield puppet.type(this.config.auth.username, `${process.env.FLUX_LOGIN}`);
                                 yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
                                 yield puppet.click(this.config.auth.submit);
-                                // Get cookies
-                                // this.cookies = await puppet.cookies()
                             }
                         }
                         yield puppet.goto(page.url, { waitUntil: 'load' });
@@ -119,10 +117,10 @@ class Capture {
                             yield puppet.evaluate(_ => {
                                 window.scrollBy(0, v);
                             });
-                            yield puppet.waitFor(500);
+                            yield puppet.waitFor(350);
                             v = v + vheight;
                         }
-                        yield puppet.waitFor(1000);
+                        yield puppet.waitFor(800);
                         yield puppet.screenshot({
                             path: localfilepath,
                             fullPage: page.fullPage
@@ -130,15 +128,6 @@ class Capture {
                         /** DB page */
                         const dbpage = yield this.db.createpage(page, this.dbreport);
                         capture.page = dbpage.id;
-                        /** Resize main image */
-                        yield sharp_1.default(localfilepath)
-                            .resize({
-                            width: 800,
-                            height: 600,
-                            position: sharp_1.default.position.top,
-                            withoutEnlargement: true
-                        })
-                            .toFile(localfilepathmin);
                         if (this.current) {
                             const currentpath = `${this.config.tmpCurrentPath}/${device.id}`;
                             if (!fs.existsSync(currentpath)) {
@@ -164,6 +153,15 @@ class Capture {
                         else {
                             capture.diff = false;
                         }
+                        /** Resize main image */
+                        yield sharp_1.default(localfilepath)
+                            .resize({
+                            width: 800,
+                            height: 600,
+                            position: sharp_1.default.position.top,
+                            withoutEnlargement: true
+                        })
+                            .toFile(localfilepathmin);
                         /** Upload images */
                         capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
                         capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);

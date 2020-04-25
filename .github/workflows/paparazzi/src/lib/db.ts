@@ -18,6 +18,9 @@ export default class DB {
     return await this.prisma.report.findMany({
       where: {
         current: true
+      },
+      include: {
+        captures: true
       }
     })
   }
