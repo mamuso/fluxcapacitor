@@ -47,7 +47,7 @@ class Compare {
                 });
                 const diffPixelCount = yield pixelmatch_1.default(captureimg.data, currentimg.data, diffImage.data, imageWidth, imageHeight, {
                     threshold: 0.1,
-                    diffColor: [235, 76, 137]
+                    diffColor: [193, 111, 185]
                 });
                 yield fs.writeFileSync(diffpath, this.png.sync.write(diffImage));
                 return diffPixelCount;
