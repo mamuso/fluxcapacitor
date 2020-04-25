@@ -215,7 +215,6 @@ export default class Capture {
           )
 
           if (diff && diff > 0) {
-            console.log(`diff - ${diff}`)
             capture.urldiff = await this.store.uploadfile(
               `${this.config.date}/${device.id}/${filenamediff}`,
               localfilepathdiff

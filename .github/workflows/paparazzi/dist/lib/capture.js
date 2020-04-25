@@ -168,7 +168,6 @@ class Capture {
                         capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
                         capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
                         if (diff && diff > 0) {
-                            console.log(`diff - ${diff}`);
                             capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamediff}`, localfilepathdiff);
                         }
                         capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
