@@ -22,8 +22,12 @@ export default class Compare {
   ) => {
     try {
       if (!fs.existsSync(currentpath)) {
-        return -1
+        // return -1
       }
+      capturepath =
+        '/Users/mamuso/Code/fluxcapacitor/.github/workflows/paparazzi/img1.png'
+      currentpath =
+        '/Users/mamuso/Code/fluxcapacitor/.github/workflows/paparazzi/img2.png'
 
       const captureimgraw = this.png.sync.read(fs.readFileSync(capturepath))
       const currentimgraw = this.png.sync.read(fs.readFileSync(currentpath))
@@ -33,8 +37,8 @@ export default class Compare {
         currentimgraw.width !== captureimgraw.width
 
       const [captureimg, currentimg] = (await hasSizeMismatch)
-        ? await this.alignImagesToSameSize(currentimgraw, currentimgraw)
-        : [currentimgraw, currentimgraw]
+        ? await this.alignImagesToSameSize(currentimgraw, captureimgraw)
+        : [currentimgraw, captureimgraw]
       const imageWidth = captureimg.width
       const imageHeight = captureimg.height
       const diffImage = new this.png({
