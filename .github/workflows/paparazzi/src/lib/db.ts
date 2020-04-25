@@ -207,4 +207,20 @@ export default class DB {
       }
     })
   }
+
+  /**
+   * Inserts or updates a page in the database.
+   */
+  getcurrentcapture = async (page: Page, report: Report, device: Device) => {
+    return await this.prisma.capture.findMany({
+      where: {
+        pageId: page.id,
+        reportId: report.id,
+        deviceId: device.id
+      },
+      select: {
+        url: true
+      }
+    })
+  }
 }

@@ -80,6 +80,7 @@ class Capture {
                         const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
                         const capture = {};
+                        let diff = null;
                         if (page.auth) {
                             if (this.config.auth.cookie) {
                                 yield puppet.setCookie({
@@ -138,9 +139,26 @@ class Capture {
                             withoutEnlargement: true
                         })
                             .toFile(localfilepathmin);
-                        /** Compare */
-                        const diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
-                        if (diff !== 0) {
+                        if (this.current) {
+                            const currentpath = `${this.config.tmpCurrentPath}/${device.id}`;
+                            if (!fs.existsSync(currentpath)) {
+                                yield fs.promises.mkdir(currentpath);
+                            }
+                            const currentcapture = yield this.db.getcurrentcapture(dbpage, this.current, this.dbdevice);
+                            if (currentcapture[0] && currentcapture[0].url) {
+                                const res = yield rp.get({
+                                    uri: currentcapture[0].url,
+                                    encoding: null
+                                });
+                                fs.writeFileSync(`${currentfilepath}`, res, {
+                                    encoding: null
+                                });
+                            }
+                            /** Compare */
+                            diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
+                            console.log(diff);
+                        }
+                        if (diff && diff !== 0) {
                             capture.diff = true;
                             capture.diffindex = diff;
                         }
@@ -150,7 +168,8 @@ class Capture {
                         /** Upload images */
                         capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
                         capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
-                        if (diff > 0) {
+                        if (diff && diff > 0) {
+                            console.log(`diff - ${diff}`);
                             capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamediff}`, localfilepathdiff);
                         }
                         capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
@@ -162,11 +181,17 @@ class Capture {
                     yield browser.close();
                 }
                 /** Compress folder, upload it, and updates the db */
-                this.printer.subheader(`🤐 Zipping screenshots`);
-                const zipname = `${this.config.date}.tgz`;
-                yield this.compress.dir(this.config.tmpDatePath, `${this.config.tmpPath}/${zipname}`);
-                const zipurl = yield this.store.uploadfile(`archive/${zipname}`, `${this.config.tmpPath}/${zipname}`);
-                yield this.db.updatereporturl(this.dbreport, zipurl);
+                // this.printer.subheader(`🤐 Zipping screenshots`)
+                // const zipname = `${this.config.date}.tgz`
+                // await this.compress.dir(
+                //   this.config.tmpDatePath,
+                //   `${this.config.tmpPath}/${zipname}`
+                // )
+                // const zipurl = await this.store.uploadfile(
+                //   `archive/${zipname}`,
+                //   `${this.config.tmpPath}/${zipname}`
+                // )
+                // await this.db.updatereporturl(this.dbreport, zipurl)
                 /** Update the current report */
                 yield this.db.setcurrent(this.dbreport.id);
                 // await this.notify.send()
@@ -180,13 +205,16 @@ class Capture {
         this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
             const current = yield this.db.getcurrent();
             this.current = current[0] ? current[0] : null;
-            if (this.current) {
-                const res = yield rp.get({ uri: this.current.url, encoding: null });
-                fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
-                    encoding: null
-                });
-                yield this.compress.extract(`${this.config.tmpPath}/current.tgz`, this.config.tmpCurrentPath);
-            }
+            // if (this.current) {
+            //   const res = await rp.get({uri: this.current.url, encoding: null})
+            //   fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
+            //     encoding: null
+            //   })
+            //   await this.compress.extract(
+            //     `${this.config.tmpPath}/current.tgz`,
+            //     this.config.tmpCurrentPath
+            //   )
+            // }
         });
         this.printer = new utils_1.default();
         this.config = Object.assign({}, config);

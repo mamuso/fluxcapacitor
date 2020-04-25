@@ -741,6 +741,21 @@
       "id": "user-settings-personal-access-tokens",
       "url": "https://github.com/settings/tokens",
       "fullPage": true
+    },
+    {
+      "id": "marketplace-home",
+      "url": "https://github.com/marketplace",
+      "fullPage": true
+    },
+    {
+      "id": "marketplace-category",
+      "url": "https://github.com/marketplace?category=continuous-integration&type=actions",
+      "fullPage": true
+    },
+    {
+      "id": "marketplace-detail",
+      "url": "https://github.com/marketplace/actions/lighthouse-audit",
+      "fullPage": true
     }
   ]
 }

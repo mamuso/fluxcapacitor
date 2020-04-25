@@ -96,6 +96,7 @@ export default class Capture {
           const filenamediff = `${slugify(page.id)}-diff.${this.config.format}`
           const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
           const capture = {} as CaptureType
+          let diff = null
 
           if (page.auth) {
             if (this.config.auth.cookie) {
@@ -167,14 +168,36 @@ export default class Capture {
             })
             .toFile(localfilepathmin)
 
-          /** Compare */
-          const diff = await this.compare.compare(
-            localfilepath,
-            currentfilepath,
-            localfilepathdiff
-          )
+          if (this.current) {
+            const currentpath = `${this.config.tmpCurrentPath}/${device.id}`
+            if (!fs.existsSync(currentpath)) {
+              await fs.promises.mkdir(currentpath)
+            }
+            const currentcapture = await this.db.getcurrentcapture(
+              dbpage,
+              this.current,
+              this.dbdevice
+            )
+            if (currentcapture[0] && currentcapture[0].url) {
+              const res = await rp.get({
+                uri: currentcapture[0].url,
+                encoding: null
+              })
+              fs.writeFileSync(`${currentfilepath}`, res, {
+                encoding: null
+              })
+            }
 
-          if (diff !== 0) {
+            /** Compare */
+            diff = await this.compare.compare(
+              localfilepath,
+              currentfilepath,
+              localfilepathdiff
+            )
+            console.log(diff)
+          }
+
+          if (diff && diff !== 0) {
             capture.diff = true
             capture.diffindex = diff
           } else {
@@ -192,7 +215,8 @@ export default class Capture {
             localfilepathmin
           )
 
-          if (diff > 0) {
+          if (diff && diff > 0) {
+            console.log(`diff - ${diff}`)
             capture.urldiff = await this.store.uploadfile(
               `${this.config.date}/${device.id}/${filenamediff}`,
               localfilepathdiff
@@ -219,19 +243,19 @@ export default class Capture {
       }
 
       /** Compress folder, upload it, and updates the db */
-      this.printer.subheader(`🤐 Zipping screenshots`)
+      // this.printer.subheader(`🤐 Zipping screenshots`)
 
-      const zipname = `${this.config.date}.tgz`
-      await this.compress.dir(
-        this.config.tmpDatePath,
-        `${this.config.tmpPath}/${zipname}`
-      )
-      const zipurl = await this.store.uploadfile(
-        `archive/${zipname}`,
-        `${this.config.tmpPath}/${zipname}`
-      )
+      // const zipname = `${this.config.date}.tgz`
+      // await this.compress.dir(
+      //   this.config.tmpDatePath,
+      //   `${this.config.tmpPath}/${zipname}`
+      // )
+      // const zipurl = await this.store.uploadfile(
+      //   `archive/${zipname}`,
+      //   `${this.config.tmpPath}/${zipname}`
+      // )
 
-      await this.db.updatereporturl(this.dbreport, zipurl)
+      // await this.db.updatereporturl(this.dbreport, zipurl)
 
       /** Update the current report */
       await this.db.setcurrent(this.dbreport.id)
@@ -249,16 +273,16 @@ export default class Capture {
     const current = await this.db.getcurrent()
     this.current = current[0] ? current[0] : null
 
-    if (this.current) {
-      const res = await rp.get({uri: this.current.url, encoding: null})
-      fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
-        encoding: null
-      })
+    // if (this.current) {
+    //   const res = await rp.get({uri: this.current.url, encoding: null})
+    //   fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
+    //     encoding: null
+    //   })
 
-      await this.compress.extract(
-        `${this.config.tmpPath}/current.tgz`,
-        this.config.tmpCurrentPath
-      )
-    }
+    //   await this.compress.extract(
+    //     `${this.config.tmpPath}/current.tgz`,
+    //     this.config.tmpCurrentPath
+    //   )
+    // }
   }
 }

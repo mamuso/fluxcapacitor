@@ -192,6 +192,21 @@ class DB {
                 }
             });
         });
+        /**
+         * Inserts or updates a page in the database.
+         */
+        this.getcurrentcapture = (page, report, device) => __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.capture.findMany({
+                where: {
+                    pageId: page.id,
+                    reportId: report.id,
+                    deviceId: device.id
+                },
+                select: {
+                    url: true
+                }
+            });
+        });
         this.prisma = new client_1.PrismaClient();
         this.config = Object.assign({}, config);
     }
