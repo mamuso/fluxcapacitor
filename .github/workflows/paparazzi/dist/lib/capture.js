@@ -156,7 +156,6 @@ class Capture {
                             }
                             /** Compare */
                             diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
-                            console.log(diff);
                         }
                         if (diff && diff !== 0) {
                             capture.diff = true;

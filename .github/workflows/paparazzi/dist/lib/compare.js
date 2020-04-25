@@ -30,7 +30,7 @@ class Compare {
         this.compare = (capturepath, currentpath, diffpath) => __awaiter(this, void 0, void 0, function* () {
             try {
                 if (!fs.existsSync(currentpath)) {
-                    // return -1
+                    return -1;
                 }
                 const captureimgraw = this.png.sync.read(fs.readFileSync(capturepath));
                 const currentimgraw = this.png.sync.read(fs.readFileSync(currentpath));

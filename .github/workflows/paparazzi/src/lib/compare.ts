@@ -22,7 +22,7 @@ export default class Compare {
   ) => {
     try {
       if (!fs.existsSync(currentpath)) {
-        // return -1
+        return -1
       }
       const captureimgraw = this.png.sync.read(fs.readFileSync(capturepath))
       const currentimgraw = this.png.sync.read(fs.readFileSync(currentpath))
