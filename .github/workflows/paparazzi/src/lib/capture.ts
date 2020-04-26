@@ -184,7 +184,7 @@ export default class Capture {
             fullPage: page.fullPage
           })
 
-          puppet.close()
+          await puppet.close()
 
           /** DB page */
           const dbpage = await this.db.createPage(page, this.dbReport)

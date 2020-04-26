@@ -149,7 +149,7 @@ class Capture {
                             path: localfilepath,
                             fullPage: page.fullPage
                         });
-                        puppet.close();
+                        yield puppet.close();
                         /** DB page */
                         const dbpage = yield this.db.createPage(page, this.dbReport);
                         capture.page = dbpage.id;
