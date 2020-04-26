@@ -284,7 +284,7 @@ export default class Capture {
         encoding: null
       })
 
-      fs.writeFileSync(currentpath, res, {
+      await fs.promises.writeFile(currentpath, res, {
         encoding: null
       })
 

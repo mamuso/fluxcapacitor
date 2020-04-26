@@ -214,7 +214,7 @@ class Capture {
                     uri: capture.url,
                     encoding: null
                 });
-                fs.writeFileSync(currentpath, res, {
+                yield fs.promises.writeFile(currentpath, res, {
                     encoding: null
                 });
                 this.printer.download(filepath);
