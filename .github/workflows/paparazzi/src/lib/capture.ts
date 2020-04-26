@@ -61,25 +61,27 @@ export default class Capture {
    *  TODO
    */
   downloadCurrent = async () => {
-    await this.current.captures.forEach(async capture => {
-      const filepath = capture.url.split(this.current.slug)[1]
-      const currentpath = `${this.config.tmpCurrentPath}${filepath}`
+    if (this.current && this.current.captures) {
+      await this.current.captures.forEach(async capture => {
+        const filepath = capture.url.split(this.current.slug)[1]
+        const currentpath = `${this.config.tmpCurrentPath}${filepath}`
 
-      this.printer.download(filepath)
+        this.printer.download(filepath)
 
-      if (!fs.existsSync(path.dirname(currentpath))) {
-        fs.mkdirSync(path.dirname(currentpath))
-      }
+        if (!fs.existsSync(path.dirname(currentpath))) {
+          fs.mkdirSync(path.dirname(currentpath))
+        }
 
-      const res = await rp.get({
-        uri: capture.url,
-        encoding: null
+        const res = await rp.get({
+          uri: capture.url,
+          encoding: null
+        })
+
+        await fs.promises.writeFile(currentpath, res, {
+          encoding: null
+        })
       })
-
-      await fs.promises.writeFile(currentpath, res, {
-        encoding: null
-      })
-    })
+    }
   }
 
   /**

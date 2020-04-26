@@ -52,21 +52,23 @@ class Capture {
          *  TODO
          */
         this.downloadCurrent = () => __awaiter(this, void 0, void 0, function* () {
-            yield this.current.captures.forEach((capture) => __awaiter(this, void 0, void 0, function* () {
-                const filepath = capture.url.split(this.current.slug)[1];
-                const currentpath = `${this.config.tmpCurrentPath}${filepath}`;
-                this.printer.download(filepath);
-                if (!fs.existsSync(path.dirname(currentpath))) {
-                    fs.mkdirSync(path.dirname(currentpath));
-                }
-                const res = yield rp.get({
-                    uri: capture.url,
-                    encoding: null
-                });
-                yield fs.promises.writeFile(currentpath, res, {
-                    encoding: null
-                });
-            }));
+            if (this.current && this.current.captures) {
+                yield this.current.captures.forEach((capture) => __awaiter(this, void 0, void 0, function* () {
+                    const filepath = capture.url.split(this.current.slug)[1];
+                    const currentpath = `${this.config.tmpCurrentPath}${filepath}`;
+                    this.printer.download(filepath);
+                    if (!fs.existsSync(path.dirname(currentpath))) {
+                        fs.mkdirSync(path.dirname(currentpath));
+                    }
+                    const res = yield rp.get({
+                        uri: capture.url,
+                        encoding: null
+                    });
+                    yield fs.promises.writeFile(currentpath, res, {
+                        encoding: null
+                    });
+                }));
+            }
         });
         /**
          *  TODO
