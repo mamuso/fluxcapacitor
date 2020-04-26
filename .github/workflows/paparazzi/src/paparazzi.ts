@@ -29,24 +29,30 @@ class Paparazzi {
       tmpCurrentPath: `${tmpPath}/current`,
       ...require(`${this.basePath}/fluxcapacitor-config`)
     } as Config
-
-    this.process()
   }
 
-  process = async (): Promise<void> => {
+  setup = async () => {
     try {
-      this.setup()
-      this.printer.header(`✨ Paparazzi - ${this.date}`)
-      const capture = new Capture(this.config)
-      await capture.capture()
-      await this.cleanup()
-    } catch (e) {}
+      this.createscaffold()
+      this.printer.header(`✨Setting up the folder structure - ${this.date}`)
+    } catch (e) {
+      throw e
+    }
+  }
+
+  getcurrent = async () => {
+    this.printer.header(
+      `🔍 Checking out the last capture session - ${this.date}`
+    )
+    // const capture = new Capture(this.config)
+    // await capture.capture()
+    // await this.cleanup()
   }
 
   /**
    *  Create the folder structure needed for capturing the screens
    */
-  setup = async () => {
+  createscaffold = async () => {
     if (!fs.existsSync(this.config.tmpPath)) {
       await fs.promises.mkdir(this.config.tmpPath)
     }
@@ -70,3 +76,18 @@ const paparazzi = new Paparazzi(
   new Date().toISOString().split('T')[0], // date
   '../../../..' // basepath
 )
+
+switch (process.argv[2]) {
+  case 'setup': {
+    paparazzi.setup()
+    break
+  }
+  case 'getcurrent': {
+    paparazzi.getcurrent()
+    break
+  }
+  default: {
+    //statements;
+    break
+  }
+}

@@ -26,24 +26,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 require("./lib/env");
 const utils_1 = __importDefault(require("./lib/utils"));
-const capture_1 = __importDefault(require("./lib/capture"));
 const fs = __importStar(require("fs"));
 class Paparazzi {
     constructor(date, basePath, tmpPath = 'tmp') {
-        this.process = () => __awaiter(this, void 0, void 0, function* () {
+        this.setup = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                this.setup();
-                this.printer.header(`✨ Paparazzi - ${this.date}`);
-                const capture = new capture_1.default(this.config);
-                yield capture.capture();
-                yield this.cleanup();
+                this.createscaffold();
+                this.printer.header(`✨Setting up the folder structure - ${this.date}`);
             }
-            catch (e) { }
+            catch (e) {
+                throw e;
+            }
+        });
+        this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
+            this.printer.header(`🔍 Checking out the last capture session - ${this.date}`);
+            // const capture = new Capture(this.config)
+            // await capture.capture()
+            // await this.cleanup()
         });
         /**
          *  Create the folder structure needed for capturing the screens
          */
-        this.setup = () => __awaiter(this, void 0, void 0, function* () {
+        this.createscaffold = () => __awaiter(this, void 0, void 0, function* () {
             if (!fs.existsSync(this.config.tmpPath)) {
                 yield fs.promises.mkdir(this.config.tmpPath);
             }
@@ -64,9 +68,22 @@ class Paparazzi {
         this.date = date;
         this.basePath = basePath;
         this.config = Object.assign({ date: this.date, basePath: this.basePath, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${this.date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`${this.basePath}/fluxcapacitor-config`));
-        this.process();
     }
 }
 const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
 '../../../..' // basepath
 );
+switch (process.argv[2]) {
+    case 'setup': {
+        paparazzi.setup();
+        break;
+    }
+    case 'getcurrent': {
+        paparazzi.getcurrent();
+        break;
+    }
+    default: {
+        //statements;
+        break;
+    }
+}

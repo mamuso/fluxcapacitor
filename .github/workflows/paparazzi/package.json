@@ -7,7 +7,8 @@
   "main": "dist/papparazi.js",
   "description": "",
   "scripts": {
-    "paparazzi": "node dist/paparazzi.js",
+    "paparazzi:setup": "node dist/paparazzi.js setup",
+    "paparazzi:getcurrent": "node dist/paparazzi.js getcurrent",
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",

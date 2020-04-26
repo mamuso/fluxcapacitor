@@ -19,7 +19,8 @@ jobs:
       - run: npm install -g yarn
       - run: yarn install --production
       - run: yarn workspace api run prisma2 generate
-      - run: yarn run paparazzi --unhandled-rejections=strict --production
+      - run: yarn run paparazzi:setup --production
+      - run: yarn run paparazzi:getcurrent --production
     env:
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
