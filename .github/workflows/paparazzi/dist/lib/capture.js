@@ -57,8 +57,7 @@ class Capture {
                     let device = (captureDevice.device
                         ? puppeteer_1.default.devices[captureDevice.device]
                         : captureDevice);
-                    device.userAgent =
-                        device.userAgent || (yield browser.userAgent());
+                    device.userAgent = device.userAgent || (yield browser.userAgent());
                     device.id = captureDevice.id;
                     yield puppet.emulate(device);
                     this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
@@ -209,7 +208,7 @@ class Capture {
                 const filepath = capture.url.split(this.current.slug)[1];
                 const currentpath = `${this.config.tmpCurrentPath}${filepath}`;
                 if (!fs.existsSync(path.dirname(currentpath))) {
-                    yield fs.promises.mkdir(path.dirname(currentpath));
+                    fs.mkdirSync(path.dirname(currentpath));
                 }
                 const res = yield rp.get({
                     uri: capture.url,
