@@ -40,7 +40,8 @@ export default class DB {
     await this.prisma.report.update({
       where: {id: report},
       data: {
-        current: true
+        current: true,
+        visible: true
       }
     })
   }

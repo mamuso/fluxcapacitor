@@ -44,7 +44,8 @@ class DB {
             yield this.prisma.report.update({
                 where: { id: report },
                 data: {
-                    current: true
+                    current: true,
+                    visible: true
                 }
             });
         });
