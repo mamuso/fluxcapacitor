@@ -11,6 +11,7 @@ import Compare from './compare'
 import Compress from './compress'
 import Notify from './notify'
 import DB from './db'
+import * as path from 'path'
 import * as fs from 'fs'
 import * as rp from 'request-promise'
 import sharp from 'sharp'
@@ -18,266 +19,295 @@ import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
 
 export default class Capture {
-  printer
-  config
-  store
-  compare
-  compress
-  db
-  dbdevice
-  dbreport
-  current
-  notify
+                 printer
+                 config
+                 store
+                 compare
+                 compress
+                 db
+                 dbdevice
+                 dbreport
+                 current
+                 notify
 
-  constructor(config: Config) {
-    this.printer = new Printer()
-    this.config = {...config} as Config
-    this.compare = new Compare({...config})
-    this.compress = new Compress({...config})
-    this.store = new Store({...config})
-    this.db = new DB({...config})
-    this.notify = new Notify({...config})
-  }
+                 constructor(config: Config) {
+                   this.printer = new Printer()
+                   this.config = {...config} as Config
+                   this.compare = new Compare({...config})
+                   this.compress = new Compress({...config})
+                   this.store = new Store({...config})
+                   this.db = new DB({...config})
+                   this.notify = new Notify({...config})
+                 }
 
-  capture = async () => {
-    try {
-      /** Set current and download report */
-      this.printer.subheader(`🔍 Checking out the last capture session`)
-      await this.getcurrent()
+                 capture = async () => {
+                   try {
+                     /** Set current and download report */
+                     this.printer.subheader(
+                       `🔍 Checking out the last capture session`
+                     )
+                     await this.getcurrent()
 
-      /** DB report */
-      this.printer.subheader(`🤓 Creating a new caputre session`)
-      this.dbreport = await this.db.createreport()
+                     /** DB report */
+                     this.printer.subheader(`🤓 Creating a new caputre session`)
+                     this.dbreport = await this.db.createreport()
 
-      this.printer.header(`📷 Capture URLs`)
+                     this.printer.header(`📷 Capture URLs`)
 
-      const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-      })
+                     const browser = await puppeteer.launch({
+                       headless: true,
+                       args: ['--no-sandbox', '--disable-setuid-sandbox']
+                     })
 
-      /** Looping through devices */
-      let i = 0
-      const iMax = this.config.devices.length
-      for (; i < iMax; i++) {
-        /** Configure device */
-        const captureDevice = this.config.devices[i]
-        const puppet = await browser.newPage()
-        let device = (captureDevice.device
-          ? puppeteer.devices[captureDevice.device]
-          : captureDevice) as Device
-        device.userAgent = device.userAgent || (await browser.userAgent())
-        device.id = captureDevice.id
+                     /** Looping through devices */
+                     let i = 0
+                     const iMax = this.config.devices.length
+                     for (; i < iMax; i++) {
+                       /** Configure device */
+                       const captureDevice = this.config.devices[i]
+                       const puppet = await browser.newPage()
+                       let device = (captureDevice.device
+                         ? puppeteer.devices[captureDevice.device]
+                         : captureDevice) as Device
+                       device.userAgent =
+                         device.userAgent || (await browser.userAgent())
+                       device.id = captureDevice.id
 
-        await puppet.emulate(device)
+                       await puppet.emulate(device)
 
-        this.printer.subheader(
-          `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
-        )
+                       this.printer.subheader(
+                         `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
+                       )
 
-        /** Make device folder */
-        if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
-          await fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`)
-        }
+                       /** Make device folder */
+                       if (
+                         !fs.existsSync(
+                           `${this.config.tmpDatePath}/${device.id}`
+                         )
+                       ) {
+                         await fs.promises.mkdir(
+                           `${this.config.tmpDatePath}/${device.id}`
+                         )
+                       }
 
-        /** DB device */
-        this.dbdevice = await this.db.createdevice(device)
+                       /** DB device */
+                       this.dbdevice = await this.db.createdevice(device)
 
-        /** Looping through URLs */
-        let j = 0
-        const jMax = this.config.pages.length
-        for (; j < jMax; j++) {
-          /** Setting all the variables */
-          const page: Page = this.config.pages[j]
-          const filename = `${slugify(page.id)}.${this.config.format}`
-          const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`
-          const currentfilepath = `${this.config.tmpCurrentPath}/${device.id}/${filename}`
-          const filenamemin = `${slugify(page.id)}-min.jpg`
-          const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`
-          const filenamediff = `${slugify(page.id)}-diff.${this.config.format}`
-          const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
-          const capture = {} as CaptureType
-          let diff = null
+                       /** Looping through URLs */
+                       let j = 0
+                       const jMax = this.config.pages.length
+                       for (; j < jMax; j++) {
+                         /** Setting all the variables */
+                         const page: Page = this.config.pages[j]
+                         const filename = `${slugify(page.id)}.${
+                           this.config.format
+                         }`
+                         const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`
+                         const currentfilepath = `${this.config.tmpCurrentPath}/${device.id}/${filename}`
+                         const filenamemin = `${slugify(page.id)}-min.jpg`
+                         const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`
+                         const filenamediff = `${slugify(page.id)}-diff.${
+                           this.config.format
+                         }`
+                         const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`
+                         const capture = {} as CaptureType
+                         let diff = null
 
-          if (page.auth) {
-            if (this.config.auth.cookie) {
-              await puppet.setCookie({
-                value: 'yes',
-                domain: `${process.env.FLUX_DOMAIN}`,
-                expires: Date.now() / 1000 + 100,
-                name: 'logged_in'
-              })
-              await puppet.setCookie({
-                value: `${process.env.FLUX_COOKIE}`,
-                domain: `${process.env.FLUX_DOMAIN}`,
-                expires: Date.now() / 1000 + 100,
-                name: 'user_session'
-              })
-            } else {
-              await puppet.goto(this.config.auth.url, {
-                waitUntil: 'load'
-              })
-              // Login
-              await puppet.type(
-                this.config.auth.username,
-                `${process.env.FLUX_LOGIN}`
-              )
-              await puppet.type(
-                this.config.auth.password,
-                `${process.env.FLUX_PASSWORD}`
-              )
-              await puppet.click(this.config.auth.submit)
-            }
-          }
+                         if (page.auth) {
+                           if (this.config.auth.cookie) {
+                             await puppet.setCookie({
+                               value: 'yes',
+                               domain: `${process.env.FLUX_DOMAIN}`,
+                               expires: Date.now() / 1000 + 100,
+                               name: 'logged_in'
+                             })
+                             await puppet.setCookie({
+                               value: `${process.env.FLUX_COOKIE}`,
+                               domain: `${process.env.FLUX_DOMAIN}`,
+                               expires: Date.now() / 1000 + 100,
+                               name: 'user_session'
+                             })
+                           } else {
+                             await puppet.goto(this.config.auth.url, {
+                               waitUntil: 'load'
+                             })
+                             // Login
+                             await puppet.type(
+                               this.config.auth.username,
+                               `${process.env.FLUX_LOGIN}`
+                             )
+                             await puppet.type(
+                               this.config.auth.password,
+                               `${process.env.FLUX_PASSWORD}`
+                             )
+                             await puppet.click(this.config.auth.submit)
+                           }
+                         }
 
-          await puppet.goto(page.url, {waitUntil: 'load'})
+                         await puppet.goto(page.url, {waitUntil: 'load'})
 
-          // Scrolling through the page
-          const vheight = await puppet.viewport().height
-          const pheight = await puppet.evaluate(_ => {
-            return document.body.scrollHeight
-          })
-          let v
-          while (v + vheight < pheight) {
-            await puppet.evaluate(_ => {
-              window.scrollBy(0, v)
-            })
-            await puppet.waitFor(350)
-            v = v + vheight
-          }
-          await puppet.waitFor(800)
+                         // Scrolling through the page
+                         const vheight = await puppet.viewport().height
+                         const pheight = await puppet.evaluate(_ => {
+                           return document.body.scrollHeight
+                         })
+                         let v
+                         while (v + vheight < pheight) {
+                           await puppet.evaluate(_ => {
+                             window.scrollBy(0, v)
+                           })
+                           await puppet.waitFor(350)
+                           v = v + vheight
+                         }
+                         await puppet.waitFor(800)
 
-          await puppet.screenshot({
-            path: localfilepath,
-            fullPage: page.fullPage
-          })
+                         await puppet.screenshot({
+                           path: localfilepath,
+                           fullPage: page.fullPage
+                         })
 
-          /** DB page */
-          const dbpage = await this.db.createpage(page, this.dbreport)
-          capture.page = dbpage.id
+                         /** DB page */
+                         const dbpage = await this.db.createpage(
+                           page,
+                           this.dbreport
+                         )
+                         capture.page = dbpage.id
 
-          if (this.current) {
-            const currentpath = `${this.config.tmpCurrentPath}/${device.id}`
-            if (!fs.existsSync(currentpath)) {
-              await fs.promises.mkdir(currentpath)
-            }
-            const currentcapture = await this.db.getcurrentcapture(
-              dbpage,
-              this.current,
-              this.dbdevice
-            )
-            if (currentcapture[0] && currentcapture[0].url) {
-              const res = await rp.get({
-                uri: currentcapture[0].url,
-                encoding: null
-              })
-              fs.writeFileSync(`${currentfilepath}`, res, {
-                encoding: null
-              })
-            }
+                         if (this.current) {
+                           const currentpath = `${this.config.tmpCurrentPath}/${device.id}`
+                           if (!fs.existsSync(currentpath)) {
+                             await fs.promises.mkdir(currentpath)
+                           }
+                           const currentcapture = await this.db.getcurrentcapture(
+                             dbpage,
+                             this.current,
+                             this.dbdevice
+                           )
+                           if (currentcapture[0] && currentcapture[0].url) {
+                             const res = await rp.get({
+                               uri: currentcapture[0].url,
+                               encoding: null
+                             })
+                             fs.writeFileSync(`${currentfilepath}`, res, {
+                               encoding: null
+                             })
+                           }
 
-            /** Compare */
-            diff = await this.compare.compare(
-              localfilepath,
-              currentfilepath,
-              localfilepathdiff
-            )
-          }
+                           /** Compare */
+                           diff = await this.compare.compare(
+                             localfilepath,
+                             currentfilepath,
+                             localfilepathdiff
+                           )
+                         }
 
-          if (diff && diff !== 0) {
-            capture.diff = true
-            capture.diffindex = diff
-          } else {
-            capture.diff = false
-          }
+                         if (diff && diff !== 0) {
+                           capture.diff = true
+                           capture.diffindex = diff
+                         } else {
+                           capture.diff = false
+                         }
 
-          /** Resize main image */
-          await sharp(localfilepath)
-            .resize({
-              width: 800,
-              height: 600,
-              position: sharp.position.top,
-              withoutEnlargement: true
-            })
-            .toFile(localfilepathmin)
+                         /** Resize main image */
+                         await sharp(localfilepath)
+                           .resize({
+                             width: 800,
+                             height: 600,
+                             position: sharp.position.top,
+                             withoutEnlargement: true
+                           })
+                           .toFile(localfilepathmin)
 
-          /** Upload images */
-          capture.url = await this.store.uploadfile(
-            `${this.config.date}/${device.id}/${filename}`,
-            localfilepath
-          )
+                         /** Upload images */
+                         capture.url = await this.store.uploadfile(
+                           `${this.config.date}/${device.id}/${filename}`,
+                           localfilepath
+                         )
 
-          capture.urlmin = await this.store.uploadfile(
-            `${this.config.date}/${device.id}/${filenamemin}`,
-            localfilepathmin
-          )
+                         capture.urlmin = await this.store.uploadfile(
+                           `${this.config.date}/${device.id}/${filenamemin}`,
+                           localfilepathmin
+                         )
 
-          if (diff && diff > 0) {
-            capture.urldiff = await this.store.uploadfile(
-              `${this.config.date}/${device.id}/${filenamediff}`,
-              localfilepathdiff
-            )
-          }
+                         if (diff && diff > 0) {
+                           capture.urldiff = await this.store.uploadfile(
+                             `${this.config.date}/${device.id}/${filenamediff}`,
+                             localfilepathdiff
+                           )
+                         }
 
-          capture.slug = slugify(
-            `${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`
-          )
+                         capture.slug = slugify(
+                           `${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`
+                         )
 
-          /** Write capture in the DB */
-          await this.db.createcapture(
-            this.dbreport,
-            this.dbdevice,
-            dbpage,
-            capture
-          )
+                         /** Write capture in the DB */
+                         await this.db.createcapture(
+                           this.dbreport,
+                           this.dbdevice,
+                           dbpage,
+                           capture
+                         )
 
-          /** Print output */
-          this.printer.capture(page.id)
-        }
-        await browser.close()
-      }
+                         /** Print output */
+                         this.printer.capture(page.id)
+                       }
+                       await browser.close()
+                     }
 
-      /** Compress folder, upload it, and updates the db */
-      // this.printer.subheader(`🤐 Zipping screenshots`)
+                     /** Compress folder, upload it, and updates the db */
+                     // this.printer.subheader(`🤐 Zipping screenshots`)
 
-      // const zipname = `${this.config.date}.tgz`
-      // await this.compress.dir(
-      //   this.config.tmpDatePath,
-      //   `${this.config.tmpPath}/${zipname}`
-      // )
-      // const zipurl = await this.store.uploadfile(
-      //   `archive/${zipname}`,
-      //   `${this.config.tmpPath}/${zipname}`
-      // )
+                     // const zipname = `${this.config.date}.tgz`
+                     // await this.compress.dir(
+                     //   this.config.tmpDatePath,
+                     //   `${this.config.tmpPath}/${zipname}`
+                     // )
+                     // const zipurl = await this.store.uploadfile(
+                     //   `archive/${zipname}`,
+                     //   `${this.config.tmpPath}/${zipname}`
+                     // )
 
-      // await this.db.updatereporturl(this.dbreport, zipurl)
+                     // await this.db.updatereporturl(this.dbreport, zipurl)
 
-      /** Update the current report */
-      await this.db.setcurrent(this.dbreport.id)
+                     /** Update the current report */
+                     await this.db.setcurrent(this.dbreport.id)
 
-      // await this.notify.send()
+                     // await this.notify.send()
 
-      /** Disconnect from the DB */
-      await this.db.prisma.disconnect()
-    } catch (e) {
-      throw e
-    }
-  }
+                     /** Disconnect from the DB */
+                     await this.db.prisma.disconnect()
+                   } catch (e) {
+                     throw e
+                   }
+                 }
 
-  getcurrent = async () => {
-    const current = await this.db.getcurrent()
-    this.current = current[0] ? current[0] : null
+                 getcurrent = async () => {
+                   const currentdb = await this.db.getcurrent()
+                   this.current = currentdb[0] ? currentdb[0] : null
+                 }
 
-    // if (this.current) {
-    //   const res = await rp.get({uri: this.current.url, encoding: null})
-    //   fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
-    //     encoding: null
-    //   })
+                 downloadcurrent = async () => {
+                   await this.current.captures.forEach(async capture => {
+                     const filepath = capture.url.split(this.current.slug)[1]
+                     const currentpath = `${this.config.tmpCurrentPath}${filepath}`
 
-    //   await this.compress.extract(
-    //     `${this.config.tmpPath}/current.tgz`,
-    //     this.config.tmpCurrentPath
-    //   )
-    // }
-  }
-}
+                     if (!fs.existsSync(path.dirname(currentpath))) {
+                       await fs.promises.mkdir(path.dirname(currentpath))
+                     }
+
+                     const res = await rp.get({
+                       uri: capture.url,
+                       encoding: null
+                     })
+                     fs.writeFileSync(currentpath, res, {
+                       encoding: null
+                     })
+                     this.printer.download(filepath)
+                   })
+                 }
+
+                 close = async () => {
+                   /** Disconnect from the DB */
+                   await this.db.prisma.disconnect()
+                 }
+               }

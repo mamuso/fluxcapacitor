@@ -24,6 +24,10 @@ export default class Printer {
     )
   }
 
+  download = (text: string): void => {
+    console.log(`  └ ⬇️  ${text}`)
+  }
+
   capture = (text: string): void => {
     console.log(`  └ 🏙  ${text}`)
   }

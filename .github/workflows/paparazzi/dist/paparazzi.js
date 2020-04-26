@@ -26,23 +26,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 require("./lib/env");
 const utils_1 = __importDefault(require("./lib/utils"));
+const capture_1 = __importDefault(require("./lib/capture"));
 const fs = __importStar(require("fs"));
 class Paparazzi {
     constructor(date, basePath, tmpPath = 'tmp') {
         this.setup = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 this.createscaffold();
-                this.printer.header(`✨Setting up the folder structure - ${this.date}`);
+                this.printer.header(`✨ Setting up the folder structure - ${this.date}`);
             }
             catch (e) {
                 throw e;
             }
         });
         this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
-            this.printer.header(`🔍 Checking out the last capture session - ${this.date}`);
-            // const capture = new Capture(this.config)
-            // await capture.capture()
-            // await this.cleanup()
+            try {
+                this.printer.header(`🔍 Checking out the last capture session - ${this.date}`);
+                const capture = new capture_1.default(this.config);
+                yield capture.getcurrent();
+                yield capture.downloadcurrent();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
         });
         /**
          *  Create the folder structure needed for capturing the screens

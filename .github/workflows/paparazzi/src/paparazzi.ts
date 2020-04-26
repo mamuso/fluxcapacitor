@@ -34,19 +34,24 @@ class Paparazzi {
   setup = async () => {
     try {
       this.createscaffold()
-      this.printer.header(`✨Setting up the folder structure - ${this.date}`)
+      this.printer.header(`✨ Setting up the folder structure - ${this.date}`)
     } catch (e) {
       throw e
     }
   }
 
   getcurrent = async () => {
-    this.printer.header(
-      `🔍 Checking out the last capture session - ${this.date}`
-    )
-    // const capture = new Capture(this.config)
-    // await capture.capture()
-    // await this.cleanup()
+    try {
+      this.printer.header(
+        `🔍 Checking out the last capture session - ${this.date}`
+      )
+      const capture = new Capture(this.config)
+      await capture.getcurrent()
+      await capture.downloadcurrent()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
   }
 
   /**

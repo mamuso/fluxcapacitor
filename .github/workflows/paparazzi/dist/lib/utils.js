@@ -17,6 +17,9 @@ class Printer {
             console.log(`${text}`);
             console.log('-----------------------------------------------------------------------');
         };
+        this.download = (text) => {
+            console.log(`  └ ⬇️  ${text}`);
+        };
         this.capture = (text) => {
             console.log(`  └ 🏙  ${text}`);
         };

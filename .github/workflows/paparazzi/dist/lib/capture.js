@@ -26,6 +26,7 @@ const compare_1 = __importDefault(require("./compare"));
 const compress_1 = __importDefault(require("./compress"));
 const notify_1 = __importDefault(require("./notify"));
 const db_1 = __importDefault(require("./db"));
+const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
 const rp = __importStar(require("request-promise"));
 const sharp_1 = __importDefault(require("sharp"));
@@ -56,7 +57,8 @@ class Capture {
                     let device = (captureDevice.device
                         ? puppeteer_1.default.devices[captureDevice.device]
                         : captureDevice);
-                    device.userAgent = device.userAgent || (yield browser.userAgent());
+                    device.userAgent =
+                        device.userAgent || (yield browser.userAgent());
                     device.id = captureDevice.id;
                     yield puppet.emulate(device);
                     this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
@@ -199,18 +201,29 @@ class Capture {
             }
         });
         this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
-            const current = yield this.db.getcurrent();
-            this.current = current[0] ? current[0] : null;
-            // if (this.current) {
-            //   const res = await rp.get({uri: this.current.url, encoding: null})
-            //   fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
-            //     encoding: null
-            //   })
-            //   await this.compress.extract(
-            //     `${this.config.tmpPath}/current.tgz`,
-            //     this.config.tmpCurrentPath
-            //   )
-            // }
+            const currentdb = yield this.db.getcurrent();
+            this.current = currentdb[0] ? currentdb[0] : null;
+        });
+        this.downloadcurrent = () => __awaiter(this, void 0, void 0, function* () {
+            yield this.current.captures.forEach((capture) => __awaiter(this, void 0, void 0, function* () {
+                const filepath = capture.url.split(this.current.slug)[1];
+                const currentpath = `${this.config.tmpCurrentPath}${filepath}`;
+                if (!fs.existsSync(path.dirname(currentpath))) {
+                    yield fs.promises.mkdir(path.dirname(currentpath));
+                }
+                const res = yield rp.get({
+                    uri: capture.url,
+                    encoding: null
+                });
+                fs.writeFileSync(currentpath, res, {
+                    encoding: null
+                });
+                this.printer.download(filepath);
+            }));
+        });
+        this.close = () => __awaiter(this, void 0, void 0, function* () {
+            /** Disconnect from the DB */
+            yield this.db.prisma.disconnect();
         });
         this.printer = new utils_1.default();
         this.config = Object.assign({}, config);
