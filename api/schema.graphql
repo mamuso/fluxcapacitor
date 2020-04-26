@@ -5,6 +5,7 @@
 type Capture {
   createdAt: DateTime!
   device: Device!
+  deviceScaleFactor: Int
   diff: Boolean!
   diffindex: Float
   id: String!
@@ -98,6 +99,7 @@ scalar DateTime
 type Device {
   captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, skip: Int): [Capture!]!
   createdAt: DateTime!
+  deviceScaleFactor: Int
   id: String!
   name: String!
   slug: String!

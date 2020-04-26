@@ -248,6 +248,7 @@ export interface NexusGenFieldTypes {
   Capture: { // field return type
     createdAt: any; // DateTime!
     device: NexusGenRootTypes['Device']; // Device!
+    deviceScaleFactor: number | null; // Int
     diff: boolean; // Boolean!
     diffindex: number | null; // Float
     id: string; // String!
@@ -261,6 +262,7 @@ export interface NexusGenFieldTypes {
   Device: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
     createdAt: any; // DateTime!
+    deviceScaleFactor: number | null; // Int
     id: string; // String!
     name: string; // String!
     slug: string; // String!
