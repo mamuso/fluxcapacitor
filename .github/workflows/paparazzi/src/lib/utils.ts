@@ -32,6 +32,10 @@ export default class Printer {
     console.log(`  └ 🏙  ${text}`)
   }
 
+  resize = (text: string): void => {
+    console.log(`  └ 🌉  ${text}`)
+  }
+
   compare = (text: string): void => {
     console.log(`  └ 🎆  ${text}`)
   }

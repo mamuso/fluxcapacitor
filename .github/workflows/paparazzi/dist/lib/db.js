@@ -64,6 +64,9 @@ class DB {
                 }
             });
         });
+        /**
+         * TODO
+         */
         this.updateReportUrl = (report, url) => __awaiter(this, void 0, void 0, function* () {
             yield this.prisma.report.update({
                 where: { id: report.id },
@@ -90,6 +93,17 @@ class DB {
                     slug: slug,
                     name: name,
                     specs: specs
+                }
+            });
+        });
+        /**
+         * TODO
+         */
+        this.getDevice = (device) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(device.id);
+            return yield this.prisma.device.findOne({
+                where: {
+                    slug: slug
                 }
             });
         });
@@ -158,6 +172,17 @@ class DB {
                     urldiff: capture.urldiff,
                     diff: capture.diff,
                     diffindex: capture.diffindex
+                }
+            });
+        });
+        /**
+         * TODO.
+         */
+        this.getCapture = (report, device, page) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(`${report.slug}-${device.slug}-${page.slug}`);
+            return yield this.prisma.capture.findOne({
+                where: {
+                    slug: slug
                 }
             });
         });

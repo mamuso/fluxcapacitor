@@ -36,7 +36,7 @@ class Paparazzi {
    */
   setup = async () => {
     try {
-      this.createscaffold()
+      this.createScaffold()
       this.printer.header(`✨ Setting up the folder structure - ${this.date}`)
     } catch (e) {
       throw e
@@ -46,7 +46,7 @@ class Paparazzi {
   /**
    *  TODO
    */
-  getcurrent = async () => {
+  getCurrent = async () => {
     try {
       this.printer.header(
         `🔍 Checking out the last capture session - ${this.date}`
@@ -73,10 +73,25 @@ class Paparazzi {
       throw e
     }
   }
+
+  /**
+   *  TODO
+   */
+  resize = async () => {
+    try {
+      this.printer.subHeader(`📦 Resize images`)
+      const capture = new Capture(this.config)
+      await capture.resize()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
   /**
    *  Create the folder structure needed for capturing the screens
    */
-  createscaffold = async () => {
+  createScaffold = async () => {
     if (!fs.existsSync(this.config.tmpPath)) {
       await fs.promises.mkdir(this.config.tmpPath)
     }
@@ -110,11 +125,15 @@ switch (process.argv[2]) {
     break
   }
   case 'getcurrent': {
-    paparazzi.getcurrent()
+    paparazzi.getCurrent()
     break
   }
   case 'capture': {
     paparazzi.capture()
+    break
+  }
+  case 'resize': {
+    paparazzi.resize()
     break
   }
   default: {

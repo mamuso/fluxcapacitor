@@ -241,14 +241,7 @@ class Capture {
                 let i = 0;
                 const iMax = this.config.devices.length;
                 for (; i < iMax; i++) {
-                    const captureDevice = this.config.devices[i];
-                    const puppet = yield this.browser.newPage();
-                    let device = (captureDevice.device
-                        ? puppeteer_1.default.devices[captureDevice.device]
-                        : captureDevice);
-                    device.userAgent = device.userAgent || (yield this.browser.userAgent());
-                    device.id = captureDevice.id;
-                    yield puppet.emulate(device);
+                    const device = yield this.setDevice(this.config.devices[i]);
                     this.printer.subHeader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
                     /** Make device folder */
                     if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
@@ -265,6 +258,8 @@ class Capture {
                         const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
                         const capture = {};
                         this.printer.capture(`Capturing ${page.id}`);
+                        const puppet = yield this.browser.newPage();
+                        yield puppet.emulate(device);
                         /** Authenticating if needed */
                         if (page.auth) {
                             if (this.config.auth.cookie) {
@@ -310,6 +305,7 @@ class Capture {
                             path: localfilepath,
                             fullPage: page.fullPage
                         });
+                        puppet.close();
                         /** DB page */
                         const dbpage = yield this.db.createPage(page, this.dbReport);
                         capture.page = dbpage.id;
@@ -323,6 +319,60 @@ class Capture {
             catch (e) {
                 throw e;
             }
+        });
+        /**
+         *  TODO
+         */
+        this.resize = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.dbReport = yield this.db.createReport();
+                let i = 0;
+                const iMax = this.config.devices.length;
+                for (; i < iMax; i++) {
+                    /** DB device */
+                    this.dbDevice = yield this.db.getDevice(this.config.devices[i]);
+                    this.printer.subHeader(`🖥  ${this.dbDevice.slug}`);
+                    /** Looping through URLs */
+                    let j = 0;
+                    const jMax = this.config.pages.length;
+                    for (; j < jMax; j++) {
+                        const page = this.config.pages[j];
+                        const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
+                        const localfilepath = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filename}`;
+                        const filenamemin = `${slugify_1.default(page.id)}-min.jpg`;
+                        const localfilepathmin = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filenamemin}`;
+                        this.printer.resize(`Resizing ${page.id}`);
+                        const dbpage = yield this.db.createPage(page, this.dbReport);
+                        const capture = yield this.db.getCapture(this.dbReport, this.dbDevice, dbpage);
+                        /** Resize captured image */
+                        yield sharp_1.default(localfilepath)
+                            .resize({
+                            width: 800,
+                            height: 600,
+                            position: sharp_1.default.position.top,
+                            withoutEnlargement: true
+                        })
+                            .toFile(localfilepathmin);
+                        capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${this.dbDevice.slug}/${filenamemin}`, localfilepathmin);
+                        /** Write capture in the DB */
+                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
+                    }
+                }
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.setDevice = (configdevice) => __awaiter(this, void 0, void 0, function* () {
+            let device = (configdevice.device
+                ? puppeteer_1.default.devices[configdevice.device]
+                : configdevice);
+            device.userAgent = device.userAgent || (yield this.browser.userAgent());
+            device.id = configdevice.id;
+            return device;
         });
         /**
          *  TODO

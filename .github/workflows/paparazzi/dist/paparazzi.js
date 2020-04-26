@@ -35,7 +35,7 @@ class Paparazzi {
          */
         this.setup = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                this.createscaffold();
+                this.createScaffold();
                 this.printer.header(`✨ Setting up the folder structure - ${this.date}`);
             }
             catch (e) {
@@ -45,7 +45,7 @@ class Paparazzi {
         /**
          *  TODO
          */
-        this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
+        this.getCurrent = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 this.printer.header(`🔍 Checking out the last capture session - ${this.date}`);
                 const capture = new capture_1.default(this.config);
@@ -72,9 +72,23 @@ class Paparazzi {
             }
         });
         /**
+         *  TODO
+         */
+        this.resize = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`📦 Resize images`);
+                const capture = new capture_1.default(this.config);
+                yield capture.resize();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
          *  Create the folder structure needed for capturing the screens
          */
-        this.createscaffold = () => __awaiter(this, void 0, void 0, function* () {
+        this.createScaffold = () => __awaiter(this, void 0, void 0, function* () {
             if (!fs.existsSync(this.config.tmpPath)) {
                 yield fs.promises.mkdir(this.config.tmpPath);
             }
@@ -109,11 +123,15 @@ switch (process.argv[2]) {
         break;
     }
     case 'getcurrent': {
-        paparazzi.getcurrent();
+        paparazzi.getCurrent();
         break;
     }
     case 'capture': {
         paparazzi.capture();
+        break;
+    }
+    case 'resize': {
+        paparazzi.resize();
         break;
     }
     default: {

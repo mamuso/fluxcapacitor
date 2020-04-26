@@ -10,6 +10,7 @@
     "setup": "node dist/paparazzi.js setup",
     "getcurrent": "node dist/paparazzi.js getcurrent",
     "capture": "node dist/paparazzi.js capture",
+    "resize": "node dist/paparazzi.js resize",
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",

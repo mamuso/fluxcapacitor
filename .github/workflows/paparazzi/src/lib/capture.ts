@@ -317,16 +317,7 @@ export default class Capture {
       let i = 0
       const iMax = this.config.devices.length
       for (; i < iMax; i++) {
-        const captureDevice = this.config.devices[i]
-        const puppet = await this.browser.newPage()
-
-        let device = (captureDevice.device
-          ? puppeteer.devices[captureDevice.device]
-          : captureDevice) as Device
-        device.userAgent = device.userAgent || (await this.browser.userAgent())
-        device.id = captureDevice.id
-
-        await puppet.emulate(device)
+        const device = await this.setDevice(this.config.devices[i])
 
         this.printer.subHeader(
           `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
@@ -350,6 +341,9 @@ export default class Capture {
           const capture = {} as CaptureType
 
           this.printer.capture(`Capturing ${page.id}`)
+
+          const puppet = await this.browser.newPage()
+          await puppet.emulate(device)
 
           /** Authenticating if needed */
           if (page.auth) {
@@ -405,6 +399,8 @@ export default class Capture {
             fullPage: page.fullPage
           })
 
+          puppet.close()
+
           /** DB page */
           const dbpage = await this.db.createPage(page, this.dbReport)
           capture.page = dbpage.id
@@ -427,6 +423,81 @@ export default class Capture {
     } catch (e) {
       throw e
     }
+  }
+
+  /**
+   *  TODO
+   */
+  resize = async () => {
+    try {
+      this.dbReport = await this.db.createReport()
+      let i = 0
+      const iMax = this.config.devices.length
+      for (; i < iMax; i++) {
+        /** DB device */
+        this.dbDevice = await this.db.getDevice(this.config.devices[i])
+
+        this.printer.subHeader(`🖥  ${this.dbDevice.slug}`)
+
+        /** Looping through URLs */
+        let j = 0
+        const jMax = this.config.pages.length
+        for (; j < jMax; j++) {
+          const page: Page = this.config.pages[j]
+          const filename = `${slugify(page.id)}.${this.config.format}`
+          const localfilepath = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filename}`
+          const filenamemin = `${slugify(page.id)}-min.jpg`
+          const localfilepathmin = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filenamemin}`
+
+          this.printer.resize(`Resizing ${page.id}`)
+
+          const dbpage = await this.db.createPage(page, this.dbReport)
+          const capture = await this.db.getCapture(
+            this.dbReport,
+            this.dbDevice,
+            dbpage
+          )
+
+          /** Resize captured image */
+          await sharp(localfilepath)
+            .resize({
+              width: 800,
+              height: 600,
+              position: sharp.position.top,
+              withoutEnlargement: true
+            })
+            .toFile(localfilepathmin)
+
+          capture.urlmin = await this.store.uploadfile(
+            `${this.config.date}/${this.dbDevice.slug}/${filenamemin}`,
+            localfilepathmin
+          )
+
+          /** Write capture in the DB */
+          await this.db.createCapture(
+            this.dbReport,
+            this.dbDevice,
+            dbpage,
+            capture
+          )
+        }
+      }
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  setDevice = async (configdevice: Device) => {
+    let device = (configdevice.device
+      ? puppeteer.devices[configdevice.device]
+      : configdevice) as Device
+    device.userAgent = device.userAgent || (await this.browser.userAgent())
+    device.id = configdevice.id
+
+    return device
   }
 
   /**

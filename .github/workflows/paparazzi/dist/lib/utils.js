@@ -23,6 +23,9 @@ class Printer {
         this.capture = (text) => {
             console.log(`  └ 🏙  ${text}`);
         };
+        this.resize = (text) => {
+            console.log(`  └ 🌉  ${text}`);
+        };
         this.compare = (text) => {
             console.log(`  └ 🎆  ${text}`);
         };

@@ -62,6 +62,9 @@ export default class DB {
     })
   }
 
+  /**
+   * TODO
+   */
   updateReportUrl = async (report, url) => {
     await this.prisma.report.update({
       where: {id: report.id},
@@ -90,6 +93,19 @@ export default class DB {
         slug: slug,
         name: name,
         specs: specs
+      }
+    })
+  }
+
+  /**
+   * TODO
+   */
+  getDevice = async (device: Device) => {
+    const slug = slugify(device.id)
+
+    return await this.prisma.device.findOne({
+      where: {
+        slug: slug
       }
     })
   }
@@ -169,6 +185,19 @@ export default class DB {
         urldiff: capture.urldiff,
         diff: capture.diff,
         diffindex: capture.diffindex
+      }
+    })
+  }
+
+  /**
+   * TODO.
+   */
+  getCapture = async (report: Report, device: Device, page: Page) => {
+    const slug = slugify(`${report.slug}-${device.slug}-${page.slug}`)
+
+    return await this.prisma.capture.findOne({
+      where: {
+        slug: slug
       }
     })
   }
