@@ -9,6 +9,7 @@
   "scripts": {
     "setup": "node dist/paparazzi.js setup",
     "getcurrent": "node dist/paparazzi.js getcurrent",
+    "capture": "node dist/paparazzi.js capture",
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",

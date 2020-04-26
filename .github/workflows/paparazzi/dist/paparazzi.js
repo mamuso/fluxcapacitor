@@ -30,6 +30,9 @@ const capture_1 = __importDefault(require("./lib/capture"));
 const fs = __importStar(require("fs"));
 class Paparazzi {
     constructor(date, basePath, tmpPath = 'tmp') {
+        /**
+         *  TODO
+         */
         this.setup = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 this.createscaffold();
@@ -39,12 +42,29 @@ class Paparazzi {
                 throw e;
             }
         });
+        /**
+         *  TODO
+         */
         this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 this.printer.header(`🔍 Checking out the last capture session - ${this.date}`);
                 const capture = new capture_1.default(this.config);
                 yield capture.getcurrent();
                 yield capture.downloadcurrent();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.capture = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`🤓 Creating a new caputre session`);
+                const capture = new capture_1.default(this.config);
+                yield capture.capture();
                 yield capture.close();
             }
             catch (e) {
@@ -80,6 +100,9 @@ class Paparazzi {
 const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
 '../../../..' // basepath
 );
+/**
+ *  TODO
+ */
 switch (process.argv[2]) {
     case 'setup': {
         paparazzi.setup();
@@ -87,6 +110,10 @@ switch (process.argv[2]) {
     }
     case 'getcurrent': {
         paparazzi.getcurrent();
+        break;
+    }
+    case 'capture': {
+        paparazzi.capture();
         break;
     }
     default: {

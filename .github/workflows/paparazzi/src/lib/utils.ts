@@ -16,7 +16,7 @@ export default class Printer {
     )
   }
 
-  subheader = (text: string): void => {
+  subHeader = (text: string): void => {
     console.log('')
     console.log(`${text}`)
     console.log(

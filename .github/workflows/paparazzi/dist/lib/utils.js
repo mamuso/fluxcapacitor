@@ -12,7 +12,7 @@ class Printer {
             console.log(`${text}`);
             console.log('-----------------------------------------------------------------------');
         };
-        this.subheader = (text) => {
+        this.subHeader = (text) => {
             console.log('');
             console.log(`${text}`);
             console.log('-----------------------------------------------------------------------');

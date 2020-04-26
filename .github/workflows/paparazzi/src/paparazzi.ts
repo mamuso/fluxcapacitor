@@ -31,6 +31,9 @@ class Paparazzi {
     } as Config
   }
 
+  /**
+   *  TODO
+   */
   setup = async () => {
     try {
       this.createscaffold()
@@ -40,6 +43,9 @@ class Paparazzi {
     }
   }
 
+  /**
+   *  TODO
+   */
   getcurrent = async () => {
     try {
       this.printer.header(
@@ -54,6 +60,19 @@ class Paparazzi {
     }
   }
 
+  /**
+   *  TODO
+   */
+  capture = async () => {
+    try {
+      this.printer.subHeader(`🤓 Creating a new caputre session`)
+      const capture = new Capture(this.config)
+      await capture.capture()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
   /**
    *  Create the folder structure needed for capturing the screens
    */
@@ -82,6 +101,9 @@ const paparazzi = new Paparazzi(
   '../../../..' // basepath
 )
 
+/**
+ *  TODO
+ */
 switch (process.argv[2]) {
   case 'setup': {
     paparazzi.setup()
@@ -89,6 +111,10 @@ switch (process.argv[2]) {
   }
   case 'getcurrent': {
     paparazzi.getcurrent()
+    break
+  }
+  case 'capture': {
+    paparazzi.capture()
     break
   }
   default: {

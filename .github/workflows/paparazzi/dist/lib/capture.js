@@ -34,14 +34,14 @@ const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
 class Capture {
     constructor(config) {
-        this.capture = () => __awaiter(this, void 0, void 0, function* () {
+        this.captureOLD = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 /** Set current and download report */
-                this.printer.subheader(`🔍 Checking out the last capture session`);
+                this.printer.subHeader(`🔍 Checking out the last capture session`);
                 yield this.getcurrent();
                 /** DB report */
-                this.printer.subheader(`🤓 Creating a new caputre session`);
-                this.dbreport = yield this.db.createreport();
+                this.printer.subHeader(`🤓 Creating a new caputre session`);
+                this.dbReport = yield this.db.createReport();
                 this.printer.header(`📷 Capture URLs`);
                 const browser = yield puppeteer_1.default.launch({
                     headless: true,
@@ -60,13 +60,13 @@ class Capture {
                     device.userAgent = device.userAgent || (yield browser.userAgent());
                     device.id = captureDevice.id;
                     yield puppet.emulate(device);
-                    this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
+                    this.printer.subHeader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
                     /** Make device folder */
                     if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
                         yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
                     }
                     /** DB device */
-                    this.dbdevice = yield this.db.createdevice(device);
+                    this.dbDevice = yield this.db.createdevice(device);
                     /** Looping through URLs */
                     let j = 0;
                     const jMax = this.config.pages.length;
@@ -127,14 +127,14 @@ class Capture {
                             fullPage: page.fullPage
                         });
                         /** DB page */
-                        const dbpage = yield this.db.createpage(page, this.dbreport);
+                        const dbpage = yield this.db.createpage(page, this.dbReport);
                         capture.page = dbpage.id;
                         if (this.current) {
                             const currentpath = `${this.config.tmpCurrentPath}/${device.id}`;
                             if (!fs.existsSync(currentpath)) {
                                 yield fs.promises.mkdir(currentpath);
                             }
-                            const currentcapture = yield this.db.getcurrentcapture(dbpage, this.current, this.dbdevice);
+                            const currentcapture = yield this.db.getcurrentcapture(dbpage, this.current, this.dbDevice);
                             if (currentcapture[0] && currentcapture[0].url) {
                                 const res = yield rp.get({
                                     uri: currentcapture[0].url,
@@ -169,16 +169,16 @@ class Capture {
                         if (diff && diff > 0) {
                             capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamediff}`, localfilepathdiff);
                         }
-                        capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
+                        capture.slug = slugify_1.default(`${this.dbReport.slug}-${this.dbDevice.slug}-${page.slug}`);
                         /** Write capture in the DB */
-                        yield this.db.createcapture(this.dbreport, this.dbdevice, dbpage, capture);
+                        yield this.db.createcapture(this.dbReport, this.dbDevice, dbpage, capture);
                         /** Print output */
                         this.printer.capture(page.id);
                     }
                     yield browser.close();
                 }
                 /** Compress folder, upload it, and updates the db */
-                // this.printer.subheader(`🤐 Zipping screenshots`)
+                // this.printer.subHeader(`🤐 Zipping screenshots`)
                 // const zipname = `${this.config.date}.tgz`
                 // await this.compress.dir(
                 //   this.config.tmpDatePath,
@@ -188,9 +188,9 @@ class Capture {
                 //   `archive/${zipname}`,
                 //   `${this.config.tmpPath}/${zipname}`
                 // )
-                // await this.db.updatereporturl(this.dbreport, zipurl)
+                // await this.db.updatereporturl(this.dbReport, zipurl)
                 /** Update the current report */
-                yield this.db.setcurrent(this.dbreport.id);
+                yield this.db.setcurrent(this.dbReport.id);
                 // await this.notify.send()
                 /** Disconnect from the DB */
                 yield this.db.prisma.disconnect();
@@ -199,14 +199,21 @@ class Capture {
                 throw e;
             }
         });
+        /**
+         *  TODO
+         */
         this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
             const currentdb = yield this.db.getcurrent();
             this.current = currentdb[0] ? currentdb[0] : null;
         });
+        /**
+         *  TODO
+         */
         this.downloadcurrent = () => __awaiter(this, void 0, void 0, function* () {
             yield this.current.captures.forEach((capture) => __awaiter(this, void 0, void 0, function* () {
                 const filepath = capture.url.split(this.current.slug)[1];
                 const currentpath = `${this.config.tmpCurrentPath}${filepath}`;
+                this.printer.download(filepath);
                 if (!fs.existsSync(path.dirname(currentpath))) {
                     fs.mkdirSync(path.dirname(currentpath));
                 }
@@ -217,12 +224,49 @@ class Capture {
                 yield fs.promises.writeFile(currentpath, res, {
                     encoding: null
                 });
-                this.printer.download(filepath);
             }));
         });
+        /**
+         *  TODO
+         */
+        this.capture = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.header(`📷 Capture URLs`);
+                this.dbReport = yield this.db.createReport();
+                this.browser = yield puppeteer_1.default.launch({
+                    headless: true,
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                });
+                /** Looping through devices */
+                let i = 0;
+                const iMax = this.config.devices.length;
+                for (; i < iMax; i++) {
+                    const captureDevice = this.config.devices[i];
+                    const puppet = yield this.browser.newPage();
+                    let device = (captureDevice.device
+                        ? puppeteer_1.default.devices[captureDevice.device]
+                        : captureDevice);
+                    device.userAgent = device.userAgent || (yield this.browser.userAgent());
+                    device.id = captureDevice.id;
+                    yield puppet.emulate(device);
+                }
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
         this.close = () => __awaiter(this, void 0, void 0, function* () {
-            /** Disconnect from the DB */
-            yield this.db.prisma.disconnect();
+            /** Close browser session */
+            if (this.browser) {
+                yield this.browser.close();
+            }
+            if (this.db.prisma) {
+                /** Disconnect from the DB */
+                yield this.db.prisma.disconnect();
+            }
         });
         this.printer = new utils_1.default();
         this.config = Object.assign({}, config);
