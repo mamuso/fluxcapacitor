@@ -21,6 +21,7 @@ jobs:
       - run: yarn workspace api run prisma2 generate
       - run: yarn workspace paparazzi setup --production
       - run: yarn workspace paparazzi getcurrent --production
+      - run: yarn workspace paparazzi capture --production
     env:
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}

@@ -66,7 +66,7 @@ class Capture {
                         yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
                     }
                     /** DB device */
-                    this.dbDevice = yield this.db.createdevice(device);
+                    this.dbDevice = yield this.db.createDevice(device);
                     /** Looping through URLs */
                     let j = 0;
                     const jMax = this.config.pages.length;
@@ -127,7 +127,7 @@ class Capture {
                             fullPage: page.fullPage
                         });
                         /** DB page */
-                        const dbpage = yield this.db.createpage(page, this.dbReport);
+                        const dbpage = yield this.db.createPage(page, this.dbReport);
                         capture.page = dbpage.id;
                         if (this.current) {
                             const currentpath = `${this.config.tmpCurrentPath}/${device.id}`;
@@ -171,7 +171,7 @@ class Capture {
                         }
                         capture.slug = slugify_1.default(`${this.dbReport.slug}-${this.dbDevice.slug}-${page.slug}`);
                         /** Write capture in the DB */
-                        yield this.db.createcapture(this.dbReport, this.dbDevice, dbpage, capture);
+                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
                         /** Print output */
                         this.printer.capture(page.id);
                     }
@@ -249,6 +249,75 @@ class Capture {
                     device.userAgent = device.userAgent || (yield this.browser.userAgent());
                     device.id = captureDevice.id;
                     yield puppet.emulate(device);
+                    this.printer.subHeader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
+                    /** Make device folder */
+                    if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
+                        yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
+                    }
+                    /** DB device */
+                    this.dbDevice = yield this.db.createDevice(device);
+                    /** Looping through URLs */
+                    let j = 0;
+                    const jMax = this.config.pages.length;
+                    for (; j < jMax; j++) {
+                        const page = this.config.pages[j];
+                        const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
+                        const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+                        const capture = {};
+                        this.printer.capture(`Capturing ${page.id}`);
+                        /** Authenticating if needed */
+                        if (page.auth) {
+                            if (this.config.auth.cookie) {
+                                yield puppet.setCookie({
+                                    value: 'yes',
+                                    domain: `${process.env.FLUX_DOMAIN}`,
+                                    expires: Date.now() / 1000 + 100,
+                                    name: 'logged_in'
+                                });
+                                yield puppet.setCookie({
+                                    value: `${process.env.FLUX_COOKIE}`,
+                                    domain: `${process.env.FLUX_DOMAIN}`,
+                                    expires: Date.now() / 1000 + 100,
+                                    name: 'user_session'
+                                });
+                            }
+                            else {
+                                yield puppet.goto(this.config.auth.url, {
+                                    waitUntil: 'load'
+                                });
+                                // Login
+                                yield puppet.type(this.config.auth.username, `${process.env.FLUX_LOGIN}`);
+                                yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
+                                yield puppet.click(this.config.auth.submit);
+                            }
+                        }
+                        yield puppet.goto(page.url, { waitUntil: 'load' });
+                        // Scrolling through the page
+                        const vheight = yield puppet.viewport().height;
+                        const pheight = yield puppet.evaluate(_ => {
+                            return document.body.scrollHeight;
+                        });
+                        let v;
+                        while (v + vheight < pheight) {
+                            yield puppet.evaluate(_ => {
+                                window.scrollBy(0, v);
+                            });
+                            yield puppet.waitFor(150);
+                            v = v + vheight;
+                        }
+                        yield puppet.waitFor(500);
+                        yield puppet.screenshot({
+                            path: localfilepath,
+                            fullPage: page.fullPage
+                        });
+                        /** DB page */
+                        const dbpage = yield this.db.createPage(page, this.dbReport);
+                        capture.page = dbpage.id;
+                        /** Upload images */
+                        capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
+                        /** Write capture in the DB */
+                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
+                    }
                 }
             }
             catch (e) {

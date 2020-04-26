@@ -83,7 +83,7 @@ export default class Capture {
         }
 
         /** DB device */
-        this.dbDevice = await this.db.createdevice(device)
+        this.dbDevice = await this.db.createDevice(device)
 
         /** Looping through URLs */
         let j = 0
@@ -155,7 +155,7 @@ export default class Capture {
           })
 
           /** DB page */
-          const dbpage = await this.db.createpage(page, this.dbReport)
+          const dbpage = await this.db.createPage(page, this.dbReport)
           capture.page = dbpage.id
 
           if (this.current) {
@@ -226,7 +226,7 @@ export default class Capture {
           )
 
           /** Write capture in the DB */
-          await this.db.createcapture(
+          await this.db.createCapture(
             this.dbReport,
             this.dbDevice,
             dbpage,
@@ -327,6 +327,102 @@ export default class Capture {
         device.id = captureDevice.id
 
         await puppet.emulate(device)
+
+        this.printer.subHeader(
+          `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
+        )
+
+        /** Make device folder */
+        if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
+          await fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`)
+        }
+
+        /** DB device */
+        this.dbDevice = await this.db.createDevice(device)
+
+        /** Looping through URLs */
+        let j = 0
+        const jMax = this.config.pages.length
+        for (; j < jMax; j++) {
+          const page: Page = this.config.pages[j]
+          const filename = `${slugify(page.id)}.${this.config.format}`
+          const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`
+          const capture = {} as CaptureType
+
+          this.printer.capture(`Capturing ${page.id}`)
+
+          /** Authenticating if needed */
+          if (page.auth) {
+            if (this.config.auth.cookie) {
+              await puppet.setCookie({
+                value: 'yes',
+                domain: `${process.env.FLUX_DOMAIN}`,
+                expires: Date.now() / 1000 + 100,
+                name: 'logged_in'
+              })
+              await puppet.setCookie({
+                value: `${process.env.FLUX_COOKIE}`,
+                domain: `${process.env.FLUX_DOMAIN}`,
+                expires: Date.now() / 1000 + 100,
+                name: 'user_session'
+              })
+            } else {
+              await puppet.goto(this.config.auth.url, {
+                waitUntil: 'load'
+              })
+              // Login
+              await puppet.type(
+                this.config.auth.username,
+                `${process.env.FLUX_LOGIN}`
+              )
+              await puppet.type(
+                this.config.auth.password,
+                `${process.env.FLUX_PASSWORD}`
+              )
+              await puppet.click(this.config.auth.submit)
+            }
+          }
+
+          await puppet.goto(page.url, {waitUntil: 'load'})
+
+          // Scrolling through the page
+          const vheight = await puppet.viewport().height
+          const pheight = await puppet.evaluate(_ => {
+            return document.body.scrollHeight
+          })
+          let v
+          while (v + vheight < pheight) {
+            await puppet.evaluate(_ => {
+              window.scrollBy(0, v)
+            })
+            await puppet.waitFor(150)
+            v = v + vheight
+          }
+          await puppet.waitFor(500)
+
+          await puppet.screenshot({
+            path: localfilepath,
+            fullPage: page.fullPage
+          })
+
+          /** DB page */
+          const dbpage = await this.db.createPage(page, this.dbReport)
+          capture.page = dbpage.id
+
+          /** Upload images */
+          capture.url = await this.store.uploadfile(
+            `${this.config.date}/${device.id}/${filename}`,
+            localfilepath
+          )
+
+          /** Write capture in the DB */
+          await this.db.createCapture(
+            this.dbReport,
+            this.dbDevice,
+            dbpage,
+            capture
+          )
+        }
       }
     } catch (e) {
       throw e
