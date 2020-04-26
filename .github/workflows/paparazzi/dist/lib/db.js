@@ -65,15 +65,6 @@ class DB {
             });
         });
         /**
-         * TODO
-         */
-        this.updateReportUrl = (report, url) => __awaiter(this, void 0, void 0, function* () {
-            yield this.prisma.report.update({
-                where: { id: report.id },
-                data: { url: url }
-            });
-        });
-        /**
          * Inserts or updates a device in the database.
          */
         this.createDevice = (device) => __awaiter(this, void 0, void 0, function* () {
@@ -87,6 +78,7 @@ class DB {
                 create: {
                     slug: slug,
                     name: name,
+                    deviceScaleFactor: device.viewport.deviceScaleFactor,
                     specs: specs
                 },
                 update: {
@@ -154,7 +146,8 @@ class DB {
                     urlmin: capture.urlmin,
                     urldiff: capture.urldiff,
                     diff: capture.diff,
-                    diffindex: capture.diffindex
+                    diffindex: capture.diffindex,
+                    deviceScaleFactor: device.deviceScaleFactor
                 },
                 update: {
                     slug: slug,
@@ -217,21 +210,6 @@ class DB {
                 data: {
                     reportcount: p.length,
                     endsAt: report.slug
-                }
-            });
-        });
-        /**
-         * Inserts or updates a page in the database.
-         */
-        this.getCurrentCapture = (page, report, device) => __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.capture.findMany({
-                where: {
-                    pageId: page.id,
-                    reportId: report.id,
-                    deviceId: device.id
-                },
-                select: {
-                    url: true
                 }
             });
         });

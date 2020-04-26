@@ -38,7 +38,7 @@ class Capture {
             try {
                 /** Set current and download report */
                 this.printer.subHeader(`🔍 Checking out the last capture session`);
-                yield this.getcurrent();
+                yield this.getCurrent();
                 /** DB report */
                 this.printer.subHeader(`🤓 Creating a new caputre session`);
                 this.dbReport = yield this.db.createReport();
@@ -134,7 +134,7 @@ class Capture {
                             if (!fs.existsSync(currentpath)) {
                                 yield fs.promises.mkdir(currentpath);
                             }
-                            const currentcapture = yield this.db.getcurrentcapture(dbpage, this.current, this.dbDevice);
+                            const currentcapture = yield this.db.getCurrentcapture(dbpage, this.current, this.dbDevice);
                             if (currentcapture[0] && currentcapture[0].url) {
                                 const res = yield rp.get({
                                     uri: currentcapture[0].url,
@@ -202,14 +202,21 @@ class Capture {
         /**
          *  TODO
          */
-        this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
-            const currentdb = yield this.db.getcurrent();
+        this.getCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            const currentdb = yield this.db.getCurrent();
             this.current = currentdb[0] ? currentdb[0] : null;
         });
         /**
          *  TODO
          */
-        this.downloadcurrent = () => __awaiter(this, void 0, void 0, function* () {
+        this.setCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            const currentdb = yield this.db.getCurrent();
+            this.current = currentdb[0] ? currentdb[0] : null;
+        });
+        /**
+         *  TODO
+         */
+        this.downloadCurrent = () => __awaiter(this, void 0, void 0, function* () {
             yield this.current.captures.forEach((capture) => __awaiter(this, void 0, void 0, function* () {
                 const filepath = capture.url.split(this.current.slug)[1];
                 const currentpath = `${this.config.tmpCurrentPath}${filepath}`;
@@ -366,12 +373,60 @@ class Capture {
         /**
          *  TODO
          */
+        this.compareReports = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.dbReport = yield this.db.createReport();
+                let i = 0;
+                const iMax = this.config.devices.length;
+                for (; i < iMax; i++) {
+                    /** DB device */
+                    this.dbDevice = yield this.db.getDevice(this.config.devices[i]);
+                    this.printer.subHeader(`🖥  ${this.dbDevice.slug}`);
+                    /** Looping through URLs */
+                    let j = 0;
+                    const jMax = this.config.pages.length;
+                    for (; j < jMax; j++) {
+                        const page = this.config.pages[j];
+                        const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
+                        const localfilepath = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filename}`;
+                        const currentfilepath = `${this.config.tmpCurrentPath}/${this.dbDevice.slug}/${filename}`;
+                        const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
+                        const localfilepathdiff = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filenamediff}`;
+                        let diff = null;
+                        this.printer.compare(`${page.id}`);
+                        const dbpage = yield this.db.createPage(page, this.dbReport);
+                        let capture = yield this.db.getCapture(this.dbReport, this.dbDevice, dbpage);
+                        /** Compare */
+                        diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
+                        if (diff && diff !== 0) {
+                            capture.diff = true;
+                            capture.diffindex = diff;
+                        }
+                        else {
+                            capture.diff = false;
+                        }
+                        if (diff && diff > 0) {
+                            capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${this.dbDevice.slug}/${filenamediff}`, localfilepathdiff);
+                        }
+                        /** Write capture in the DB */
+                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
+                    }
+                }
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
         this.setDevice = (configdevice) => __awaiter(this, void 0, void 0, function* () {
             let device = (configdevice.device
                 ? puppeteer_1.default.devices[configdevice.device]
                 : configdevice);
             device.userAgent = device.userAgent || (yield this.browser.userAgent());
             device.id = configdevice.id;
+            device.deviceScaleFactor = device.viewport.deviceScaleFactor;
             return device;
         });
         /**

@@ -49,7 +49,7 @@ export default class Compare {
         imageHeight,
         {
           threshold: 0.1,
-          diffColor: [193, 111, 185]
+          diffColor: [217, 80, 89]
         }
       )
 

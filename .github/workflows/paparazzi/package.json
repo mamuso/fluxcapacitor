@@ -11,6 +11,7 @@
     "getcurrent": "node dist/paparazzi.js getcurrent",
     "capture": "node dist/paparazzi.js capture",
     "resize": "node dist/paparazzi.js resize",
+    "compare": "node dist/paparazzi.js compare",
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",

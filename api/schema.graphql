@@ -19,6 +19,7 @@ type Capture {
 input CaptureCreateInput {
   createdAt: DateTime
   device: DeviceCreateOneWithoutCapturesInput!
+  deviceScaleFactor: Int
   diff: Boolean
   diffindex: Float
   id: String
@@ -47,6 +48,7 @@ input CaptureCreateManyWithoutReportInput {
 
 input CaptureCreateWithoutDeviceInput {
   createdAt: DateTime
+  deviceScaleFactor: Int
   diff: Boolean
   diffindex: Float
   id: String
@@ -61,6 +63,7 @@ input CaptureCreateWithoutDeviceInput {
 input CaptureCreateWithoutPageInput {
   createdAt: DateTime
   device: DeviceCreateOneWithoutCapturesInput!
+  deviceScaleFactor: Int
   diff: Boolean
   diffindex: Float
   id: String
@@ -74,6 +77,7 @@ input CaptureCreateWithoutPageInput {
 input CaptureCreateWithoutReportInput {
   createdAt: DateTime
   device: DeviceCreateOneWithoutCapturesInput!
+  deviceScaleFactor: Int
   diff: Boolean
   diffindex: Float
   id: String
@@ -103,6 +107,7 @@ type Device {
 input DeviceCreateInput {
   captures: CaptureCreateManyWithoutDeviceInput
   createdAt: DateTime
+  deviceScaleFactor: Int
   id: String
   name: String!
   slug: String!
@@ -116,6 +121,7 @@ input DeviceCreateOneWithoutCapturesInput {
 
 input DeviceCreateWithoutCapturesInput {
   createdAt: DateTime
+  deviceScaleFactor: Int
   id: String
   name: String!
   slug: String!
@@ -209,7 +215,6 @@ type Report {
   pagecount: Int
   pages(after: PageWhereUniqueInput, before: PageWhereUniqueInput, first: Int, last: Int, skip: Int): [Page!]!
   slug: String!
-  url: String
 }
 
 input ReportCreateInput {
@@ -220,7 +225,7 @@ input ReportCreateInput {
   pagecount: Int
   pages: PageCreateManyWithoutReportsInput
   slug: String!
-  url: String
+  visible: Boolean
 }
 
 input ReportCreateManyWithoutPagesInput {
@@ -240,7 +245,7 @@ input ReportCreateWithoutCapturesInput {
   pagecount: Int
   pages: PageCreateManyWithoutReportsInput
   slug: String!
-  url: String
+  visible: Boolean
 }
 
 input ReportCreateWithoutPagesInput {
@@ -250,7 +255,7 @@ input ReportCreateWithoutPagesInput {
   id: String
   pagecount: Int
   slug: String!
-  url: String
+  visible: Boolean
 }
 
 input ReportWhereUniqueInput {

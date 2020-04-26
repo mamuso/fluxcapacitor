@@ -63,16 +63,6 @@ export default class DB {
   }
 
   /**
-   * TODO
-   */
-  updateReportUrl = async (report, url) => {
-    await this.prisma.report.update({
-      where: {id: report.id},
-      data: {url: url}
-    })
-  }
-
-  /**
    * Inserts or updates a device in the database.
    */
   createDevice = async (device: Device) => {
@@ -87,6 +77,7 @@ export default class DB {
       create: {
         slug: slug,
         name: name,
+        deviceScaleFactor: device.viewport.deviceScaleFactor,
         specs: specs
       },
       update: {
@@ -167,7 +158,8 @@ export default class DB {
         urlmin: capture.urlmin,
         urldiff: capture.urldiff,
         diff: capture.diff,
-        diffindex: capture.diffindex
+        diffindex: capture.diffindex,
+        deviceScaleFactor: device.deviceScaleFactor
       },
       update: {
         slug: slug,
@@ -236,22 +228,6 @@ export default class DB {
       data: {
         reportcount: p.length,
         endsAt: report.slug
-      }
-    })
-  }
-
-  /**
-   * Inserts or updates a page in the database.
-   */
-  getCurrentCapture = async (page: Page, report: Report, device: Device) => {
-    return await this.prisma.capture.findMany({
-      where: {
-        pageId: page.id,
-        reportId: report.id,
-        deviceId: device.id
-      },
-      select: {
-        url: true
       }
     })
   }

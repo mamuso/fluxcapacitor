@@ -49,8 +49,22 @@ class Paparazzi {
             try {
                 this.printer.header(`🔍 Checking out the last capture session - ${this.date}`);
                 const capture = new capture_1.default(this.config);
-                yield capture.getcurrent();
-                yield capture.downloadcurrent();
+                yield capture.getCurrent();
+                yield capture.downloadCurrent();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.setCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.header(`✨ Updating the current report - ${this.date}`);
+                const capture = new capture_1.default(this.config);
+                yield capture.setCurrent();
                 yield capture.close();
             }
             catch (e) {
@@ -79,6 +93,20 @@ class Paparazzi {
                 this.printer.subHeader(`📦 Resize images`);
                 const capture = new capture_1.default(this.config);
                 yield capture.resize();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.compare = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`🤔 Compare images`);
+                const capture = new capture_1.default(this.config);
+                yield capture.compareReports();
                 yield capture.close();
             }
             catch (e) {
@@ -132,6 +160,14 @@ switch (process.argv[2]) {
     }
     case 'resize': {
         paparazzi.resize();
+        break;
+    }
+    case 'compare': {
+        paparazzi.compare();
+        break;
+    }
+    case 'setcurrent': {
+        paparazzi.setCurrent();
         break;
     }
     default: {

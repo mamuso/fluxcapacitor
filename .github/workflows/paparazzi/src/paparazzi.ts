@@ -52,8 +52,22 @@ class Paparazzi {
         `🔍 Checking out the last capture session - ${this.date}`
       )
       const capture = new Capture(this.config)
-      await capture.getcurrent()
-      await capture.downloadcurrent()
+      await capture.getCurrent()
+      await capture.downloadCurrent()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  setCurrent = async () => {
+    try {
+      this.printer.header(`✨ Updating the current report - ${this.date}`)
+      const capture = new Capture(this.config)
+      await capture.setCurrent()
       await capture.close()
     } catch (e) {
       throw e
@@ -82,6 +96,20 @@ class Paparazzi {
       this.printer.subHeader(`📦 Resize images`)
       const capture = new Capture(this.config)
       await capture.resize()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  compare = async () => {
+    try {
+      this.printer.subHeader(`🤔 Compare images`)
+      const capture = new Capture(this.config)
+      await capture.compareReports()
       await capture.close()
     } catch (e) {
       throw e
@@ -134,6 +162,14 @@ switch (process.argv[2]) {
   }
   case 'resize': {
     paparazzi.resize()
+    break
+  }
+  case 'compare': {
+    paparazzi.compare()
+    break
+  }
+  case 'setcurrent': {
+    paparazzi.setCurrent()
     break
   }
   default: {
