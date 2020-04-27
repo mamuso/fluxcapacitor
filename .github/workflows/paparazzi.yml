@@ -7,40 +7,44 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  steps:
-    - name: Get current time
-      uses: srfrnk/current-time@master
-      id: current-time
-      with:
-        format: YYYY-MM-DD
-    - name: Take screenshots
-      runs-on: ubuntu-latest
-      container: mamuso/fluxcapacitor:latest
-      steps:
-        - name: Get current time
-          uses: srfrnk/current-time@master
-          id: current-time
-          with:
-            format: YYYY-MM-DD
-        - uses: actions/checkout@v2
-        - uses: actions/setup-node@v1
-          with:
-            node-version: "13.x"
-        - run: npm install -g yarn
-        - run: yarn install --production
-        - run: yarn workspace api run prisma2 generate
-        - run: yarn workspace paparazzi setup --production
-        - run: yarn workspace paparazzi getcurrent --production
-        - run: yarn workspace paparazzi capture --production
-        - run: yarn workspace paparazzi resize --production
-        - run: yarn workspace paparazzi compare --production
-        - run: yarn workspace paparazzi setcurrent --production
-      env:
-        TIME: ${{ steps.current-time.outputs.time }}
-        POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-        AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-        SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-        FLUX_LOGIN: ${{ secrets.FLUX_LOGIN }}
-        FLUX_PASSWORD: ${{ secrets.FLUX_PASSWORD }}
-        FLUX_COOKIE: ${{ secrets.FLUX_COOKIE }}
-        FLUX_DOMAIN: ${{ secrets.FLUX_DOMAIN }}
+  step:
+    name: Take screenshots
+    runs-on: ubuntu-latest
+    container: mamuso/fluxcapacitor:latest
+    steps:
+      - name: Get current time
+        uses: srfrnk/current-time@master
+        id: current-time
+        with:
+          format: YYYY-MM-DD
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "13.x"
+      - run: npm install -g yarn
+      - run: yarn install --production
+      - run: yarn workspace api run prisma2 generate
+      - run: yarn workspace paparazzi setup --production
+        env:
+          TIME: ${{ steps.current-time.outputs.time }}
+      - run: yarn workspace paparazzi getcurrent --production
+        env:
+          TIME: ${{ steps.current-time.outputs.time }}
+      - run: yarn workspace paparazzi capture --production
+        env:
+          TIME: ${{ steps.current-time.outputs.time }}
+      - run: yarn workspace paparazzi resize --production
+        env:
+          TIME: ${{ steps.current-time.outputs.time }}
+      - run: yarn workspace paparazzi compare --production
+        env:
+          TIME: ${{ steps.current-time.outputs.time }}
+      - run: yarn workspace paparazzi setcurrent --production
+    env:
+      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      FLUX_LOGIN: ${{ secrets.FLUX_LOGIN }}
+      FLUX_PASSWORD: ${{ secrets.FLUX_PASSWORD }}
+      FLUX_COOKIE: ${{ secrets.FLUX_COOKIE }}
+      FLUX_DOMAIN: ${{ secrets.FLUX_DOMAIN }}
