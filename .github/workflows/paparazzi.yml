@@ -17,6 +17,9 @@ jobs:
         id: current-time
         with:
           format: YYYY-MM-DD
+      - run: echo $TIME
+        env:
+          TIME: ${{ steps.current-time.outputs.time }}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
