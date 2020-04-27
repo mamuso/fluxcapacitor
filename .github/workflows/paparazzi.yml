@@ -2,7 +2,6 @@ name: 📷 Paparazzi
 
 on: push
 
-
 env:
   CI: true
   FORCE_COLOR: 1
@@ -18,7 +17,7 @@ jobs:
         id: current-time
         with:
           format: YYYY-MM-DD
-        run: echo $TIME
+      - run: echo $TIME
     env:
       TIME: ${{ steps.current-time.outputs.time }}
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
