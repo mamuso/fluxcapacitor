@@ -140,7 +140,7 @@ class Paparazzi {
 }
 
 const paparazzi = new Paparazzi(
-  new Date().toISOString().split('T')[0], // date
+  process.env.TIME ? process.env.TIME : new Date().toISOString().split('T')[0], // date
   '../../../..' // basepath
 )
 
