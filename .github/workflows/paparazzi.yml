@@ -1,6 +1,8 @@
 name: 📷 Paparazzi
 
-on: push
+on:
+  schedule:
+    - cron: 0 0 */3 * *
 
 env:
   CI: true
@@ -17,9 +19,6 @@ jobs:
         id: current-time
         with:
           format: YYYY-MM-DD
-      - run: echo $TIME
-        env:
-          TIME: ${{ steps.current-time.outputs.formattedTime }}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
@@ -43,6 +42,8 @@ jobs:
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
       - run: yarn workspace paparazzi setcurrent --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
     env:
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
