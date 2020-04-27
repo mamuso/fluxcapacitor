@@ -925,6 +925,77 @@
       "id": "education-benefits",
       "url": "https://education.github.com/benefits",
       "fullPage": true
+    },
+    {
+      "id": "classroom",
+      "url": "https://classroom.github.com/",
+      "fullPage": true
+    },
+    {
+      "id": "classroom-dashboard",
+      "url": "https://classroom.github.com/classrooms",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-assignmets",
+      "url": "https://classroom.github.com/classrooms/23494477-pluginbakery-classroom",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-students",
+      "url": "https://classroom.github.com/classrooms/23494477-pluginbakery-classroom/roster",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-admins",
+      "url": "https://classroom.github.com/classrooms/23494477-pluginbakery-classroom/settings/invitations",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-settings",
+      "url": "https://classroom.github.com/classrooms/23494477-pluginbakery-classroom/settings",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-assignmets-assignment",
+      "url": "https://classroom.github.com/classrooms/23494477-pluginbakery-classroom/assignments/this-is-an-assignment",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-new-individual-assignment",
+      "url": "https://classroom.github.com/classrooms/23494477-pluginbakery-classroom/assignments/new",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-new",
+      "url": "https://classroom.github.com/classrooms/new",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-new",
+      "url": "https://classroom.github.com/classrooms/new",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-new-setup",
+      "url": "https://classroom.github.com/classrooms/23494477-awesome-classroom/setup",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "classroom-new-invite",
+      "url": "https://classroom.github.com/classrooms/23494477-awesome-classroom/invite",
+      "fullPage": true,
+      "auth": true
     }
   ]
 }
