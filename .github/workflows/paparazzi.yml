@@ -1,6 +1,6 @@
 name: 📷 Paparazzi
 
-on: 
+on:
   schedule:
     - cron: 0 0 */3 * *
 
