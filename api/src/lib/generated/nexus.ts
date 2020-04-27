@@ -23,6 +23,7 @@ export interface NexusGenInputs {
   CaptureCreateInput: { // input type
     createdAt?: any | null; // DateTime
     device: NexusGenInputs['DeviceCreateOneWithoutCapturesInput']; // DeviceCreateOneWithoutCapturesInput!
+    deviceScaleFactor?: number | null; // Int
     diff?: boolean | null; // Boolean
     diffindex?: number | null; // Float
     id?: string | null; // String
@@ -47,6 +48,7 @@ export interface NexusGenInputs {
   }
   CaptureCreateWithoutDeviceInput: { // input type
     createdAt?: any | null; // DateTime
+    deviceScaleFactor?: number | null; // Int
     diff?: boolean | null; // Boolean
     diffindex?: number | null; // Float
     id?: string | null; // String
@@ -60,6 +62,7 @@ export interface NexusGenInputs {
   CaptureCreateWithoutPageInput: { // input type
     createdAt?: any | null; // DateTime
     device: NexusGenInputs['DeviceCreateOneWithoutCapturesInput']; // DeviceCreateOneWithoutCapturesInput!
+    deviceScaleFactor?: number | null; // Int
     diff?: boolean | null; // Boolean
     diffindex?: number | null; // Float
     id?: string | null; // String
@@ -72,6 +75,7 @@ export interface NexusGenInputs {
   CaptureCreateWithoutReportInput: { // input type
     createdAt?: any | null; // DateTime
     device: NexusGenInputs['DeviceCreateOneWithoutCapturesInput']; // DeviceCreateOneWithoutCapturesInput!
+    deviceScaleFactor?: number | null; // Int
     diff?: boolean | null; // Boolean
     diffindex?: number | null; // Float
     id?: string | null; // String
@@ -88,6 +92,7 @@ export interface NexusGenInputs {
   DeviceCreateInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutDeviceInput'] | null; // CaptureCreateManyWithoutDeviceInput
     createdAt?: any | null; // DateTime
+    deviceScaleFactor?: number | null; // Int
     id?: string | null; // String
     name: string; // String!
     slug: string; // String!
@@ -99,6 +104,7 @@ export interface NexusGenInputs {
   }
   DeviceCreateWithoutCapturesInput: { // input type
     createdAt?: any | null; // DateTime
+    deviceScaleFactor?: number | null; // Int
     id?: string | null; // String
     name: string; // String!
     slug: string; // String!
@@ -159,7 +165,7 @@ export interface NexusGenInputs {
     pagecount?: number | null; // Int
     pages?: NexusGenInputs['PageCreateManyWithoutReportsInput'] | null; // PageCreateManyWithoutReportsInput
     slug: string; // String!
-    url?: string | null; // String
+    visible?: boolean | null; // Boolean
   }
   ReportCreateManyWithoutPagesInput: { // input type
     connect?: NexusGenInputs['ReportWhereUniqueInput'][] | null; // [ReportWhereUniqueInput!]
@@ -176,7 +182,7 @@ export interface NexusGenInputs {
     pagecount?: number | null; // Int
     pages?: NexusGenInputs['PageCreateManyWithoutReportsInput'] | null; // PageCreateManyWithoutReportsInput
     slug: string; // String!
-    url?: string | null; // String
+    visible?: boolean | null; // Boolean
   }
   ReportCreateWithoutPagesInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutReportInput'] | null; // CaptureCreateManyWithoutReportInput
@@ -185,7 +191,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     pagecount?: number | null; // Int
     slug: string; // String!
-    url?: string | null; // String
+    visible?: boolean | null; // Boolean
   }
   ReportWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -242,6 +248,7 @@ export interface NexusGenFieldTypes {
   Capture: { // field return type
     createdAt: any; // DateTime!
     device: NexusGenRootTypes['Device']; // Device!
+    deviceScaleFactor: number | null; // Int
     diff: boolean; // Boolean!
     diffindex: number | null; // Float
     id: string; // String!
@@ -255,6 +262,7 @@ export interface NexusGenFieldTypes {
   Device: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
     createdAt: any; // DateTime!
+    deviceScaleFactor: number | null; // Int
     id: string; // String!
     name: string; // String!
     slug: string; // String!
@@ -290,7 +298,6 @@ export interface NexusGenFieldTypes {
     pagecount: number | null; // Int
     pages: NexusGenRootTypes['Page'][]; // [Page!]!
     slug: string; // String!
-    url: string | null; // String
   }
 }
 

@@ -30,20 +30,93 @@ const capture_1 = __importDefault(require("./lib/capture"));
 const fs = __importStar(require("fs"));
 class Paparazzi {
     constructor(date, basePath, tmpPath = 'tmp') {
-        this.process = () => __awaiter(this, void 0, void 0, function* () {
+        /**
+         *  TODO
+         */
+        this.setup = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                this.setup();
-                this.printer.header(`✨ Paparazzi - ${this.date}`);
+                this.createScaffold();
+                this.printer.header(`✨ Setting up the folder structure - ${this.date}`);
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.getCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.header(`🔍 Checking out the last capture session - ${this.date}`);
+                const capture = new capture_1.default(this.config);
+                yield capture.getCurrent();
+                yield capture.downloadCurrent();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.setCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.header(`✨ Updating the current report - ${this.date}`);
+                const capture = new capture_1.default(this.config);
+                yield capture.setCurrent();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.capture = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`🤓 Creating a new caputre session`);
                 const capture = new capture_1.default(this.config);
                 yield capture.capture();
-                yield this.cleanup();
+                yield capture.close();
             }
-            catch (e) { }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.resize = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`📦 Resize images`);
+                const capture = new capture_1.default(this.config);
+                yield capture.resize();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.compare = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`🤔 Compare images`);
+                const capture = new capture_1.default(this.config);
+                yield capture.compareReports();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
         });
         /**
          *  Create the folder structure needed for capturing the screens
          */
-        this.setup = () => __awaiter(this, void 0, void 0, function* () {
+        this.createScaffold = () => __awaiter(this, void 0, void 0, function* () {
             if (!fs.existsSync(this.config.tmpPath)) {
                 yield fs.promises.mkdir(this.config.tmpPath);
             }
@@ -64,9 +137,41 @@ class Paparazzi {
         this.date = date;
         this.basePath = basePath;
         this.config = Object.assign({ date: this.date, basePath: this.basePath, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${this.date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`${this.basePath}/fluxcapacitor-config`));
-        this.process();
     }
 }
-const paparazzi = new Paparazzi(new Date().toISOString().split('T')[0], // date
+const paparazzi = new Paparazzi(process.env.TIME ? process.env.TIME : new Date().toISOString().split('T')[0], // date
 '../../../..' // basepath
 );
+/**
+ *  TODO
+ */
+switch (process.argv[2]) {
+    case 'setup': {
+        paparazzi.setup();
+        break;
+    }
+    case 'getcurrent': {
+        paparazzi.getCurrent();
+        break;
+    }
+    case 'capture': {
+        paparazzi.capture();
+        break;
+    }
+    case 'resize': {
+        paparazzi.resize();
+        break;
+    }
+    case 'compare': {
+        paparazzi.compare();
+        break;
+    }
+    case 'setcurrent': {
+        paparazzi.setCurrent();
+        break;
+    }
+    default: {
+        //statements;
+        break;
+    }
+}

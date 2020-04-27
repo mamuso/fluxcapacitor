@@ -8,7 +8,6 @@ export const Report = objectType({
   definition(t) {
     t.model.id();
     t.model.slug();
-    t.model.url();
     t.model.current();
     t.model.pages({ type: "Page" });
     t.model.pagecount();
@@ -44,6 +43,7 @@ export const Capture = objectType({
     t.model.page({ type: "Page" });
     t.model.report({ type: "Report" });
     t.model.device({ type: "Device" });
+    t.model.deviceScaleFactor();
     t.model.createdAt();
   },
 });
@@ -55,6 +55,7 @@ export const Device = objectType({
     t.model.slug();
     t.model.name();
     t.model.specs();
+    t.model.deviceScaleFactor();
     t.model.captures({ type: "Capture" });
     t.model.createdAt();
   },

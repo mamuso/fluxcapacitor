@@ -19,17 +19,20 @@ class DB {
         /**
          * Get current.
          */
-        this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
+        this.getCurrent = () => __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.report.findMany({
                 where: {
                     current: true
+                },
+                include: {
+                    captures: true
                 }
             });
         });
         /**
          * Sets the new current.
          */
-        this.setcurrent = (report) => __awaiter(this, void 0, void 0, function* () {
+        this.setCurrent = (report) => __awaiter(this, void 0, void 0, function* () {
             yield this.prisma.report.updateMany({
                 where: {
                     current: true
@@ -41,14 +44,15 @@ class DB {
             yield this.prisma.report.update({
                 where: { id: report },
                 data: {
-                    current: true
+                    current: true,
+                    visible: true
                 }
             });
         });
         /**
          * Inserts a report in the database.
          */
-        this.createreport = () => __awaiter(this, void 0, void 0, function* () {
+        this.createReport = () => __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.report.upsert({
                 where: {
                     slug: `${this.config.date}`
@@ -61,16 +65,10 @@ class DB {
                 }
             });
         });
-        this.updatereporturl = (report, url) => __awaiter(this, void 0, void 0, function* () {
-            yield this.prisma.report.update({
-                where: { id: report.id },
-                data: { url: url }
-            });
-        });
         /**
          * Inserts or updates a device in the database.
          */
-        this.createdevice = (device) => __awaiter(this, void 0, void 0, function* () {
+        this.createDevice = (device) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(device.id);
             const name = device.id;
             const specs = `${device.viewport.width}x${device.viewport.height} @${device.viewport.deviceScaleFactor}x – ${device.userAgent}`;
@@ -81,6 +79,7 @@ class DB {
                 create: {
                     slug: slug,
                     name: name,
+                    deviceScaleFactor: device.viewport.deviceScaleFactor,
                     specs: specs
                 },
                 update: {
@@ -91,9 +90,20 @@ class DB {
             });
         });
         /**
+         * TODO
+         */
+        this.getDevice = (device) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(device.id);
+            return yield this.prisma.device.findOne({
+                where: {
+                    slug: slug
+                }
+            });
+        });
+        /**
          * Inserts or updates a page in the database.
          */
-        this.createpage = (page, report) => __awaiter(this, void 0, void 0, function* () {
+        this.createPage = (page, report) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(page.id);
             const url = page.url;
             const p = yield this.prisma.page.upsert({
@@ -110,13 +120,13 @@ class DB {
                     url: url
                 }
             });
-            yield this.addpagetoreport(report, p);
+            yield this.addPageToReport(report, p);
             return p;
         });
         /**
          * Inserts or updates a capture in the database.
          */
-        this.createcapture = (report, device, page, capture) => __awaiter(this, void 0, void 0, function* () {
+        this.createCapture = (report, device, page, capture) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(`${report.slug}-${device.slug}-${page.slug}`);
             return yield this.prisma.capture.upsert({
                 where: {
@@ -137,7 +147,8 @@ class DB {
                     urlmin: capture.urlmin,
                     urldiff: capture.urldiff,
                     diff: capture.diff,
-                    diffindex: capture.diffindex
+                    diffindex: capture.diffindex,
+                    deviceScaleFactor: device.deviceScaleFactor
                 },
                 update: {
                     slug: slug,
@@ -159,9 +170,20 @@ class DB {
             });
         });
         /**
+         * TODO.
+         */
+        this.getCapture = (report, device, page) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(`${report.slug}-${device.slug}-${page.slug}`);
+            return yield this.prisma.capture.findOne({
+                where: {
+                    slug: slug
+                }
+            });
+        });
+        /**
          * Connect pages and reports.
          */
-        this.addpagetoreport = (report, page) => __awaiter(this, void 0, void 0, function* () {
+        this.addPageToReport = (report, page) => __awaiter(this, void 0, void 0, function* () {
             /** TODO: I'm sure there is a better way of doing this */
             const r = yield this.prisma.report
                 .update({

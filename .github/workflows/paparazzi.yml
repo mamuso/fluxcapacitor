@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     container: mamuso/fluxcapacitor:latest
     steps:
+      - name: Get current time
+        uses: srfrnk/current-time@master
+        id: current-time
+        with:
+          format: YYYY-MM-DD
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
@@ -21,7 +26,24 @@ jobs:
       - run: npm install -g yarn
       - run: yarn install --production
       - run: yarn workspace api run prisma2 generate
-      - run: yarn run paparazzi --unhandled-rejections=strict --production
+      - run: yarn workspace paparazzi setup --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
+      - run: yarn workspace paparazzi getcurrent --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
+      - run: yarn workspace paparazzi capture --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
+      - run: yarn workspace paparazzi resize --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
+      - run: yarn workspace paparazzi compare --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
+      - run: yarn workspace paparazzi setcurrent --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
     env:
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}

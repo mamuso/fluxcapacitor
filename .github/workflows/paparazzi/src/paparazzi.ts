@@ -29,24 +29,97 @@ class Paparazzi {
       tmpCurrentPath: `${tmpPath}/current`,
       ...require(`${this.basePath}/fluxcapacitor-config`)
     } as Config
-
-    this.process()
   }
 
-  process = async (): Promise<void> => {
+  /**
+   *  TODO
+   */
+  setup = async () => {
     try {
-      this.setup()
-      this.printer.header(`✨ Paparazzi - ${this.date}`)
+      this.createScaffold()
+      this.printer.header(`✨ Setting up the folder structure - ${this.date}`)
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  getCurrent = async () => {
+    try {
+      this.printer.header(
+        `🔍 Checking out the last capture session - ${this.date}`
+      )
+      const capture = new Capture(this.config)
+      await capture.getCurrent()
+      await capture.downloadCurrent()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  setCurrent = async () => {
+    try {
+      this.printer.header(`✨ Updating the current report - ${this.date}`)
+      const capture = new Capture(this.config)
+      await capture.setCurrent()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  capture = async () => {
+    try {
+      this.printer.subHeader(`🤓 Creating a new caputre session`)
       const capture = new Capture(this.config)
       await capture.capture()
-      await this.cleanup()
-    } catch (e) {}
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  resize = async () => {
+    try {
+      this.printer.subHeader(`📦 Resize images`)
+      const capture = new Capture(this.config)
+      await capture.resize()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
+   *  TODO
+   */
+  compare = async () => {
+    try {
+      this.printer.subHeader(`🤔 Compare images`)
+      const capture = new Capture(this.config)
+      await capture.compareReports()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
   }
 
   /**
    *  Create the folder structure needed for capturing the screens
    */
-  setup = async () => {
+  createScaffold = async () => {
     if (!fs.existsSync(this.config.tmpPath)) {
       await fs.promises.mkdir(this.config.tmpPath)
     }
@@ -67,6 +140,40 @@ class Paparazzi {
 }
 
 const paparazzi = new Paparazzi(
-  new Date().toISOString().split('T')[0], // date
+  process.env.TIME ? process.env.TIME : new Date().toISOString().split('T')[0], // date
   '../../../..' // basepath
 )
+
+/**
+ *  TODO
+ */
+switch (process.argv[2]) {
+  case 'setup': {
+    paparazzi.setup()
+    break
+  }
+  case 'getcurrent': {
+    paparazzi.getCurrent()
+    break
+  }
+  case 'capture': {
+    paparazzi.capture()
+    break
+  }
+  case 'resize': {
+    paparazzi.resize()
+    break
+  }
+  case 'compare': {
+    paparazzi.compare()
+    break
+  }
+  case 'setcurrent': {
+    paparazzi.setCurrent()
+    break
+  }
+  default: {
+    //statements;
+    break
+  }
+}

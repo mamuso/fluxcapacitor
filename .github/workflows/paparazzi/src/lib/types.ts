@@ -27,6 +27,7 @@ export type Device = {
   name: string
   device: string
   userAgent: string
+  deviceScaleFactor: number
   viewport: {
     width: number
     height: number
@@ -37,7 +38,6 @@ export type Device = {
 export type Report = {
   id: string
   slug: string
-  url: string
   current: boolean
   pages: [Page]
   pagecount: number
@@ -60,6 +60,7 @@ export type Page = {
 export type CaptureType = {
   id: string
   slug: string
+  deviceScaleFactor: number
   url: string
   urlmin: string
   urldiff: string

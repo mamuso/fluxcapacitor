@@ -257,20 +257,20 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     reports: {
-  filtering: 'id' | 'slug' | 'url' | 'current' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
-  ordering: 'id' | 'slug' | 'url' | 'current' | 'pagecount' | 'createdAt'
+  filtering: 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
 }
     pages: {
   filtering: 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
 }
     devices: {
-  filtering: 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
-  ordering: 'id' | 'slug' | 'name' | 'specs' | 'createdAt'
+  filtering: 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'deviceScaleFactor' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  ordering: 'id' | 'slug' | 'name' | 'specs' | 'deviceScaleFactor' | 'createdAt'
 }
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
 
   },
@@ -280,24 +280,24 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
 }
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
 
   },  Page: {
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
     reports: {
-  filtering: 'id' | 'slug' | 'url' | 'current' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
-  ordering: 'id' | 'slug' | 'url' | 'current' | 'pagecount' | 'createdAt'
+  filtering: 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
 }
 
   },  Device: {
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
 }
 
   },  Capture: {
@@ -348,8 +348,8 @@ interface NexusPrismaTypes {
   Report: {
     id: 'String'
     slug: 'String'
-    url: 'String'
     current: 'Boolean'
+    visible: 'Boolean'
     pages: 'Page'
     pagecount: 'Int'
     captures: 'Capture'
@@ -372,6 +372,7 @@ interface NexusPrismaTypes {
     name: 'String'
     specs: 'String'
     captures: 'Capture'
+    deviceScaleFactor: 'Int'
     createdAt: 'DateTime'
 
 },  Capture: {
@@ -382,6 +383,7 @@ interface NexusPrismaTypes {
     urldiff: 'String'
     diff: 'Boolean'
     diffindex: 'Float'
+    deviceScaleFactor: 'Int'
     page: 'Page'
     pageId: 'String'
     report: 'Report'

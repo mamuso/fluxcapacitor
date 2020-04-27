@@ -37,8 +37,8 @@ class Compare {
                 const hasSizeMismatch = currentimgraw.height !== captureimgraw.height ||
                     currentimgraw.width !== captureimgraw.width;
                 const [captureimg, currentimg] = (yield hasSizeMismatch)
-                    ? yield this.alignImagesToSameSize(currentimgraw, currentimgraw)
-                    : [currentimgraw, currentimgraw];
+                    ? yield this.alignImagesToSameSize(currentimgraw, captureimgraw)
+                    : [currentimgraw, captureimgraw];
                 const imageWidth = captureimg.width;
                 const imageHeight = captureimg.height;
                 const diffImage = new this.png({
@@ -47,7 +47,7 @@ class Compare {
                 });
                 const diffPixelCount = yield pixelmatch_1.default(captureimg.data, currentimg.data, diffImage.data, imageWidth, imageHeight, {
                     threshold: 0.1,
-                    diffColor: [247, 35, 34]
+                    diffColor: [217, 80, 89]
                 });
                 yield fs.writeFileSync(diffpath, this.png.sync.write(diffImage));
                 return diffPixelCount;

@@ -16,7 +16,7 @@ export default class Printer {
     )
   }
 
-  subheader = (text: string): void => {
+  subHeader = (text: string): void => {
     console.log('')
     console.log(`${text}`)
     console.log(
@@ -24,8 +24,16 @@ export default class Printer {
     )
   }
 
+  download = (text: string): void => {
+    console.log(`  └ ⬇️  ${text}`)
+  }
+
   capture = (text: string): void => {
     console.log(`  └ 🏙  ${text}`)
+  }
+
+  resize = (text: string): void => {
+    console.log(`  └ 🌉  ${text}`)
   }
 
   compare = (text: string): void => {

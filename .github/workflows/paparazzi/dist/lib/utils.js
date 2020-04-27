@@ -12,13 +12,19 @@ class Printer {
             console.log(`${text}`);
             console.log('-----------------------------------------------------------------------');
         };
-        this.subheader = (text) => {
+        this.subHeader = (text) => {
             console.log('');
             console.log(`${text}`);
             console.log('-----------------------------------------------------------------------');
         };
+        this.download = (text) => {
+            console.log(`  └ ⬇️  ${text}`);
+        };
         this.capture = (text) => {
             console.log(`  └ 🏙  ${text}`);
+        };
+        this.resize = (text) => {
+            console.log(`  └ 🌉  ${text}`);
         };
         this.compare = (text) => {
             console.log(`  └ 🎆  ${text}`);

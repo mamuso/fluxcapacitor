@@ -14,10 +14,13 @@ export default class DB {
   /**
    * Get current.
    */
-  getcurrent = async () => {
+  getCurrent = async () => {
     return await this.prisma.report.findMany({
       where: {
         current: true
+      },
+      include: {
+        captures: true
       }
     })
   }
@@ -25,7 +28,7 @@ export default class DB {
   /**
    * Sets the new current.
    */
-  setcurrent = async report => {
+  setCurrent = async report => {
     await this.prisma.report.updateMany({
       where: {
         current: true
@@ -37,7 +40,8 @@ export default class DB {
     await this.prisma.report.update({
       where: {id: report},
       data: {
-        current: true
+        current: true,
+        visible: true
       }
     })
   }
@@ -45,7 +49,7 @@ export default class DB {
   /**
    * Inserts a report in the database.
    */
-  createreport = async () => {
+  createReport = async () => {
     return await this.prisma.report.upsert({
       where: {
         slug: `${this.config.date}`
@@ -59,17 +63,10 @@ export default class DB {
     })
   }
 
-  updatereporturl = async (report, url) => {
-    await this.prisma.report.update({
-      where: {id: report.id},
-      data: {url: url}
-    })
-  }
-
   /**
    * Inserts or updates a device in the database.
    */
-  createdevice = async (device: Device) => {
+  createDevice = async (device: Device) => {
     const slug = slugify(device.id)
     const name = device.id
     const specs = `${device.viewport.width}x${device.viewport.height} @${device.viewport.deviceScaleFactor}x – ${device.userAgent}`
@@ -81,6 +78,7 @@ export default class DB {
       create: {
         slug: slug,
         name: name,
+        deviceScaleFactor: device.viewport.deviceScaleFactor,
         specs: specs
       },
       update: {
@@ -92,9 +90,22 @@ export default class DB {
   }
 
   /**
+   * TODO
+   */
+  getDevice = async (device: Device) => {
+    const slug = slugify(device.id)
+
+    return await this.prisma.device.findOne({
+      where: {
+        slug: slug
+      }
+    })
+  }
+
+  /**
    * Inserts or updates a page in the database.
    */
-  createpage = async (page: Page, report: Report) => {
+  createPage = async (page: Page, report: Report) => {
     const slug = slugify(page.id)
     const url = page.url
 
@@ -113,7 +124,7 @@ export default class DB {
       }
     })
 
-    await this.addpagetoreport(report, p)
+    await this.addPageToReport(report, p)
 
     return p
   }
@@ -121,7 +132,7 @@ export default class DB {
   /**
    * Inserts or updates a capture in the database.
    */
-  createcapture = async (
+  createCapture = async (
     report: Report,
     device: Device,
     page: Page,
@@ -148,7 +159,8 @@ export default class DB {
         urlmin: capture.urlmin,
         urldiff: capture.urldiff,
         diff: capture.diff,
-        diffindex: capture.diffindex
+        diffindex: capture.diffindex,
+        deviceScaleFactor: device.deviceScaleFactor
       },
       update: {
         slug: slug,
@@ -171,9 +183,22 @@ export default class DB {
   }
 
   /**
+   * TODO.
+   */
+  getCapture = async (report: Report, device: Device, page: Page) => {
+    const slug = slugify(`${report.slug}-${device.slug}-${page.slug}`)
+
+    return await this.prisma.capture.findOne({
+      where: {
+        slug: slug
+      }
+    })
+  }
+
+  /**
    * Connect pages and reports.
    */
-  addpagetoreport = async (report, page) => {
+  addPageToReport = async (report, page) => {
     /** TODO: I'm sure there is a better way of doing this */
     const r = await this.prisma.report
       .update({

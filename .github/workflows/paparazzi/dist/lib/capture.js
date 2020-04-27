@@ -26,6 +26,7 @@ const compare_1 = __importDefault(require("./compare"));
 const compress_1 = __importDefault(require("./compress"));
 const notify_1 = __importDefault(require("./notify"));
 const db_1 = __importDefault(require("./db"));
+const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
 const rp = __importStar(require("request-promise"));
 const sharp_1 = __importDefault(require("sharp"));
@@ -33,53 +34,77 @@ const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
 class Capture {
     constructor(config) {
+        /**
+         *  TODO
+         */
+        this.getCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            const currentdb = yield this.db.getCurrent();
+            this.current = currentdb[0] ? currentdb[0] : null;
+        });
+        /**
+         *  TODO
+         */
+        this.setCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            this.dbReport = yield this.db.createReport();
+            yield this.db.setCurrent(this.dbReport.id);
+        });
+        /**
+         *  TODO
+         */
+        this.downloadCurrent = () => __awaiter(this, void 0, void 0, function* () {
+            if (this.current && this.current.captures) {
+                yield this.current.captures.forEach((capture) => __awaiter(this, void 0, void 0, function* () {
+                    const filepath = capture.url.split(this.current.slug)[1];
+                    const currentpath = `${this.config.tmpCurrentPath}${filepath}`;
+                    this.printer.download(filepath);
+                    if (!fs.existsSync(path.dirname(currentpath))) {
+                        fs.mkdirSync(path.dirname(currentpath));
+                    }
+                    const res = yield rp.get({
+                        uri: capture.url,
+                        encoding: null
+                    });
+                    yield fs.promises.writeFile(currentpath, res, {
+                        encoding: null
+                    });
+                }));
+            }
+        });
+        /**
+         *  TODO
+         */
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                /** Set current and download report */
-                this.printer.subheader(`🔍 Checking out the last capture session`);
-                yield this.getcurrent();
-                /** DB report */
-                this.printer.subheader(`🤓 Creating a new caputre session`);
-                this.dbreport = yield this.db.createreport();
                 this.printer.header(`📷 Capture URLs`);
+                this.dbReport = yield this.db.createReport();
+                this.browser = yield puppeteer_1.default.launch({
+                    headless: true,
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                });
                 /** Looping through devices */
                 let i = 0;
                 const iMax = this.config.devices.length;
                 for (; i < iMax; i++) {
-                    /** Configure device */
-                    const captureDevice = this.config.devices[i];
-                    const browser = yield puppeteer_1.default.launch({
-                        headless: true,
-                        args: ['--no-sandbox', '--disable-setuid-sandbox']
-                    });
-                    const puppet = yield browser.newPage();
-                    let device = (captureDevice.device
-                        ? puppeteer_1.default.devices[captureDevice.device]
-                        : captureDevice);
-                    device.userAgent = device.userAgent || (yield browser.userAgent());
-                    device.id = captureDevice.id;
-                    yield puppet.emulate(device);
-                    this.printer.subheader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
+                    const device = yield this.setDevice(this.config.devices[i]);
+                    this.printer.subHeader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
                     /** Make device folder */
                     if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
                         yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
                     }
                     /** DB device */
-                    this.dbdevice = yield this.db.createdevice(device);
+                    this.dbDevice = yield this.db.createDevice(device);
                     /** Looping through URLs */
                     let j = 0;
                     const jMax = this.config.pages.length;
                     for (; j < jMax; j++) {
-                        /** Setting all the variables */
                         const page = this.config.pages[j];
                         const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
                         const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
-                        const currentfilepath = `${this.config.tmpCurrentPath}/${device.id}/${filename}`;
-                        const filenamemin = `${slugify_1.default(page.id)}-min.jpg`;
-                        const localfilepathmin = `${this.config.tmpDatePath}/${device.id}/${filenamemin}`;
-                        const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
-                        const localfilepathdiff = `${this.config.tmpDatePath}/${device.id}/${filenamediff}`;
                         const capture = {};
+                        this.printer.capture(`Capturing ${page.id}`);
+                        const puppet = yield this.browser.newPage();
+                        yield puppet.emulate(device);
+                        /** Authenticating if needed */
                         if (page.auth) {
                             if (this.config.auth.cookie) {
                                 yield puppet.setCookie({
@@ -103,8 +128,6 @@ class Capture {
                                 yield puppet.type(this.config.auth.username, `${process.env.FLUX_LOGIN}`);
                                 yield puppet.type(this.config.auth.password, `${process.env.FLUX_PASSWORD}`);
                                 yield puppet.click(this.config.auth.submit);
-                                // Get cookies
-                                // this.cookies = await puppet.cookies()
                             }
                         }
                         yield puppet.goto(page.url, { waitUntil: 'load' });
@@ -118,18 +141,54 @@ class Capture {
                             yield puppet.evaluate(_ => {
                                 window.scrollBy(0, v);
                             });
-                            yield puppet.waitFor(500);
+                            yield puppet.waitFor(150);
                             v = v + vheight;
                         }
-                        yield puppet.waitFor(1000);
+                        yield puppet.waitFor(500);
                         yield puppet.screenshot({
                             path: localfilepath,
                             fullPage: page.fullPage
                         });
+                        yield puppet.close();
                         /** DB page */
-                        const dbpage = yield this.db.createpage(page, this.dbreport);
+                        const dbpage = yield this.db.createPage(page, this.dbReport);
                         capture.page = dbpage.id;
-                        /** Resize main image */
+                        /** Upload images */
+                        capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
+                        /** Write capture in the DB */
+                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
+                    }
+                }
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.resize = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.dbReport = yield this.db.createReport();
+                let i = 0;
+                const iMax = this.config.devices.length;
+                for (; i < iMax; i++) {
+                    /** DB device */
+                    this.dbDevice = yield this.db.getDevice(this.config.devices[i]);
+                    this.printer.subHeader(`🖥  ${this.dbDevice.slug}`);
+                    /** Looping through URLs */
+                    let j = 0;
+                    const jMax = this.config.pages.length;
+                    for (; j < jMax; j++) {
+                        const page = this.config.pages[j];
+                        const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
+                        const localfilepath = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filename}`;
+                        const filenamemin = `${slugify_1.default(page.id)}-min.jpg`;
+                        const localfilepathmin = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filenamemin}`;
+                        this.printer.resize(`Resizing ${page.id}`);
+                        const dbpage = yield this.db.createPage(page, this.dbReport);
+                        const capture = yield this.db.getCapture(this.dbReport, this.dbDevice, dbpage);
+                        /** Resize captured image */
                         yield sharp_1.default(localfilepath)
                             .resize({
                             width: 800,
@@ -138,54 +197,86 @@ class Capture {
                             withoutEnlargement: true
                         })
                             .toFile(localfilepathmin);
+                        capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${this.dbDevice.slug}/${filenamemin}`, localfilepathmin);
+                        /** Write capture in the DB */
+                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
+                    }
+                }
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  TODO
+         */
+        this.compareReports = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.dbReport = yield this.db.createReport();
+                let i = 0;
+                const iMax = this.config.devices.length;
+                for (; i < iMax; i++) {
+                    /** DB device */
+                    this.dbDevice = yield this.db.getDevice(this.config.devices[i]);
+                    this.printer.subHeader(`🖥  ${this.dbDevice.slug}`);
+                    /** Looping through URLs */
+                    let j = 0;
+                    const jMax = this.config.pages.length;
+                    for (; j < jMax; j++) {
+                        const page = this.config.pages[j];
+                        const filename = `${slugify_1.default(page.id)}.${this.config.format}`;
+                        const localfilepath = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filename}`;
+                        const currentfilepath = `${this.config.tmpCurrentPath}/${this.dbDevice.slug}/${filename}`;
+                        const filenamediff = `${slugify_1.default(page.id)}-diff.${this.config.format}`;
+                        const localfilepathdiff = `${this.config.tmpDatePath}/${this.dbDevice.slug}/${filenamediff}`;
+                        let diff = null;
+                        this.printer.compare(`${page.id}`);
+                        const dbpage = yield this.db.createPage(page, this.dbReport);
+                        let capture = yield this.db.getCapture(this.dbReport, this.dbDevice, dbpage);
                         /** Compare */
-                        const diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
-                        if (diff !== 0) {
+                        diff = yield this.compare.compare(localfilepath, currentfilepath, localfilepathdiff);
+                        if (diff && diff !== 0) {
                             capture.diff = true;
                             capture.diffindex = diff;
                         }
                         else {
                             capture.diff = false;
                         }
-                        /** Upload images */
-                        capture.url = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filename}`, localfilepath);
-                        capture.urlmin = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamemin}`, localfilepathmin);
-                        if (diff > 0) {
-                            capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${device.id}/${filenamediff}`, localfilepathdiff);
+                        if (diff && diff > 0) {
+                            capture.urldiff = yield this.store.uploadfile(`${this.config.date}/${this.dbDevice.slug}/${filenamediff}`, localfilepathdiff);
                         }
-                        capture.slug = slugify_1.default(`${this.dbreport.slug}-${this.dbdevice.slug}-${page.slug}`);
                         /** Write capture in the DB */
-                        yield this.db.createcapture(this.dbreport, this.dbdevice, dbpage, capture);
-                        /** Print output */
-                        this.printer.capture(page.id);
+                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
                     }
-                    yield browser.close();
                 }
-                /** Compress folder, upload it, and updates the db */
-                this.printer.subheader(`🤐 Zipping screenshots`);
-                const zipname = `${this.config.date}.tgz`;
-                yield this.compress.dir(this.config.tmpDatePath, `${this.config.tmpPath}/${zipname}`);
-                const zipurl = yield this.store.uploadfile(`archive/${zipname}`, `${this.config.tmpPath}/${zipname}`);
-                yield this.db.updatereporturl(this.dbreport, zipurl);
-                /** Update the current report */
-                yield this.db.setcurrent(this.dbreport.id);
-                // await this.notify.send()
-                /** Disconnect from the DB */
-                yield this.db.prisma.disconnect();
             }
             catch (e) {
                 throw e;
             }
         });
-        this.getcurrent = () => __awaiter(this, void 0, void 0, function* () {
-            const current = yield this.db.getcurrent();
-            this.current = current[0] ? current[0] : null;
-            if (this.current) {
-                const res = yield rp.get({ uri: this.current.url, encoding: null });
-                fs.writeFileSync(`${this.config.tmpPath}/current.tgz`, res, {
-                    encoding: null
-                });
-                yield this.compress.extract(`${this.config.tmpPath}/current.tgz`, this.config.tmpCurrentPath);
+        /**
+         *  TODO
+         */
+        this.setDevice = (configdevice) => __awaiter(this, void 0, void 0, function* () {
+            let device = (configdevice.device
+                ? puppeteer_1.default.devices[configdevice.device]
+                : configdevice);
+            device.userAgent = device.userAgent || (yield this.browser.userAgent());
+            device.id = configdevice.id;
+            device.deviceScaleFactor = device.viewport.deviceScaleFactor;
+            return device;
+        });
+        /**
+         *  TODO
+         */
+        this.close = () => __awaiter(this, void 0, void 0, function* () {
+            /** Close browser session */
+            if (this.browser) {
+                yield this.browser.close();
+            }
+            if (this.db.prisma) {
+                /** Disconnect from the DB */
+                yield this.db.prisma.disconnect();
             }
         });
         this.printer = new utils_1.default();
