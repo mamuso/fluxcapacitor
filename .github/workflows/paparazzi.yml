@@ -2,6 +2,7 @@ name: 📷 Paparazzi
 
 on: push
 
+
 env:
   CI: true
   FORCE_COLOR: 1
