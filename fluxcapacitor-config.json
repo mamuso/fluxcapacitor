@@ -895,6 +895,36 @@
       "url": "https://github.com/marketplace/actions/lighthouse-audit",
       "fullPage": true,
       "auth": true
+    },
+    {
+      "id": "education",
+      "url": "https://education.github.com/",
+      "fullPage": true
+    },
+    {
+      "id": "education-students",
+      "url": "https://education.github.com/students",
+      "fullPage": true
+    },
+    {
+      "id": "education-teachers",
+      "url": "https://education.github.com/teachers",
+      "fullPage": true
+    },
+    {
+      "id": "education-schools",
+      "url": "https://education.github.com/schools",
+      "fullPage": true
+    },
+    {
+      "id": "education-events",
+      "url": "https://education.github.com/events",
+      "fullPage": true
+    },
+    {
+      "id": "education-benefits",
+      "url": "https://education.github.com/benefits",
+      "fullPage": true
     }
   ]
 }
