@@ -333,6 +333,30 @@
       "auth": true
     },
     {
+      "id": "repo-new",
+      "url": "https://github.com/new",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-import",
+      "url": "https://github.com/new/import",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-empty",
+      "url": "https://github.com/mamuso/empty",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-owned-empty",
+      "url": "https://github.com/condensadordefluzo/empty",
+      "fullPage": true,
+      "auth": true
+    },
+    {
       "id": "repo-commits",
       "url": "https://github.com/babel/babel/commits/master",
       "fullPage": true,
@@ -615,6 +639,24 @@
       "auth": true
     },
     {
+      "id": "org-plans",
+      "url": "https://github.com/organizations/plan",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "org-create",
+      "url": "https://github.com/account/organizations/new?coupon=&plan=team_free",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "org-create-invite",
+      "url": "https://github.com/organizations/condensadortest/invite",
+      "fullPage": true,
+      "auth": true
+    },
+    {
       "id": "org-empty",
       "url": "https://github.com/mamusorg/",
       "fullPage": true,
@@ -779,6 +821,18 @@
     {
       "id": "notifications-beta",
       "url": "https://github.com/notifications/beta",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "notifications-subscriptions",
+      "url": "https://github.com/notifications/subscriptions",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "watching",
+      "url": "https://github.com/watching",
       "fullPage": true,
       "auth": true
     },
