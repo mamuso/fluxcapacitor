@@ -14,33 +14,44 @@ jobs:
     runs-on: ubuntu-latest
     container: mamuso/fluxcapacitor:latest
     steps:
-      - name: Get current time
+      - name: Set current time
         uses: srfrnk/current-time@master
         id: current-time
         with:
           format: YYYY-MM-DD
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Node
+        uses: actions/setup-node@v1
         with:
           node-version: "13.x"
-      - run: npm install -g yarn
-      - run: yarn install --production
-      - run: yarn workspace api run prisma2 generate
-      - run: yarn workspace paparazzi setup --production
+      - name: Yarn
+        run: npm install -g yarn
+      - name: Dependencies
+        run: yarn install --production
+      - name: Prisma
+        run: yarn workspace api run prisma2 generate
+      - name: Set up
+        run: yarn workspace paparazzi setup --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
-      - run: yarn workspace paparazzi getcurrent --production
+      - name: Download
+        run: yarn workspace paparazzi getcurrent --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
-      - run: yarn workspace paparazzi capture --production
+      - name: Capture
+        run: yarn workspace paparazzi capture --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
-      - run: yarn workspace paparazzi resize --production
+      - name: Resize
+        run: yarn workspace paparazzi resize --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
-      - run: yarn workspace paparazzi compare --production
+      - name: Compare
+        run: yarn workspace paparazzi compare --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
+      - name: Cleanup
       - run: yarn workspace paparazzi setcurrent --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
