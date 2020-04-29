@@ -52,7 +52,7 @@ jobs:
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
       - name: Cleanup
-      - run: yarn workspace paparazzi setcurrent --production
+        run: yarn workspace paparazzi setcurrent --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
     env:
