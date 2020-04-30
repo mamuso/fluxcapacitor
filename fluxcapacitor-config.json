@@ -61,7 +61,6 @@
       "fullPage": true,
       "auth": true
     },
-
     {
       "id": "team",
       "url": "https://github.com/team",
@@ -299,8 +298,7 @@
     {
       "id": "auth-login",
       "url": "https://github.com/login",
-      "fullPage": true,
-      "auth": true
+      "fullPage": true
     },
     {
       "id": "auth-forgot-password",
@@ -845,6 +843,12 @@
     {
       "id": "user-settings-account",
       "url": "https://github.com/settings/admin",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "user-settings-account-upgrade",
+      "url": "https://github.com/account/upgrade",
       "fullPage": true,
       "auth": true
     },

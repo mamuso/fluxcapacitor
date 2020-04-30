@@ -97,13 +97,17 @@ input CaptureWhereUniqueInput {
 scalar DateTime
 
 type Device {
-  captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, skip: Int): [Capture!]!
+  captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, orderBy: DeviceCapturesOrderByInput, skip: Int): [Capture!]!
   createdAt: DateTime!
   deviceScaleFactor: Int
   id: String!
   name: String!
   slug: String!
   specs: String!
+}
+
+input DeviceCapturesOrderByInput {
+  slug: OrderByArg
 }
 
 input DeviceCreateInput {
@@ -140,6 +144,11 @@ type Mutation {
   createOneDevice(data: DeviceCreateInput!): Device!
   createOnePage(data: PageCreateInput!): Page!
   createOneReport(data: ReportCreateInput!): Report!
+}
+
+enum OrderByArg {
+  asc
+  desc
 }
 
 type Page {

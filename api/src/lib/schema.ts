@@ -56,7 +56,12 @@ export const Device = objectType({
     t.model.name();
     t.model.specs();
     t.model.deviceScaleFactor();
-    t.model.captures({ type: "Capture" });
+    t.model.captures({
+      type: "Capture",
+      ordering: {
+        slug: true,
+      },
+    });
     t.model.createdAt();
   },
 });
