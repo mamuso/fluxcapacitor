@@ -61,7 +61,6 @@
       "fullPage": true,
       "auth": true
     },
-
     {
       "id": "team",
       "url": "https://github.com/team",
@@ -299,8 +298,7 @@
     {
       "id": "auth-login",
       "url": "https://github.com/login",
-      "fullPage": true,
-      "auth": true
+      "fullPage": true
     },
     {
       "id": "auth-forgot-password",
@@ -329,6 +327,30 @@
     {
       "id": "repo",
       "url": "https://github.com/babel/babel",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-new",
+      "url": "https://github.com/new",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-import",
+      "url": "https://github.com/new/import",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-empty",
+      "url": "https://github.com/mamuso/empty",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "repo-owned-empty",
+      "url": "https://github.com/condensadordefluzo/empty",
       "fullPage": true,
       "auth": true
     },
@@ -615,6 +637,24 @@
       "auth": true
     },
     {
+      "id": "org-plans",
+      "url": "https://github.com/organizations/plan",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "org-create",
+      "url": "https://github.com/account/organizations/new?coupon=&plan=team_free",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "org-create-invite",
+      "url": "https://github.com/organizations/condensadortest/invite",
+      "fullPage": true,
+      "auth": true
+    },
+    {
       "id": "org-empty",
       "url": "https://github.com/mamusorg/",
       "fullPage": true,
@@ -783,6 +823,18 @@
       "auth": true
     },
     {
+      "id": "notifications-subscriptions",
+      "url": "https://github.com/notifications/subscriptions",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "watching",
+      "url": "https://github.com/watching",
+      "fullPage": true,
+      "auth": true
+    },
+    {
       "id": "user-settings-profile",
       "url": "https://github.com/settings/profile",
       "fullPage": true,
@@ -791,6 +843,12 @@
     {
       "id": "user-settings-account",
       "url": "https://github.com/settings/admin",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "user-settings-account-upgrade",
+      "url": "https://github.com/account/upgrade",
       "fullPage": true,
       "auth": true
     },

@@ -9,12 +9,12 @@
     "build-local": "npm -s run clean && npm -s run generate && tsc",
     "postinstall": "npm -s run generate",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
-    "generate:prisma": "prisma2 generate",
+    "generate:prisma": "prisma generate",
     "generate:nexus": "GENERATE_ARTIFACTS=true ts-node --transpile-only ./src",
     "dev": "GENERATE_ARTIFACTS=true ts-node-dev --no-notify --respawn --transpileOnly ./src/index",
     "migrate": "yarn -s run migrate:save && yarn -s run migrate:up",
-    "migrate:save": "prisma2 migrate save --experimental",
-    "migrate:up": "prisma2 migrate up --experimental"
+    "migrate:save": "prisma migrate save --experimental",
+    "migrate:up": "prisma migrate up --experimental"
   },
   "dependencies": {
     "@nexus/schema": "^0.13.1",

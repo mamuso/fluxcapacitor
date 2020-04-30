@@ -12,11 +12,17 @@
   },
   "builds": [
     {
+      "src": "api/src/index.ts",
+      "use": "@now/node",
+      "config": { "maxLambdaSize": "20mb" }
+    },
+    {
       "src": "web/next.config.js",
       "use": "@now/next"
     }
   ],
   "routes": [
+    { "src": "/api", "dest": "/api/src/index.ts" },
     {
       "src": "/(.*)",
       "dest": "/web/$1",
