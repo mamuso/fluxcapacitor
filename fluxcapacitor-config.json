@@ -54,6 +54,11 @@
       "url": "https://github.com",
       "fullPage": true
     },
+    {
+      "id": "auth-login",
+      "url": "https://github.com/login",
+      "fullPage": true
+    },
 
     {
       "id": "home-logged-in",
@@ -294,11 +299,6 @@
       "url": "https://github.com/logos/",
       "fullPage": true,
       "auth": true
-    },
-    {
-      "id": "auth-login",
-      "url": "https://github.com/login",
-      "fullPage": true
     },
     {
       "id": "auth-forgot-password",
