@@ -1,10 +1,11 @@
 import * as pluralize from "pluralize";
 import Link from "next/link";
-import * as DB from "../lib/db";
+import * as DB from "~/lib/db";
+import Layout from "~/components/layout";
 
 function HomePage({ report, devices }) {
   return (
-    <div>
+    <Layout>
       <style jsx>{`
         ul {
           margin: 16px;
@@ -43,7 +44,7 @@ function HomePage({ report, devices }) {
           </ul>
         </div>
       ))}
-    </div>
+    </Layout>
   );
 }
 export const getServerSideProps = async () => {
