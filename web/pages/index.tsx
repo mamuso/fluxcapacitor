@@ -1,7 +1,6 @@
 import * as pluralize from "pluralize";
 import Link from "next/link";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import * as DB from "../lib/db";
 
 function HomePage({ report, devices }) {
   return (
@@ -48,46 +47,9 @@ function HomePage({ report, devices }) {
   );
 }
 export const getServerSideProps = async () => {
-  const report = await prisma.report.findMany({
-    where: {
-      current: true,
-      visible: true,
-    },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      slug: true,
-      captures: {
-        orderBy: {
-          slug: "asc",
-        },
-        select: {
-          slug: true,
-          urlmin: true,
-          page: {
-            select: {
-              slug: true,
-              reportcount: true,
-            },
-          },
-          device: {
-            select: {
-              id: true,
-              slug: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const report = await DB.getCurrent();
+  const devices = await DB.getDevices();
 
-  const devices = await prisma.device.findMany({
-    orderBy: { createdAt: "asc" },
-    select: {
-      id: true,
-      slug: true,
-    },
-  });
   return {
     props: { report, devices },
   };
