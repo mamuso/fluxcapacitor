@@ -1,47 +1,23 @@
 import * as pluralize from "pluralize";
 import Link from "next/link";
 import * as DB from "~/lib/db";
-import Layout from "~/components/layout";
+import Layout from "~/components/Layout";
+import CaptureGrid from "~/components/CaptureGrid";
+import CaptureCard from "~/components/CaptureCard";
 
 function HomePage({ report, devices }) {
   return (
     <Layout>
-      <style jsx>{`
-        ul {
-          margin: 16px;
-        }
-        li {
-          display: inline-block;
-          margin: 16px;
-        }
-        p {
-          color: blue;
-        }
-      `}</style>
       {devices.map((device) => (
         <div>
           <h1>{device.slug}</h1>
-          <ul>
+          <CaptureGrid>
             {report[0].captures
               .filter((c) => c.device.id === device.id)
               .map((c) => (
-                <li>
-                  <Link href="/page/[slug]" as={`/page/${c.page.slug}`}>
-                    <a>
-                      <img src={c.urlmin} width="220" />
-                      <br />
-                      <strong>{c.page.slug}</strong>
-                      <br />
-                      <span>{`${c.page.reportcount} ${pluralize(
-                        "capture",
-                        c.page.reportcount
-                      )}`}</span>
-                      <br />
-                    </a>
-                  </Link>
-                </li>
+                <CaptureCard capture={c} />
               ))}
-          </ul>
+          </CaptureGrid>
         </div>
       ))}
     </Layout>
