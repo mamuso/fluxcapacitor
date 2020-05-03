@@ -1,10 +1,6 @@
 import { COLORS } from "./colors";
 
 const theme = {
-  social: {
-    facebook: "#1877f2",
-    twitter: "#00ACED",
-  },
   breakpoints: [
     "1440px", // 0
     "1256px", // 1
@@ -66,6 +62,7 @@ const theme = {
     hover: "0.15s ease-in",
     active: "0.15s ease-in-out",
   },
+  radius: "8px",
   colors: COLORS,
 };
 

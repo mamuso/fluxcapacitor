@@ -9,7 +9,7 @@ export const CaptureImageContainer = styled.div`
   height: 0;
   padding-bottom: 65%;
   background-color: ${theme.colors["bg-primary"]};
-  border-radius: 6px;
+  border-radius: ${theme.radius};
   overflow: hidden;
   & img {
     max-width: 100%;

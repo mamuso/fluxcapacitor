@@ -1,14 +1,7 @@
 export const COLORS = {
   "bg-primary": "#dcdfe5",
   "bg-secondary": "#f3f4f6",
-  "bg-inset": {
-    light: "#eff0f5",
-    dark: "#151617",
-  },
-  "border-primary": {
-    light: "rgba(65,67,78,0.16)",
-    dark: "rgba(255,255,255,0.12)",
-  },
+  "border-primary": "rgba(220,223,229,0.6)",
   "text-primary": {
     light: "#050505",
     dark: "#fbfbfc",

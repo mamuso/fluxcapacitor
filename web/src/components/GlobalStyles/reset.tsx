@@ -28,7 +28,7 @@ const ResetStyles = createGlobalStyle`
     margin: 0;
     -webkit-font-smoothing: antialiased;
     font-family: ${theme.fonts.body};
-    background-color: ${theme.colors["bg-secondary"]};
+    background-color: #fff;
     -webkit-text-size-adjust: none;
 
     @media (max-width: ${theme.breakpoints[3]}) {
