@@ -1,6 +1,7 @@
 export const COLORS = {
-  "bg-primary": "#dcdfe5",
-  "bg-secondary": "#f3f4f6",
+  "bg-primary": "#f3f4f6",
+  "bg-secondary": "#dcdfe5",
+  "bg-tertiary": "#888d91",
   "border-primary": "rgba(220,223,229,0.6)",
   "text-primary": {
     light: "#050505",

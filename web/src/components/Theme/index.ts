@@ -62,7 +62,7 @@ const theme = {
     hover: "0.15s ease-in",
     active: "0.15s ease-in-out",
   },
-  radius: "8px",
+  radius: "12px",
   colors: COLORS,
 };
 
