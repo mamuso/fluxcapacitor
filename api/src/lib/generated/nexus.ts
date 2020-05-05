@@ -4,7 +4,6 @@
  */
 
 import * as Context from "../context"
-import * as prisma from "@prisma/client"
 
 
 
@@ -203,16 +202,46 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  OrderByArg: prisma.OrderByArg
+  OrderByArg: "asc" | "desc"
 }
 
 export interface NexusGenRootTypes {
-  Capture: prisma.Capture;
-  Device: prisma.Device;
+  Capture: { // root type
+    createdAt: any; // DateTime!
+    deviceScaleFactor?: number | null; // Int
+    diff: boolean; // Boolean!
+    diffindex?: number | null; // Float
+    id: string; // String!
+    slug: string; // String!
+    url?: string | null; // String
+    urldiff?: string | null; // String
+    urlmin?: string | null; // String
+  }
+  Device: { // root type
+    createdAt: any; // DateTime!
+    deviceScaleFactor?: number | null; // Int
+    id: string; // String!
+    name: string; // String!
+    slug: string; // String!
+    specs: string; // String!
+  }
   Mutation: {};
-  Page: prisma.Page;
+  Page: { // root type
+    createdAt: any; // DateTime!
+    endsAt?: string | null; // String
+    id: string; // String!
+    reportcount?: number | null; // Int
+    slug: string; // String!
+    startsAt?: string | null; // String
+  }
   Query: {};
-  Report: prisma.Report;
+  Report: { // root type
+    createdAt: any; // DateTime!
+    current: boolean; // Boolean!
+    id: string; // String!
+    pagecount?: number | null; // Int
+    slug: string; // String!
+  }
   String: string;
   Int: number;
   Float: number;

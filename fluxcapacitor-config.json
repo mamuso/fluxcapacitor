@@ -54,6 +54,11 @@
       "url": "https://github.com",
       "fullPage": true
     },
+    {
+      "id": "auth-login",
+      "url": "https://github.com/login",
+      "fullPage": true
+    },
 
     {
       "id": "home-logged-in",
@@ -294,11 +299,6 @@
       "url": "https://github.com/logos/",
       "fullPage": true,
       "auth": true
-    },
-    {
-      "id": "auth-login",
-      "url": "https://github.com/login",
-      "fullPage": true
     },
     {
       "id": "auth-forgot-password",
@@ -1052,6 +1052,72 @@
     {
       "id": "classroom-new-invite",
       "url": "https://classroom.github.com/classrooms/23494477-awesome-classroom/invite",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-repositories",
+      "url": "https://github.com/search?q=test",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-code",
+      "url": "https://github.com/search?q=test&type=Code",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-commits",
+      "url": "https://github.com/search?q=test&type=Commits",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-issues",
+      "url": "https://github.com/search?q=test&type=Issues",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-discussions",
+      "url": "https://github.com/search?q=test&type=Discussions",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-packages",
+      "url": "https://github.com/search?q=test&type=RegistryPackages",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-marketplace",
+      "url": "https://github.com/search?q=test&type=Marketplace",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-topics",
+      "url": "https://github.com/search?q=test&type=Topics",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-wikis",
+      "url": "https://github.com/search?q=test&type=Wikis",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-users",
+      "url": "https://github.com/search?q=test&type=Users",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "search-advanced",
+      "url": "https://github.com/search/advanced",
       "fullPage": true,
       "auth": true
     }

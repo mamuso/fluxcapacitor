@@ -1,7 +1,7 @@
 import React from "react";
 import App from "next/app";
 import { ThemeProvider } from "styled-components";
-import theme from "../components/theme";
+import theme from "~/components/Theme";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
