@@ -136,8 +136,6 @@ class Capture {
                         yield puppet._client.send('Animation.setPlaybackRate', {
                             playbackRate: 2
                         });
-                        // Wait sandwich (TODO: images don't load properly in some caseshow can we remove this)
-                        yield puppet.waitFor(3000);
                         // Scrolling through the page
                         const vheight = yield puppet.viewport().height;
                         const pheight = yield puppet.evaluate(_ => {
@@ -151,7 +149,6 @@ class Capture {
                             yield puppet.waitFor(350);
                             v = v + vheight;
                         }
-                        // Wait sandwich (TODO: images don't load properly in some caseshow can we remove this)
                         yield puppet.waitFor(3000);
                         yield puppet.screenshot({
                             path: localfilepath,
