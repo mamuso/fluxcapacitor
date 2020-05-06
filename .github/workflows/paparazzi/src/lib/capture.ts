@@ -171,6 +171,7 @@ export default class Capture {
           })
 
           // Scrolling through the page
+          const vwidth = await puppet.viewport().width
           const vheight = await puppet.viewport().height
           const pheight = await puppet.evaluate(_ => {
             return document.body.scrollHeight
@@ -188,7 +189,7 @@ export default class Capture {
 
           await puppet.screenshot({
             path: localfilepath,
-            fullPage: page.fullPage
+            clip: {top: 0, left: 0, vwidth, height: pheight}
           })
 
           await puppet.close()

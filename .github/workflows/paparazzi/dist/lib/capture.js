@@ -137,6 +137,7 @@ class Capture {
                             playbackRate: 2
                         });
                         // Scrolling through the page
+                        const vwidth = yield puppet.viewport().width;
                         const vheight = yield puppet.viewport().height;
                         const pheight = yield puppet.evaluate(_ => {
                             return document.body.scrollHeight;
@@ -152,7 +153,7 @@ class Capture {
                         yield puppet.waitFor(5000);
                         yield puppet.screenshot({
                             path: localfilepath,
-                            fullPage: page.fullPage
+                            clip: { top: 0, left: 0, vwidth, height: pheight }
                         });
                         yield puppet.close();
                         /** DB page */
