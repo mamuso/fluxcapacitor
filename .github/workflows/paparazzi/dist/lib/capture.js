@@ -153,7 +153,7 @@ class Capture {
                         yield puppet.waitFor(5000);
                         yield puppet.screenshot({
                             path: localfilepath,
-                            clip: { top: 0, left: 0, vwidth, height: pheight }
+                            clip: { top: 0, left: 0, width: vwidth, height: pheight }
                         });
                         yield puppet.close();
                         /** DB page */
