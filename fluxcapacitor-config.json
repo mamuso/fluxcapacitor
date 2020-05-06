@@ -506,25 +506,25 @@
     },
     {
       "id": "repo-security",
-      "url": "https://github.com/mamuso/fluxcapacitor/security",
+      "url": "https://github.com/pluginbakery/bakery/security",
       "fullPage": true,
       "auth": true
     },
     {
       "id": "repo-security-policy",
-      "url": "https://github.com/mamuso/fluxcapacitor/security/policy",
+      "url": "https://github.com/pluginbakery/bakery/security/policy",
       "fullPage": true,
       "auth": true
     },
     {
       "id": "repo-security-advisories",
-      "url": "https://github.com/mamuso/fluxcapacitor/security/advisories",
+      "url": "https://github.com/pluginbakery/bakery/security/advisories",
       "fullPage": true,
       "auth": true
     },
     {
       "id": "repo-security-alerts",
-      "url": "https://github.com/mamuso/fluxcapacitor/network/alerts",
+      "url": "https://github.com/pluginbakery/bakery/network/alerts",
       "fullPage": true,
       "auth": true
     },
@@ -1120,6 +1120,47 @@
       "url": "https://github.com/search/advanced",
       "fullPage": true,
       "auth": true
+    },
+    {
+      "id": "about",
+      "url": "https://github.com/about",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "about-diversity",
+      "url": "https://github.com/about/diversity",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "about-diversity-report",
+      "url": "https://github.com/about/diversity/report",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "about-milestones",
+      "url": "https://github.com/about/milestones",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "about-leadership",
+      "url": "https://github.com/about/leadership",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "social-impact",
+      "url": "https://socialimpact.github.com",
+      "fullPage": true,
+      "auth": true
+    },
+    {
+      "id": "octoverse",
+      "url": "https://octoverse.github.com/",
+      "fullPage": true
     }
   ]
 }
