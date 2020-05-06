@@ -79,7 +79,11 @@ class Capture {
                 this.dbReport = yield this.db.createReport();
                 this.browser = yield puppeteer_1.default.launch({
                     headless: true,
-                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                    args: [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        '--window-size=1920,1440'
+                    ]
                 });
                 /** Looping through devices */
                 let i = 0;
@@ -137,7 +141,6 @@ class Capture {
                             playbackRate: 2
                         });
                         // Scrolling through the page
-                        const vwidth = yield puppet.viewport().width;
                         const vheight = yield puppet.viewport().height;
                         const pheight = yield puppet.evaluate(_ => {
                             return document.body.scrollHeight;
@@ -149,16 +152,16 @@ class Capture {
                             });
                             yield puppet.waitFor(450);
                             v = v + vheight;
+                            console.log(v);
                         }
+                        // Back to the top of the page
+                        yield puppet.evaluate(_ => {
+                            window.scrollBy(0, 0);
+                        });
                         yield puppet.waitFor(5000);
                         yield puppet.screenshot({
                             path: localfilepath,
-                            clip: {
-                                x: 0,
-                                y: 0,
-                                width: vwidth,
-                                height: pheight > vheight ? pheight : vheight
-                            }
+                            fullPage: page.fullPage
                         });
                         yield puppet.close();
                         /** DB page */

@@ -95,7 +95,11 @@ export default class Capture {
 
       this.browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--window-size=1920,1440'
+        ]
       })
 
       /** Looping through devices */
@@ -171,11 +175,11 @@ export default class Capture {
           })
 
           // Scrolling through the page
-          const vwidth = await puppet.viewport().width
           const vheight = await puppet.viewport().height
           const pheight = await puppet.evaluate(_ => {
             return document.body.scrollHeight
           })
+
           let v
           while (v + vheight < pheight) {
             await puppet.evaluate(_ => {
@@ -183,18 +187,18 @@ export default class Capture {
             })
             await puppet.waitFor(450)
             v = v + vheight
+            console.log(v)
           }
+          // Back to the top of the page
+          await puppet.evaluate(_ => {
+            window.scrollBy(0, 0)
+          })
 
           await puppet.waitFor(5000)
 
           await puppet.screenshot({
             path: localfilepath,
-            clip: {
-              x: 0,
-              y: 0,
-              width: vwidth,
-              height: pheight > vheight ? pheight : vheight
-            }
+            fullPage: page.fullPage
           })
 
           await puppet.close()
