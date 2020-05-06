@@ -349,7 +349,7 @@
       "auth": true
     },
     {
-      "id": "repo-owned-empty",
+      "id": "repo-empty-owner",
       "url": "https://github.com/condensadordefluzo/empty",
       "fullPage": true,
       "auth": true
@@ -735,12 +735,6 @@
     {
       "id": "org-settings-webhooks",
       "url": "https://github.com/organizations/pluginbakery/settings/hooks",
-      "fullPage": true,
-      "auth": true
-    },
-    {
-      "id": "org-settings-third-party-access-policy",
-      "url": "https://github.com/organizations/pluginbakery/settings/oauth_application_policy",
       "fullPage": true,
       "auth": true
     },
@@ -1150,17 +1144,6 @@
       "url": "https://github.com/about/leadership",
       "fullPage": true,
       "auth": true
-    },
-    {
-      "id": "social-impact",
-      "url": "https://socialimpact.github.com",
-      "fullPage": true,
-      "auth": true
-    },
-    {
-      "id": "octoverse",
-      "url": "https://octoverse.github.com/",
-      "fullPage": true
     }
   ]
 }

@@ -130,7 +130,10 @@ class Capture {
                                 yield puppet.click(this.config.auth.submit);
                             }
                         }
-                        yield puppet.goto(page.url, { waitUntil: 'load' });
+                        yield puppet.goto(page.url, {
+                            waitUntil: 'networkidle2',
+                            timeout: 60000
+                        });
                         // Scrolling through the page
                         const vheight = yield puppet.viewport().height;
                         const pheight = yield puppet.evaluate(_ => {
@@ -141,7 +144,7 @@ class Capture {
                             yield puppet.evaluate(_ => {
                                 window.scrollBy(0, v);
                             });
-                            yield puppet.waitFor(150);
+                            yield puppet.waitFor(250);
                             v = v + vheight;
                         }
                         yield puppet.waitFor(500);

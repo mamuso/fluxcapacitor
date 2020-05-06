@@ -162,7 +162,10 @@ export default class Capture {
             }
           }
 
-          await puppet.goto(page.url, {waitUntil: 'load'})
+          await puppet.goto(page.url, {
+            waitUntil: 'networkidle2',
+            timeout: 60000
+          })
 
           // Scrolling through the page
           const vheight = await puppet.viewport().height
@@ -174,7 +177,7 @@ export default class Capture {
             await puppet.evaluate(_ => {
               window.scrollBy(0, v)
             })
-            await puppet.waitFor(150)
+            await puppet.waitFor(250)
             v = v + vheight
           }
           await puppet.waitFor(500)
