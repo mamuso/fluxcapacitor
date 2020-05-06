@@ -121,6 +121,12 @@
       "auth": true
     },
     {
+      "id": "features-codespaces",
+      "url": "https://github.com/features/codespaces",
+      "fullPage": true,
+      "auth": true
+    },
+    {
       "id": "customer-stories",
       "url": "https://github.com/customer-stories",
       "fullPage": true,

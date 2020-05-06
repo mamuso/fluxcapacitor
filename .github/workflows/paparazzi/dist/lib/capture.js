@@ -150,7 +150,7 @@ class Capture {
                             yield puppet.waitFor(350);
                             v = v + vheight;
                         }
-                        yield puppet.waitFor(500);
+                        yield puppet.waitFor(3000);
                         yield puppet.screenshot({
                             path: localfilepath,
                             fullPage: page.fullPage

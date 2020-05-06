@@ -184,7 +184,7 @@ export default class Capture {
             await puppet.waitFor(350)
             v = v + vheight
           }
-          await puppet.waitFor(500)
+          await puppet.waitFor(3000)
 
           await puppet.screenshot({
             path: localfilepath,
