@@ -189,7 +189,7 @@ export default class Capture {
 
           await puppet.screenshot({
             path: localfilepath,
-            clip: {top: 0, left: 0, width: vwidth, height: pheight}
+            clip: {x: 0, y: 0, width: vwidth, height: pheight}
           })
 
           await puppet.close()
