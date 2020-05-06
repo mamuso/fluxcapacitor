@@ -163,8 +163,7 @@ export default class Capture {
           }
 
           await puppet.goto(page.url, {
-            waitUntil: 'networkidle2',
-            timeout: 60000
+            waitUntil: 'networkidle0'
           })
 
           await puppet._client.send('Animation.setPlaybackRate', {

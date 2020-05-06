@@ -131,8 +131,7 @@ class Capture {
                             }
                         }
                         yield puppet.goto(page.url, {
-                            waitUntil: 'networkidle2',
-                            timeout: 60000
+                            waitUntil: 'networkidle0'
                         });
                         yield puppet._client.send('Animation.setPlaybackRate', {
                             playbackRate: 2
