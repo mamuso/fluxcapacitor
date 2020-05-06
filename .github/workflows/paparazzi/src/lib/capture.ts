@@ -180,11 +180,11 @@ export default class Capture {
             await puppet.evaluate(_ => {
               window.scrollBy(0, v)
             })
-            await puppet.waitFor(350)
+            await puppet.waitFor(450)
             v = v + vheight
           }
 
-          await puppet.waitFor(3000)
+          await puppet.waitFor(5000)
 
           await puppet.screenshot({
             path: localfilepath,

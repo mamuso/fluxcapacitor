@@ -146,10 +146,10 @@ class Capture {
                             yield puppet.evaluate(_ => {
                                 window.scrollBy(0, v);
                             });
-                            yield puppet.waitFor(350);
+                            yield puppet.waitFor(450);
                             v = v + vheight;
                         }
-                        yield puppet.waitFor(3000);
+                        yield puppet.waitFor(5000);
                         yield puppet.screenshot({
                             path: localfilepath,
                             fullPage: page.fullPage
