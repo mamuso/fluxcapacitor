@@ -167,6 +167,10 @@ export default class Capture {
             timeout: 60000
           })
 
+          await puppet._client.send('Animation.setPlaybackRate', {
+            playbackRate: 2
+          })
+
           // Scrolling through the page
           const vheight = await puppet.viewport().height
           const pheight = await puppet.evaluate(_ => {
@@ -177,7 +181,7 @@ export default class Capture {
             await puppet.evaluate(_ => {
               window.scrollBy(0, v)
             })
-            await puppet.waitFor(250)
+            await puppet.waitFor(350)
             v = v + vheight
           }
           await puppet.waitFor(500)

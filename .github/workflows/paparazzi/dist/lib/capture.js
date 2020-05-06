@@ -134,6 +134,9 @@ class Capture {
                             waitUntil: 'networkidle2',
                             timeout: 60000
                         });
+                        yield puppet._client.send('Animation.setPlaybackRate', {
+                            playbackRate: 2
+                        });
                         // Scrolling through the page
                         const vheight = yield puppet.viewport().height;
                         const pheight = yield puppet.evaluate(_ => {
@@ -144,7 +147,7 @@ class Capture {
                             yield puppet.evaluate(_ => {
                                 window.scrollBy(0, v);
                             });
-                            yield puppet.waitFor(250);
+                            yield puppet.waitFor(350);
                             v = v + vheight;
                         }
                         yield puppet.waitFor(500);
