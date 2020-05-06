@@ -79,11 +79,8 @@ class Capture {
                 this.dbReport = yield this.db.createReport();
                 this.browser = yield puppeteer_1.default.launch({
                     headless: true,
-                    args: [
-                        '--no-sandbox',
-                        '--disable-setuid-sandbox',
-                        '--window-size=1920,1440'
-                    ]
+                    defaultViewport: null,
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
                 });
                 /** Looping through devices */
                 let i = 0;
@@ -141,22 +138,19 @@ class Capture {
                             playbackRate: 2
                         });
                         // Scrolling through the page
-                        const vheight = yield puppet.viewport().height;
-                        const pheight = yield puppet.evaluate(_ => {
-                            return document.body.scrollHeight;
-                        });
-                        let v;
-                        while (v + vheight < pheight) {
-                            yield puppet.evaluate(_ => {
-                                window.scrollBy(0, v);
-                            });
-                            yield puppet.waitFor(450);
-                            v = v + vheight;
-                            console.log(v);
-                        }
-                        // Back to the top of the page
                         yield puppet.evaluate(_ => {
-                            window.scrollBy(0, 0);
+                            let tHeight = 0;
+                            const dist = 100;
+                            let timer = setInterval(() => {
+                                const scrollHeight = document.body.scrollHeight;
+                                window.scrollBy(0, dist);
+                                tHeight += dist;
+                                if (tHeight >= scrollHeight) {
+                                    clearInterval(timer);
+                                    window.scrollTo(0, 0);
+                                    return true;
+                                }
+                            }, 100);
                         });
                         yield puppet.waitFor(5000);
                         yield puppet.screenshot({

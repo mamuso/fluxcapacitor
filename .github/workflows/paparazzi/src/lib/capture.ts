@@ -17,6 +17,7 @@ import * as rp from 'request-promise'
 import sharp from 'sharp'
 import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
+import {resolve} from 'dns'
 
 export default class Capture {
   browser
@@ -95,11 +96,8 @@ export default class Capture {
 
       this.browser = await puppeteer.launch({
         headless: true,
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--window-size=1920,1440'
-        ]
+        defaultViewport: null,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
       })
 
       /** Looping through devices */
@@ -175,23 +173,20 @@ export default class Capture {
           })
 
           // Scrolling through the page
-          const vheight = await puppet.viewport().height
-          const pheight = await puppet.evaluate(_ => {
-            return document.body.scrollHeight
-          })
 
-          let v
-          while (v + vheight < pheight) {
-            await puppet.evaluate(_ => {
-              window.scrollBy(0, v)
-            })
-            await puppet.waitFor(450)
-            v = v + vheight
-            console.log(v)
-          }
-          // Back to the top of the page
           await puppet.evaluate(_ => {
-            window.scrollBy(0, 0)
+            let tHeight = 0
+            const dist = 100
+            let timer = setInterval(() => {
+              const scrollHeight = document.body.scrollHeight
+              window.scrollBy(0, dist)
+              tHeight += dist
+              if (tHeight >= scrollHeight) {
+                clearInterval(timer)
+                window.scrollTo(0, 0)
+                return true
+              }
+            }, 100)
           })
 
           await puppet.waitFor(5000)
