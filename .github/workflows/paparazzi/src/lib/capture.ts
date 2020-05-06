@@ -170,6 +170,9 @@ export default class Capture {
             playbackRate: 2
           })
 
+          // Wait sandwich (TODO: images don't load properly in some caseshow can we remove this)
+          await puppet.waitFor(3000)
+
           // Scrolling through the page
           const vheight = await puppet.viewport().height
           const pheight = await puppet.evaluate(_ => {
@@ -183,6 +186,8 @@ export default class Capture {
             await puppet.waitFor(350)
             v = v + vheight
           }
+
+          // Wait sandwich (TODO: images don't load properly in some caseshow can we remove this)
           await puppet.waitFor(3000)
 
           await puppet.screenshot({
