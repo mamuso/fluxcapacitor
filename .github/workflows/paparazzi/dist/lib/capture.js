@@ -132,32 +132,80 @@ class Capture {
                             }
                         }
                         yield puppet.goto(page.url, {
-                            waitUntil: 'networkidle0'
+                            waitUntil: 'networkidle0',
+                            timeout: 60000
                         });
                         yield puppet._client.send('Animation.setPlaybackRate', {
                             playbackRate: 2
                         });
-                        // Scrolling through the page to activate effects
-                        yield puppet.evaluate(_ => {
-                            let tHeight = 0;
-                            const dist = 100;
-                            let timer = setInterval(() => {
-                                const scrollHeight = document.body.scrollHeight;
-                                window.scrollBy(0, dist);
-                                tHeight += dist;
-                                if (tHeight >= scrollHeight) {
-                                    clearInterval(timer);
-                                    window.scrollTo(0, 0);
-                                    return true;
-                                }
-                            }, 150);
-                        });
-                        yield puppet.waitFor(5000);
-                        // If the page is bigger than the viewport, then we screenshot clips or the image
+                        // // Scrolling through the page to activate effects
+                        // await puppet.evaluate(_ => {
+                        //   let tHeight = 0
+                        //   const dist = 100
+                        //   let timer = setInterval(() => {
+                        //     const scrollHeight = document.body.scrollHeight
+                        //     window.scrollBy(0, dist)
+                        //     tHeight += dist
+                        //     if (tHeight >= scrollHeight) {
+                        //       clearInterval(timer)
+                        //       window.scrollTo(0, 0)
+                        //       return true
+                        //     }
+                        //   }, 150)
+                        // })
+                        // If the page is bigger than the viewport, then we screenshot clips or the image and stitch them together
                         const scrollHeight = yield puppet.evaluate(_ => {
                             return document.body.scrollHeight;
                         });
                         if (scrollHeight > device.viewport.height) {
+                            let s = 0;
+                            let scrollTo = 0;
+                            const safeSpace = 400;
+                            // We leave a few pixels between snapshots to stich free of header duplications
+                            const scrollSafe = device.viewport.height - safeSpace;
+                            while (scrollTo + scrollSafe < scrollHeight) {
+                                yield puppet.evaluate(({ scrollTo }) => {
+                                    window.scrollTo(0, scrollTo);
+                                }, { scrollTo });
+                                yield puppet.waitFor(1000);
+                                const buffer = yield puppet.screenshot({
+                                    fullPage: false
+                                });
+                                yield fs.promises.writeFile(`${this.config.tmpDatePath}/${s}.png`, buffer, {
+                                    encoding: null
+                                });
+                                // increase variables
+                                s += 1;
+                                scrollTo += scrollSafe;
+                            }
+                            let baseImage = yield sharp_1.default(`${this.config.tmpDatePath}/1.png`).resize(device.viewport.width * device.deviceScaleFactor, scrollHeight * device.deviceScaleFactor);
+                            baseImage = baseImage.composite([
+                                {
+                                    input: `${this.config.tmpDatePath}/0.png`,
+                                    top: 0,
+                                    left: 0
+                                }
+                            ]);
+                            baseImage = baseImage.composite([
+                                {
+                                    input: `${this.config.tmpDatePath}/1.png`,
+                                    top: 1200 * device.deviceScaleFactor,
+                                    left: 0
+                                }
+                            ]);
+                            baseImage = baseImage.composite([
+                                {
+                                    input: `${this.config.tmpDatePath}/3.png`,
+                                    top: 2400 * device.deviceScaleFactor,
+                                    left: 0
+                                }
+                            ]);
+                            baseImage.toFile(localfilepath);
+                            // for (i == 0; i < s; i++) {
+                            //   let image = sharp(`${this.config.tmpDatePath}/${i}.png`)
+                            //   if (i != 0) {
+                            //   }
+                            // }
                         }
                         else {
                             yield puppet.screenshot({
