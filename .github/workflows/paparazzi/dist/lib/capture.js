@@ -137,7 +137,7 @@ class Capture {
                         yield puppet._client.send('Animation.setPlaybackRate', {
                             playbackRate: 2
                         });
-                        // Scrolling through the page
+                        // Scrolling through the page to activate effects
                         yield puppet.evaluate(_ => {
                             let tHeight = 0;
                             const dist = 100;
@@ -150,13 +150,21 @@ class Capture {
                                     window.scrollTo(0, 0);
                                     return true;
                                 }
-                            }, 100);
+                            }, 150);
                         });
                         yield puppet.waitFor(5000);
-                        yield puppet.screenshot({
-                            path: localfilepath,
-                            fullPage: page.fullPage
+                        // If the page is bigger than the viewport, then we screenshot clips or the image
+                        const scrollHeight = yield puppet.evaluate(_ => {
+                            return document.body.scrollHeight;
                         });
+                        if (scrollHeight > device.viewport.height) {
+                        }
+                        else {
+                            yield puppet.screenshot({
+                                path: localfilepath,
+                                fullPage: true
+                            });
+                        }
                         yield puppet.close();
                         /** DB page */
                         const dbpage = yield this.db.createPage(page, this.dbReport);

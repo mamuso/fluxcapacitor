@@ -172,8 +172,7 @@ export default class Capture {
             playbackRate: 2
           })
 
-          // Scrolling through the page
-
+          // Scrolling through the page to activate effects
           await puppet.evaluate(_ => {
             let tHeight = 0
             const dist = 100
@@ -186,15 +185,23 @@ export default class Capture {
                 window.scrollTo(0, 0)
                 return true
               }
-            }, 100)
+            }, 150)
           })
 
           await puppet.waitFor(5000)
 
-          await puppet.screenshot({
-            path: localfilepath,
-            fullPage: page.fullPage
+          // If the page is bigger than the viewport, then we screenshot clips or the image
+          const scrollHeight = await puppet.evaluate(_ => {
+            return document.body.scrollHeight
           })
+
+          if (scrollHeight > device.viewport.height) {
+          } else {
+            await puppet.screenshot({
+              path: localfilepath,
+              fullPage: true
+            })
+          }
 
           await puppet.close()
 
