@@ -28,6 +28,7 @@ const notify_1 = __importDefault(require("./notify"));
 const db_1 = __importDefault(require("./db"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
+const glob_1 = __importDefault(require("glob"));
 const rp = __importStar(require("request-promise"));
 const sharp_1 = __importDefault(require("sharp"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
@@ -138,32 +139,16 @@ class Capture {
                         yield puppet._client.send('Animation.setPlaybackRate', {
                             playbackRate: 2
                         });
-                        // // Scrolling through the page to activate effects
-                        // await puppet.evaluate(_ => {
-                        //   let tHeight = 0
-                        //   const dist = 100
-                        //   let timer = setInterval(() => {
-                        //     const scrollHeight = document.body.scrollHeight
-                        //     window.scrollBy(0, dist)
-                        //     tHeight += dist
-                        //     if (tHeight >= scrollHeight) {
-                        //       clearInterval(timer)
-                        //       window.scrollTo(0, 0)
-                        //       return true
-                        //     }
-                        //   }, 150)
-                        // })
-                        // If the page is bigger than the viewport, then we screenshot clips or the image and stitch them together
                         const scrollHeight = yield puppet.evaluate(_ => {
                             return document.body.scrollHeight;
                         });
                         if (scrollHeight > device.viewport.height) {
                             let s = 0;
                             let scrollTo = 0;
-                            const safeSpace = 400;
+                            const safeSpace = 440;
                             // We leave a few pixels between snapshots to stich free of header duplications
                             const scrollSafe = device.viewport.height - safeSpace;
-                            while (scrollTo + scrollSafe < scrollHeight) {
+                            while (scrollTo <= scrollHeight) {
                                 yield puppet.evaluate(({ scrollTo }) => {
                                     window.scrollTo(0, scrollTo);
                                 }, { scrollTo });
@@ -171,41 +156,83 @@ class Capture {
                                 const buffer = yield puppet.screenshot({
                                     fullPage: false
                                 });
-                                yield fs.promises.writeFile(`${this.config.tmpDatePath}/${s}.png`, buffer, {
+                                yield fs.promises.writeFile(`${this.config.tmpDatePath}/tmpshot-${s}.png`, buffer, {
                                     encoding: null
                                 });
-                                // increase variables
                                 s += 1;
                                 scrollTo += scrollSafe;
                             }
-                            let baseImage = yield sharp_1.default(`${this.config.tmpDatePath}/1.png`).resize(device.viewport.width * device.deviceScaleFactor, scrollHeight * device.deviceScaleFactor);
-                            baseImage = baseImage.composite([
-                                {
-                                    input: `${this.config.tmpDatePath}/0.png`,
-                                    top: 0,
-                                    left: 0
+                            let composite = new Array();
+                            let topComposite = 0;
+                            for (let i = 0; i < s; i++) {
+                                const fileIn = `${this.config.tmpDatePath}/tmpshot-${i}.png`;
+                                const fileOut = `${this.config.tmpDatePath}/tmpshot-${i}r.png`;
+                                let height = 0;
+                                let image = yield sharp_1.default(fileIn);
+                                switch (i) {
+                                    case 0:
+                                        height =
+                                            (device.viewport.height - safeSpace / 2) *
+                                                device.deviceScaleFactor;
+                                        yield image
+                                            .resize({
+                                            width: device.viewport.width * device.deviceScaleFactor,
+                                            height: height,
+                                            position: sharp_1.default.position.top
+                                        })
+                                            .toFile(fileOut);
+                                        composite.push({
+                                            input: fileOut,
+                                            top: 0,
+                                            left: 0
+                                        });
+                                        break;
+                                    case s - 1:
+                                        height =
+                                            (device.viewport.height - safeSpace / 2) *
+                                                device.deviceScaleFactor;
+                                        yield image
+                                            .resize({
+                                            width: device.viewport.width * device.deviceScaleFactor,
+                                            height: height,
+                                            position: sharp_1.default.position.bottom
+                                        })
+                                            .toFile(fileOut);
+                                        composite.push({
+                                            input: fileOut,
+                                            gravity: 'southwest'
+                                        });
+                                        break;
+                                    default:
+                                        height =
+                                            (device.viewport.height - safeSpace) *
+                                                device.deviceScaleFactor;
+                                        yield image
+                                            .resize({
+                                            width: device.viewport.width * device.deviceScaleFactor,
+                                            height: height
+                                        })
+                                            .toFile(fileOut);
+                                        composite.push({
+                                            input: fileOut,
+                                            top: topComposite,
+                                            left: 0
+                                        });
+                                        break;
                                 }
-                            ]);
-                            baseImage = baseImage.composite([
-                                {
-                                    input: `${this.config.tmpDatePath}/1.png`,
-                                    top: 1200 * device.deviceScaleFactor,
-                                    left: 0
-                                }
-                            ]);
-                            baseImage = baseImage.composite([
-                                {
-                                    input: `${this.config.tmpDatePath}/3.png`,
-                                    top: 2400 * device.deviceScaleFactor,
-                                    left: 0
-                                }
-                            ]);
-                            baseImage.toFile(localfilepath);
-                            // for (i == 0; i < s; i++) {
-                            //   let image = sharp(`${this.config.tmpDatePath}/${i}.png`)
-                            //   if (i != 0) {
-                            //   }
-                            // }
+                                topComposite += height;
+                            }
+                            yield sharp_1.default(`blank.png`)
+                                .resize(device.viewport.width * device.deviceScaleFactor, scrollHeight * device.deviceScaleFactor)
+                                .composite(composite)
+                                .toFile(localfilepath);
+                            yield glob_1.default('**/tmpshot-*.png', function (er, files) {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    for (const file of files) {
+                                        yield fs.promises.unlink(file);
+                                    }
+                                });
+                            });
                         }
                         else {
                             yield puppet.screenshot({

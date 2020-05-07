@@ -13,6 +13,7 @@ import Notify from './notify'
 import DB from './db'
 import * as path from 'path'
 import * as fs from 'fs'
+import glob from 'glob'
 import * as rp from 'request-promise'
 import sharp from 'sharp'
 import slugify from '@sindresorhus/slugify'
@@ -171,23 +172,6 @@ export default class Capture {
           await puppet._client.send('Animation.setPlaybackRate', {
             playbackRate: 2
           })
-
-          // // Scrolling through the page to activate effects
-          // await puppet.evaluate(_ => {
-          //   let tHeight = 0
-          //   const dist = 100
-          //   let timer = setInterval(() => {
-          //     const scrollHeight = document.body.scrollHeight
-          //     window.scrollBy(0, dist)
-          //     tHeight += dist
-          //     if (tHeight >= scrollHeight) {
-          //       clearInterval(timer)
-          //       window.scrollTo(0, 0)
-          //       return true
-          //     }
-          //   }, 150)
-          // })
-          // If the page is bigger than the viewport, then we screenshot clips or the image and stitch them together
           const scrollHeight = await puppet.evaluate(_ => {
             return document.body.scrollHeight
           })
@@ -195,10 +179,10 @@ export default class Capture {
           if (scrollHeight > device.viewport.height) {
             let s = 0
             let scrollTo = 0
-            const safeSpace = 400
+            const safeSpace = 440
             // We leave a few pixels between snapshots to stich free of header duplications
             const scrollSafe = device.viewport.height - safeSpace
-            while (scrollTo + scrollSafe < scrollHeight) {
+            while (scrollTo <= scrollHeight) {
               await puppet.evaluate(
                 ({scrollTo}) => {
                   window.scrollTo(0, scrollTo)
@@ -212,54 +196,95 @@ export default class Capture {
               })
 
               await fs.promises.writeFile(
-                `${this.config.tmpDatePath}/${s}.png`,
+                `${this.config.tmpDatePath}/tmpshot-${s}.png`,
                 buffer,
                 {
                   encoding: null
                 }
               )
-              // increase variables
               s += 1
               scrollTo += scrollSafe
             }
 
-            let baseImage = await sharp(
-              `${this.config.tmpDatePath}/1.png`
-            ).resize(
-              device.viewport.width * device.deviceScaleFactor,
-              scrollHeight * device.deviceScaleFactor
-            )
+            let composite = new Array()
+            let topComposite = 0
 
-            baseImage = baseImage.composite([
-              {
-                input: `${this.config.tmpDatePath}/0.png`,
-                top: 0,
-                left: 0
+            for (let i = 0; i < s; i++) {
+              const fileIn = `${this.config.tmpDatePath}/tmpshot-${i}.png`
+              const fileOut = `${this.config.tmpDatePath}/tmpshot-${i}r.png`
+              let height = 0
+              let image = await sharp(fileIn)
+
+              switch (i) {
+                case 0:
+                  height =
+                    (device.viewport.height - safeSpace / 2) *
+                    device.deviceScaleFactor
+                  await image
+                    .resize({
+                      width: device.viewport.width * device.deviceScaleFactor,
+                      height: height,
+                      position: sharp.position.top
+                    })
+                    .toFile(fileOut)
+
+                  composite.push({
+                    input: fileOut,
+                    top: 0,
+                    left: 0
+                  })
+                  break
+                case s - 1:
+                  height =
+                    (device.viewport.height - safeSpace / 2) *
+                    device.deviceScaleFactor
+                  await image
+                    .resize({
+                      width: device.viewport.width * device.deviceScaleFactor,
+                      height: height,
+                      position: sharp.position.bottom
+                    })
+                    .toFile(fileOut)
+
+                  composite.push({
+                    input: fileOut,
+                    gravity: 'southwest'
+                  })
+                  break
+                default:
+                  height =
+                    (device.viewport.height - safeSpace) *
+                    device.deviceScaleFactor
+                  await image
+                    .resize({
+                      width: device.viewport.width * device.deviceScaleFactor,
+                      height: height
+                    })
+                    .toFile(fileOut)
+
+                  composite.push({
+                    input: fileOut,
+                    top: topComposite,
+                    left: 0
+                  })
+                  break
               }
-            ])
-            baseImage = baseImage.composite([
-              {
-                input: `${this.config.tmpDatePath}/1.png`,
-                top: 1200 * device.deviceScaleFactor,
-                left: 0
+              topComposite += height
+            }
+
+            await sharp(`blank.png`)
+              .resize(
+                device.viewport.width * device.deviceScaleFactor,
+                scrollHeight * device.deviceScaleFactor
+              )
+              .composite(composite)
+              .toFile(localfilepath)
+
+            await glob('**/tmpshot-*.png', async function(er, files) {
+              for (const file of files) {
+                await fs.promises.unlink(file)
               }
-            ])
-
-            baseImage = baseImage.composite([
-              {
-                input: `${this.config.tmpDatePath}/3.png`,
-                top: 2400 * device.deviceScaleFactor,
-                left: 0
-              }
-            ])
-
-            baseImage.toFile(localfilepath)
-
-            // for (i == 0; i < s; i++) {
-            //   let image = sharp(`${this.config.tmpDatePath}/${i}.png`)
-            //   if (i != 0) {
-            //   }
-            // }
+            })
           } else {
             await puppet.screenshot({
               path: localfilepath,
