@@ -48,7 +48,6 @@ export type Page = {
   id: string
   slug: string
   url: string
-  fullPage: boolean
   captures: [CaptureType]
   reports: [Report]
   reportcount: number

@@ -28,6 +28,7 @@ const notify_1 = __importDefault(require("./notify"));
 const db_1 = __importDefault(require("./db"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
+const glob_1 = __importDefault(require("glob"));
 const rp = __importStar(require("request-promise"));
 const sharp_1 = __importDefault(require("sharp"));
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
@@ -132,31 +133,113 @@ class Capture {
                             }
                         }
                         yield puppet.goto(page.url, {
-                            waitUntil: 'networkidle0'
+                            waitUntil: 'networkidle0',
+                            timeout: 60000
                         });
                         yield puppet._client.send('Animation.setPlaybackRate', {
                             playbackRate: 2
                         });
-                        // Scrolling through the page
-                        yield puppet.evaluate(_ => {
-                            let tHeight = 0;
-                            const dist = 100;
-                            let timer = setInterval(() => {
-                                const scrollHeight = document.body.scrollHeight;
-                                window.scrollBy(0, dist);
-                                tHeight += dist;
-                                if (tHeight >= scrollHeight) {
-                                    clearInterval(timer);
-                                    window.scrollTo(0, 0);
-                                    return true;
+                        const scrollHeight = yield puppet.evaluate(_ => {
+                            return document.body.scrollHeight;
+                        });
+                        if (scrollHeight > device.viewport.height) {
+                            let s = 0;
+                            let scrollTo = 0;
+                            const safeSpace = 440;
+                            // We leave a few pixels between snapshots to stich free of header duplications
+                            const scrollSafe = device.viewport.height - safeSpace;
+                            while (scrollTo <= scrollHeight) {
+                                yield puppet.evaluate(({ scrollTo }) => {
+                                    window.scrollTo(0, scrollTo);
+                                }, { scrollTo });
+                                yield puppet.waitFor(1000);
+                                const buffer = yield puppet.screenshot({
+                                    fullPage: false
+                                });
+                                yield fs.promises.writeFile(`${this.config.tmpDatePath}/tmpshot-${s}.png`, buffer, {
+                                    encoding: null
+                                });
+                                s += 1;
+                                scrollTo += scrollSafe;
+                            }
+                            let composite = new Array();
+                            let topComposite = 0;
+                            for (let i = 0; i < s; i++) {
+                                const fileIn = `${this.config.tmpDatePath}/tmpshot-${i}.png`;
+                                const fileOut = `${this.config.tmpDatePath}/tmpshot-${i}r.png`;
+                                let height = 0;
+                                let image = yield sharp_1.default(fileIn);
+                                switch (i) {
+                                    case 0:
+                                        height =
+                                            (device.viewport.height - safeSpace / 2) *
+                                                device.deviceScaleFactor;
+                                        yield image
+                                            .resize({
+                                            width: device.viewport.width * device.deviceScaleFactor,
+                                            height: height,
+                                            position: sharp_1.default.position.top
+                                        })
+                                            .toFile(fileOut);
+                                        composite.push({
+                                            input: fileOut,
+                                            top: 0,
+                                            left: 0
+                                        });
+                                        break;
+                                    case s - 1:
+                                        height =
+                                            (device.viewport.height - safeSpace / 2) *
+                                                device.deviceScaleFactor;
+                                        yield image
+                                            .resize({
+                                            width: device.viewport.width * device.deviceScaleFactor,
+                                            height: height,
+                                            position: sharp_1.default.position.bottom
+                                        })
+                                            .toFile(fileOut);
+                                        composite.push({
+                                            input: fileOut,
+                                            gravity: 'southwest'
+                                        });
+                                        break;
+                                    default:
+                                        height =
+                                            (device.viewport.height - safeSpace) *
+                                                device.deviceScaleFactor;
+                                        yield image
+                                            .resize({
+                                            width: device.viewport.width * device.deviceScaleFactor,
+                                            height: height
+                                        })
+                                            .toFile(fileOut);
+                                        composite.push({
+                                            input: fileOut,
+                                            top: topComposite,
+                                            left: 0
+                                        });
+                                        break;
                                 }
-                            }, 100);
-                        });
-                        yield puppet.waitFor(5000);
-                        yield puppet.screenshot({
-                            path: localfilepath,
-                            fullPage: page.fullPage
-                        });
+                                topComposite += height;
+                            }
+                            yield sharp_1.default(`blank.png`)
+                                .resize(device.viewport.width * device.deviceScaleFactor, scrollHeight * device.deviceScaleFactor)
+                                .composite(composite)
+                                .toFile(localfilepath);
+                            yield glob_1.default('**/tmpshot-*.png', function (er, files) {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    for (const file of files) {
+                                        yield fs.promises.unlink(file);
+                                    }
+                                });
+                            });
+                        }
+                        else {
+                            yield puppet.screenshot({
+                                path: localfilepath,
+                                fullPage: true
+                            });
+                        }
                         yield puppet.close();
                         /** DB page */
                         const dbpage = yield this.db.createPage(page, this.dbReport);
