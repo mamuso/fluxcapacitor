@@ -142,7 +142,8 @@ class Capture {
                         const scrollHeight = yield puppet.evaluate(_ => {
                             return document.body.scrollHeight;
                         });
-                        if (scrollHeight > device.viewport.height) {
+                        // If the page is bigger than two times the viewport
+                        if (scrollHeight > 2 * device.viewport.height) {
                             let s = 0;
                             let scrollTo = 0;
                             const safeSpace = 440;
@@ -233,14 +234,6 @@ class Capture {
                                     }
                                 });
                             });
-                        }
-                        else {
-                            yield puppet.screenshot({
-                                path: localfilepath,
-                                fullPage: true
-                            });
-                        }
-                        if (scrollHeight > device.viewport.height) {
                         }
                         else {
                             yield puppet.screenshot({
