@@ -13,11 +13,11 @@ import Notify from './notify'
 import DB from './db'
 import * as path from 'path'
 import * as fs from 'fs'
+import glob from 'glob'
 import * as rp from 'request-promise'
 import sharp from 'sharp'
 import slugify from '@sindresorhus/slugify'
 import puppeteer from 'puppeteer'
-import {resolve} from 'dns'
 
 export default class Capture {
   browser
@@ -165,35 +165,132 @@ export default class Capture {
           }
 
           await puppet.goto(page.url, {
-            waitUntil: 'networkidle0'
+            waitUntil: 'networkidle0',
+            timeout: 60000
           })
 
           await puppet._client.send('Animation.setPlaybackRate', {
             playbackRate: 2
           })
-
-          // Scrolling through the page to activate effects
-          await puppet.evaluate(_ => {
-            let tHeight = 0
-            const dist = 100
-            let timer = setInterval(() => {
-              const scrollHeight = document.body.scrollHeight
-              window.scrollBy(0, dist)
-              tHeight += dist
-              if (tHeight >= scrollHeight) {
-                clearInterval(timer)
-                window.scrollTo(0, 0)
-                return true
-              }
-            }, 150)
-          })
-
-          await puppet.waitFor(5000)
-
-          // If the page is bigger than the viewport, then we screenshot clips or the image
           const scrollHeight = await puppet.evaluate(_ => {
             return document.body.scrollHeight
           })
+
+          if (scrollHeight > device.viewport.height) {
+            let s = 0
+            let scrollTo = 0
+            const safeSpace = 440
+            // We leave a few pixels between snapshots to stich free of header duplications
+            const scrollSafe = device.viewport.height - safeSpace
+            while (scrollTo <= scrollHeight) {
+              await puppet.evaluate(
+                ({scrollTo}) => {
+                  window.scrollTo(0, scrollTo)
+                },
+                {scrollTo}
+              )
+              await puppet.waitFor(1000)
+
+              const buffer = await puppet.screenshot({
+                fullPage: false
+              })
+
+              await fs.promises.writeFile(
+                `${this.config.tmpDatePath}/tmpshot-${s}.png`,
+                buffer,
+                {
+                  encoding: null
+                }
+              )
+              s += 1
+              scrollTo += scrollSafe
+            }
+
+            let composite = new Array()
+            let topComposite = 0
+
+            for (let i = 0; i < s; i++) {
+              const fileIn = `${this.config.tmpDatePath}/tmpshot-${i}.png`
+              const fileOut = `${this.config.tmpDatePath}/tmpshot-${i}r.png`
+              let height = 0
+              let image = await sharp(fileIn)
+
+              switch (i) {
+                case 0:
+                  height =
+                    (device.viewport.height - safeSpace / 2) *
+                    device.deviceScaleFactor
+                  await image
+                    .resize({
+                      width: device.viewport.width * device.deviceScaleFactor,
+                      height: height,
+                      position: sharp.position.top
+                    })
+                    .toFile(fileOut)
+
+                  composite.push({
+                    input: fileOut,
+                    top: 0,
+                    left: 0
+                  })
+                  break
+                case s - 1:
+                  height =
+                    (device.viewport.height - safeSpace / 2) *
+                    device.deviceScaleFactor
+                  await image
+                    .resize({
+                      width: device.viewport.width * device.deviceScaleFactor,
+                      height: height,
+                      position: sharp.position.bottom
+                    })
+                    .toFile(fileOut)
+
+                  composite.push({
+                    input: fileOut,
+                    gravity: 'southwest'
+                  })
+                  break
+                default:
+                  height =
+                    (device.viewport.height - safeSpace) *
+                    device.deviceScaleFactor
+                  await image
+                    .resize({
+                      width: device.viewport.width * device.deviceScaleFactor,
+                      height: height
+                    })
+                    .toFile(fileOut)
+
+                  composite.push({
+                    input: fileOut,
+                    top: topComposite,
+                    left: 0
+                  })
+                  break
+              }
+              topComposite += height
+            }
+
+            await sharp(`blank.png`)
+              .resize(
+                device.viewport.width * device.deviceScaleFactor,
+                scrollHeight * device.deviceScaleFactor
+              )
+              .composite(composite)
+              .toFile(localfilepath)
+
+            await glob('**/tmpshot-*.png', async function(er, files) {
+              for (const file of files) {
+                await fs.promises.unlink(file)
+              }
+            })
+          } else {
+            await puppet.screenshot({
+              path: localfilepath,
+              fullPage: true
+            })
+          }
 
           if (scrollHeight > device.viewport.height) {
           } else {
