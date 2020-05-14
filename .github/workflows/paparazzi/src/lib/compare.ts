@@ -53,7 +53,7 @@ export default class Compare {
         }
       )
 
-      await fs.writeFileSync(diffpath, this.png.sync.write(diffImage))
+      // await fs.writeFileSync(diffpath, this.png.sync.write(diffImage))
       return diffPixelCount
     } catch (e) {
       throw e

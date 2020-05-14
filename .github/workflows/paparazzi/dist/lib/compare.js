@@ -49,7 +49,7 @@ class Compare {
                     threshold: 0.1,
                     diffColor: [159, 43, 51]
                 });
-                yield fs.writeFileSync(diffpath, this.png.sync.write(diffImage));
+                // await fs.writeFileSync(diffpath, this.png.sync.write(diffImage))
                 return diffPixelCount;
             }
             catch (e) {

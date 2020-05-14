@@ -166,7 +166,7 @@ export default class Capture {
 
           await puppet.goto(page.url, {
             waitUntil: 'networkidle0',
-            timeout: 60000
+            timeout: 30000
           })
 
           await puppet._client.send('Animation.setPlaybackRate', {
@@ -189,7 +189,7 @@ export default class Capture {
                 },
                 {scrollTo}
               )
-              await puppet.waitFor(1000)
+              await puppet.waitFor(300)
 
               const buffer = await puppet.screenshot({
                 fullPage: false
@@ -437,12 +437,12 @@ export default class Capture {
             capture.diff = false
           }
 
-          if (diff && diff > 0) {
-            capture.urldiff = await this.store.uploadfile(
-              `${this.config.date}/${this.dbDevice.slug}/${filenamediff}`,
-              localfilepathdiff
-            )
-          }
+          // if (diff && diff > 0) {
+          //   capture.urldiff = await this.store.uploadfile(
+          //     `${this.config.date}/${this.dbDevice.slug}/${filenamediff}`,
+          //     localfilepathdiff
+          //   )
+          // }
 
           /** Write capture in the DB */
           await this.db.createCapture(
