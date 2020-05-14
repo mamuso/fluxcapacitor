@@ -29,6 +29,22 @@
     { "id": "gh-cli", "url": "https://cli.github.com/" },
     { "id": "home", "url": "https://github.com" },
     { "id": "auth-login", "url": "https://github.com/login" },
+    {
+      "id": "learning-lab",
+      "url": "https://lab.github.com/"
+    },
+    {
+      "id": "learning-lab-for-orgs",
+      "url": "https://lab.github.com/organizations"
+    },
+    {
+      "id": "learning-lab-for-community",
+      "url": "https://lab.github.com/community"
+    },
+    {
+      "id": "learning-lab-course",
+      "url": "https://lab.github.com/githubtraining/introduction-to-github"
+    },
     { "id": "home-logged-in", "url": "https://github.com/", "auth": true },
     { "id": "team", "url": "https://github.com/team", "auth": true },
     {
