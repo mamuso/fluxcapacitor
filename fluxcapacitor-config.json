@@ -59,6 +59,11 @@
     },
     { "id": "features", "url": "https://github.com/features", "auth": true },
     {
+      "id": "features-actions",
+      "url": "https://github.com/actions",
+      "auth": true
+    },
+    {
       "id": "features-code-review",
       "url": "https://github.com/features/code-review",
       "auth": true
