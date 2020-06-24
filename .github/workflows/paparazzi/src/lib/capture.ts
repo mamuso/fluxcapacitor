@@ -165,7 +165,7 @@ export default class Capture {
           }
 
           await puppet.goto(page.url, {
-            waitUntil: 'networkidle0',
+            waitUntil: 'networkidle2',
             timeout: 30000
           })
 
