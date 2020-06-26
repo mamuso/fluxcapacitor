@@ -2,6 +2,7 @@ import { nexusPrismaPlugin } from "nexus-prisma";
 import { intArg, makeSchema, objectType, stringArg } from "@nexus/schema";
 
 import path from "path";
+import { type } from "os";
 
 export const Report = objectType({
   name: "Report",

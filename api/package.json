@@ -14,12 +14,12 @@
     "dev": "GENERATE_ARTIFACTS=true ts-node-dev --no-notify --respawn --transpileOnly ./src/index",
     "migrate": "yarn -s run migrate:save && yarn -s run migrate:up",
     "migrate:save": "prisma migrate save --experimental",
-    "migrate:up": "prisma migrate up --experimental"
+    "migrate:up": "prisma migrate up --experimental --verbose"
   },
   "dependencies": {
     "@nexus/schema": "^0.13.1",
-    "@prisma/cli": "^2.0.0-alpha.1076",
-    "@prisma/client": "^2.0.0-alpha.1076",
+    "@prisma/cli": "^2.1.1",
+    "@prisma/client": "^2.1.1",
     "@types/node-fetch": "^2.5.6",
     "apollo-server-micro": "^2.14.2",
     "nexus-prisma": "^0.12.0",

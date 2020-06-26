@@ -27,6 +27,7 @@ input CaptureCreateInput {
   page: PageCreateOneWithoutCapturesInput!
   report: ReportCreateOneWithoutCapturesInput!
   slug: String!
+  sparkline: SparklineCreateOneWithoutCapturesInput
   url: String
   urldiff: String
   urlmin: String
@@ -47,6 +48,11 @@ input CaptureCreateManyWithoutReportInput {
   create: [CaptureCreateWithoutReportInput!]
 }
 
+input CaptureCreateManyWithoutSparklineInput {
+  connect: [CaptureWhereUniqueInput!]
+  create: [CaptureCreateWithoutSparklineInput!]
+}
+
 input CaptureCreateWithoutDeviceInput {
   createdAt: DateTime
   deviceScaleFactor: Int
@@ -56,6 +62,7 @@ input CaptureCreateWithoutDeviceInput {
   page: PageCreateOneWithoutCapturesInput!
   report: ReportCreateOneWithoutCapturesInput!
   slug: String!
+  sparkline: SparklineCreateOneWithoutCapturesInput
   url: String
   urldiff: String
   urlmin: String
@@ -70,6 +77,7 @@ input CaptureCreateWithoutPageInput {
   id: String
   report: ReportCreateOneWithoutCapturesInput!
   slug: String!
+  sparkline: SparklineCreateOneWithoutCapturesInput
   url: String
   urldiff: String
   urlmin: String
@@ -83,6 +91,22 @@ input CaptureCreateWithoutReportInput {
   diffindex: Float
   id: String
   page: PageCreateOneWithoutCapturesInput!
+  slug: String!
+  sparkline: SparklineCreateOneWithoutCapturesInput
+  url: String
+  urldiff: String
+  urlmin: String
+}
+
+input CaptureCreateWithoutSparklineInput {
+  createdAt: DateTime
+  device: DeviceCreateOneWithoutCapturesInput!
+  deviceScaleFactor: Int
+  diff: Boolean
+  diffindex: Float
+  id: String
+  page: PageCreateOneWithoutCapturesInput!
+  report: ReportCreateOneWithoutCapturesInput!
   slug: String!
   url: String
   urldiff: String
@@ -117,6 +141,7 @@ input DeviceCreateInput {
   id: String
   name: String!
   slug: String!
+  Sparkline: SparklineCreateManyWithoutDeviceInput
   specs: String!
 }
 
@@ -125,7 +150,23 @@ input DeviceCreateOneWithoutCapturesInput {
   create: DeviceCreateWithoutCapturesInput
 }
 
+input DeviceCreateOneWithoutSparklineInput {
+  connect: DeviceWhereUniqueInput
+  create: DeviceCreateWithoutSparklineInput
+}
+
 input DeviceCreateWithoutCapturesInput {
+  createdAt: DateTime
+  deviceScaleFactor: Int
+  id: String
+  name: String!
+  slug: String!
+  Sparkline: SparklineCreateManyWithoutDeviceInput
+  specs: String!
+}
+
+input DeviceCreateWithoutSparklineInput {
+  captures: CaptureCreateManyWithoutDeviceInput
   createdAt: DateTime
   deviceScaleFactor: Int
   id: String
@@ -170,6 +211,7 @@ input PageCreateInput {
   reportcount: Int
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
+  Sparkline: SparklineCreateManyWithoutPageInput
   startsAt: String
   url: String!
 }
@@ -184,6 +226,11 @@ input PageCreateOneWithoutCapturesInput {
   create: PageCreateWithoutCapturesInput
 }
 
+input PageCreateOneWithoutSparklineInput {
+  connect: PageWhereUniqueInput
+  create: PageCreateWithoutSparklineInput
+}
+
 input PageCreateWithoutCapturesInput {
   createdAt: DateTime
   endsAt: String
@@ -191,6 +238,7 @@ input PageCreateWithoutCapturesInput {
   reportcount: Int
   reports: ReportCreateManyWithoutPagesInput
   slug: String!
+  Sparkline: SparklineCreateManyWithoutPageInput
   startsAt: String
   url: String!
 }
@@ -201,6 +249,19 @@ input PageCreateWithoutReportsInput {
   endsAt: String
   id: String
   reportcount: Int
+  slug: String!
+  Sparkline: SparklineCreateManyWithoutPageInput
+  startsAt: String
+  url: String!
+}
+
+input PageCreateWithoutSparklineInput {
+  captures: CaptureCreateManyWithoutPageInput
+  createdAt: DateTime
+  endsAt: String
+  id: String
+  reportcount: Int
+  reports: ReportCreateManyWithoutPagesInput
   slug: String!
   startsAt: String
   url: String!
@@ -272,4 +333,48 @@ input ReportCreateWithoutPagesInput {
 input ReportWhereUniqueInput {
   id: String
   slug: String
+}
+
+input SparklineCreatedataInput {
+  set: [String!]
+}
+
+input SparklineCreateManyWithoutDeviceInput {
+  connect: [SparklineWhereUniqueInput!]
+  create: [SparklineCreateWithoutDeviceInput!]
+}
+
+input SparklineCreateManyWithoutPageInput {
+  connect: [SparklineWhereUniqueInput!]
+  create: [SparklineCreateWithoutPageInput!]
+}
+
+input SparklineCreateOneWithoutCapturesInput {
+  connect: SparklineWhereUniqueInput
+  create: SparklineCreateWithoutCapturesInput
+}
+
+input SparklineCreateWithoutCapturesInput {
+  data: SparklineCreatedataInput
+  device: DeviceCreateOneWithoutSparklineInput!
+  id: String
+  page: PageCreateOneWithoutSparklineInput!
+}
+
+input SparklineCreateWithoutDeviceInput {
+  captures: CaptureCreateManyWithoutSparklineInput
+  data: SparklineCreatedataInput
+  id: String
+  page: PageCreateOneWithoutSparklineInput!
+}
+
+input SparklineCreateWithoutPageInput {
+  captures: CaptureCreateManyWithoutSparklineInput
+  data: SparklineCreatedataInput
+  device: DeviceCreateOneWithoutSparklineInput!
+  id: String
+}
+
+input SparklineWhereUniqueInput {
+  id: String
 }
