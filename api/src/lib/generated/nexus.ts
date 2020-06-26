@@ -339,10 +339,6 @@ export interface NexusGenFieldTypes {
 export interface NexusGenArgTypes {
   Device: {
     captures: { // args
-      after?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      before?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       orderBy?: NexusGenInputs['DeviceCapturesOrderByInput'] | null; // DeviceCapturesOrderByInput
       skip?: number | null; // Int
     }
@@ -363,17 +359,9 @@ export interface NexusGenArgTypes {
   }
   Page: {
     captures: { // args
-      after?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      before?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
     reports: { // args
-      after?: NexusGenInputs['ReportWhereUniqueInput'] | null; // ReportWhereUniqueInput
-      before?: NexusGenInputs['ReportWhereUniqueInput'] | null; // ReportWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
   }
@@ -393,17 +381,9 @@ export interface NexusGenArgTypes {
   }
   Report: {
     captures: { // args
-      after?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      before?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
     pages: { // args
-      after?: NexusGenInputs['PageWhereUniqueInput'] | null; // PageWhereUniqueInput
-      before?: NexusGenInputs['PageWhereUniqueInput'] | null; // PageWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
   }

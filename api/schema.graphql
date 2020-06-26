@@ -97,7 +97,7 @@ input CaptureWhereUniqueInput {
 scalar DateTime
 
 type Device {
-  captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, orderBy: DeviceCapturesOrderByInput, skip: Int): [Capture!]!
+  captures(orderBy: DeviceCapturesOrderByInput, skip: Int): [Capture!]!
   createdAt: DateTime!
   deviceScaleFactor: Int
   id: String!
@@ -152,12 +152,12 @@ enum OrderByArg {
 }
 
 type Page {
-  captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, skip: Int): [Capture!]!
+  captures(skip: Int): [Capture!]!
   createdAt: DateTime!
   endsAt: String
   id: String!
   reportcount: Int
-  reports(after: ReportWhereUniqueInput, before: ReportWhereUniqueInput, first: Int, last: Int, skip: Int): [Report!]!
+  reports(skip: Int): [Report!]!
   slug: String!
   startsAt: String
 }
@@ -219,12 +219,12 @@ type Query {
 }
 
 type Report {
-  captures(after: CaptureWhereUniqueInput, before: CaptureWhereUniqueInput, first: Int, last: Int, skip: Int): [Capture!]!
+  captures(skip: Int): [Capture!]!
   createdAt: DateTime!
   current: Boolean!
   id: String!
   pagecount: Int
-  pages(after: PageWhereUniqueInput, before: PageWhereUniqueInput, first: Int, last: Int, skip: Int): [Page!]!
+  pages(skip: Int): [Page!]!
   slug: String!
 }
 
