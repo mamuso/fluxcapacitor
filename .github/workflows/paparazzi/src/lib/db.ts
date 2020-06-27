@@ -252,12 +252,14 @@ export default class DB {
    * SetSparkline.
    */
   setSparkline = async (device: Device, page: Page) => {
+    const slug = slugify(`${device.slug}-${page.slug}`)
+
     return await this.prisma.sparkline.upsert({
       where: {
-        deviceId: device.id,
-        page: page
+        slug: slug
       },
       create: {
+        slug: slug,
         device: {
           connect: {id: device.id}
         },

@@ -469,7 +469,7 @@ export default class Capture {
         const page: Page = this.config.pages[j]
         const dbPage: Page = await this.db.getPage(page)
 
-        const spark = await this.db.setSparkline(device, page)
+        const spark = await this.db.setSparkline(device, dbPage)
         console.log(spark)
       }
     }

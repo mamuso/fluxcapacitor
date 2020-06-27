@@ -71,6 +71,7 @@ export const Sparkline = objectType({
   name: "Sparkline",
   definition(t) {
     t.model.id();
+    t.model.slug();
     t.model.device({ type: "Device" });
     t.model.page({ type: "Page" });
     t.model.data();

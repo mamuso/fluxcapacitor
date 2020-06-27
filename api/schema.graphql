@@ -342,6 +342,7 @@ type Sparkline {
   device: Device!
   id: String!
   page: Page!
+  slug: String!
 }
 
 input SparklineCreatedataInput {
@@ -354,6 +355,7 @@ input SparklineCreateInput {
   device: DeviceCreateOneWithoutSparklineInput!
   id: String
   page: PageCreateOneWithoutSparklineInput!
+  slug: String!
 }
 
 input SparklineCreateManyWithoutDeviceInput {
@@ -376,6 +378,7 @@ input SparklineCreateWithoutCapturesInput {
   device: DeviceCreateOneWithoutSparklineInput!
   id: String
   page: PageCreateOneWithoutSparklineInput!
+  slug: String!
 }
 
 input SparklineCreateWithoutDeviceInput {
@@ -383,6 +386,7 @@ input SparklineCreateWithoutDeviceInput {
   data: SparklineCreatedataInput
   id: String
   page: PageCreateOneWithoutSparklineInput!
+  slug: String!
 }
 
 input SparklineCreateWithoutPageInput {
@@ -390,8 +394,10 @@ input SparklineCreateWithoutPageInput {
   data: SparklineCreatedataInput
   device: DeviceCreateOneWithoutSparklineInput!
   id: String
+  slug: String!
 }
 
 input SparklineWhereUniqueInput {
   id: String
+  slug: String
 }

@@ -274,8 +274,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
     sparklines: {
-  filtering: 'id' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
-  ordering: 'id' | 'deviceId' | 'pageId'
+  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
 }
 
   },
@@ -299,8 +299,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
 }
     Sparkline: {
-  filtering: 'id' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
-  ordering: 'id' | 'deviceId' | 'pageId'
+  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
 }
 
   },  Device: {
@@ -309,8 +309,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
     Sparkline: {
-  filtering: 'id' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
-  ordering: 'id' | 'deviceId' | 'pageId'
+  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
 }
 
   },  Capture: {
@@ -425,6 +425,7 @@ interface NexusPrismaTypes {
 
 },  Sparkline: {
     id: 'String'
+    slug: 'String'
     device: 'Device'
     deviceId: 'String'
     page: 'Page'

@@ -364,7 +364,7 @@ class Capture {
                 for (; j < jMax; j++) {
                     const page = this.config.pages[j];
                     const dbPage = yield this.db.getPage(page);
-                    const spark = yield this.db.setSparkline(device, page);
+                    const spark = yield this.db.setSparkline(device, dbPage);
                     console.log(spark);
                 }
             }

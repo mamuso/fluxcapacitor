@@ -260,6 +260,7 @@ export interface NexusGenInputs {
     device: NexusGenInputs['DeviceCreateOneWithoutSparklineInput']; // DeviceCreateOneWithoutSparklineInput!
     id?: string | null; // String
     page: NexusGenInputs['PageCreateOneWithoutSparklineInput']; // PageCreateOneWithoutSparklineInput!
+    slug: string; // String!
   }
   SparklineCreateManyWithoutDeviceInput: { // input type
     connect?: NexusGenInputs['SparklineWhereUniqueInput'][] | null; // [SparklineWhereUniqueInput!]
@@ -278,24 +279,28 @@ export interface NexusGenInputs {
     device: NexusGenInputs['DeviceCreateOneWithoutSparklineInput']; // DeviceCreateOneWithoutSparklineInput!
     id?: string | null; // String
     page: NexusGenInputs['PageCreateOneWithoutSparklineInput']; // PageCreateOneWithoutSparklineInput!
+    slug: string; // String!
   }
   SparklineCreateWithoutDeviceInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutSparklineInput'] | null; // CaptureCreateManyWithoutSparklineInput
     data?: NexusGenInputs['SparklineCreatedataInput'] | null; // SparklineCreatedataInput
     id?: string | null; // String
     page: NexusGenInputs['PageCreateOneWithoutSparklineInput']; // PageCreateOneWithoutSparklineInput!
+    slug: string; // String!
   }
   SparklineCreateWithoutPageInput: { // input type
     captures?: NexusGenInputs['CaptureCreateManyWithoutSparklineInput'] | null; // CaptureCreateManyWithoutSparklineInput
     data?: NexusGenInputs['SparklineCreatedataInput'] | null; // SparklineCreatedataInput
     device: NexusGenInputs['DeviceCreateOneWithoutSparklineInput']; // DeviceCreateOneWithoutSparklineInput!
     id?: string | null; // String
+    slug: string; // String!
   }
   SparklineCreatedataInput: { // input type
     set?: string[] | null; // [String!]
   }
   SparklineWhereUniqueInput: { // input type
     id?: string | null; // String
+    slug?: string | null; // String
   }
 }
 
@@ -343,6 +348,7 @@ export interface NexusGenRootTypes {
   Sparkline: { // root type
     data: string[]; // [String!]!
     id: string; // String!
+    slug: string; // String!
   }
   String: string;
   Int: number;
@@ -458,6 +464,7 @@ export interface NexusGenFieldTypes {
     device: NexusGenRootTypes['Device']; // Device!
     id: string; // String!
     page: NexusGenRootTypes['Page']; // Page!
+    slug: string; // String!
   }
 }
 
