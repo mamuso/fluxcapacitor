@@ -352,6 +352,26 @@ class Capture {
         /**
          *  TODO
          */
+        this.populateSparklines = () => __awaiter(this, void 0, void 0, function* () {
+            this.printer.header(`📷 populateSparklines`);
+            let i = 0;
+            const iMax = this.config.devices.length;
+            for (; i < iMax; i++) {
+                const device = yield this.db.getDevice(this.config.devices[i]);
+                /** Looping through URLs */
+                let j = 0;
+                const jMax = this.config.pages.length;
+                for (; j < jMax; j++) {
+                    const page = this.config.pages[j];
+                    const dbPage = yield this.db.getPage(page);
+                    const spark = yield this.db.setSparkline(device, page);
+                    console.log(spark);
+                }
+            }
+        });
+        /**
+         *  TODO
+         */
         this.setDevice = (configdevice) => __awaiter(this, void 0, void 0, function* () {
             let device = (configdevice.device
                 ? puppeteer_1.default.devices[configdevice.device]

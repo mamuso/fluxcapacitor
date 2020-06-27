@@ -56,8 +56,22 @@ exports.Device = schema_1.objectType({
         t.model.name();
         t.model.specs();
         t.model.deviceScaleFactor();
-        t.model.captures({ type: "Capture" });
+        t.model.captures({
+            type: "Capture",
+            ordering: {
+                slug: true
+            }
+        });
         t.model.createdAt();
+    }
+});
+exports.Sparkline = schema_1.objectType({
+    name: "Sparkline",
+    definition: function (t) {
+        t.model.id();
+        t.model.device({ type: "Device" });
+        t.model.page({ type: "Page" });
+        t.model.data();
     }
 });
 var Query = schema_1.objectType({
@@ -67,26 +81,7 @@ var Query = schema_1.objectType({
         t.crud.page();
         t.crud.capture();
         t.crud.device();
-        t.list.field("reportsnapshot", {
-            type: "Report",
-            args: {
-                slug: schema_1.stringArg({ required: true })
-            },
-            resolve: function (_root, args, ctx) {
-                return ctx.prisma.report
-                    .findOne({
-                    where: {
-                        slug: args.slug
-                    }
-                })
-                    .then(function (result) {
-                    if (result === null) {
-                        throw new Error("No report with slug \"" + args.slug + "\"");
-                    }
-                    return result;
-                });
-            }
-        });
+        t.crud.sparkline();
     }
 });
 var Mutation = schema_1.objectType({
@@ -96,11 +91,12 @@ var Mutation = schema_1.objectType({
         t.crud.createOnePage();
         t.crud.createOneDevice();
         t.crud.createOneCapture();
+        t.crud.createOneSparkline();
     }
 });
 var generateArtifacts = Boolean(process.env.GENERATE_ARTIFACTS);
 exports.schema = schema_1.makeSchema({
-    types: [Query, Mutation, exports.Report, exports.Page, exports.Capture, exports.Device],
+    types: [Query, Mutation, exports.Report, exports.Page, exports.Capture, exports.Device, exports.Sparkline],
     plugins: [
         nexus_prisma_1.nexusPrismaPlugin({
             shouldGenerateArtifacts: generateArtifacts,

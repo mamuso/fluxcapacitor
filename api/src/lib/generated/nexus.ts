@@ -254,6 +254,13 @@ export interface NexusGenInputs {
     id?: string | null; // String
     slug?: string | null; // String
   }
+  SparklineCreateInput: { // input type
+    captures?: NexusGenInputs['CaptureCreateManyWithoutSparklineInput'] | null; // CaptureCreateManyWithoutSparklineInput
+    data?: NexusGenInputs['SparklineCreatedataInput'] | null; // SparklineCreatedataInput
+    device: NexusGenInputs['DeviceCreateOneWithoutSparklineInput']; // DeviceCreateOneWithoutSparklineInput!
+    id?: string | null; // String
+    page: NexusGenInputs['PageCreateOneWithoutSparklineInput']; // PageCreateOneWithoutSparklineInput!
+  }
   SparklineCreateManyWithoutDeviceInput: { // input type
     connect?: NexusGenInputs['SparklineWhereUniqueInput'][] | null; // [SparklineWhereUniqueInput!]
     create?: NexusGenInputs['SparklineCreateWithoutDeviceInput'][] | null; // [SparklineCreateWithoutDeviceInput!]
@@ -333,6 +340,10 @@ export interface NexusGenRootTypes {
     pagecount?: number | null; // Int
     slug: string; // String!
   }
+  Sparkline: { // root type
+    data: string[]; // [String!]!
+    id: string; // String!
+  }
   String: string;
   Int: number;
   Float: number;
@@ -373,6 +384,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   ReportCreateWithoutCapturesInput: NexusGenInputs['ReportCreateWithoutCapturesInput'];
   ReportCreateWithoutPagesInput: NexusGenInputs['ReportCreateWithoutPagesInput'];
   ReportWhereUniqueInput: NexusGenInputs['ReportWhereUniqueInput'];
+  SparklineCreateInput: NexusGenInputs['SparklineCreateInput'];
   SparklineCreateManyWithoutDeviceInput: NexusGenInputs['SparklineCreateManyWithoutDeviceInput'];
   SparklineCreateManyWithoutPageInput: NexusGenInputs['SparklineCreateManyWithoutPageInput'];
   SparklineCreateOneWithoutCapturesInput: NexusGenInputs['SparklineCreateOneWithoutCapturesInput'];
@@ -413,6 +425,7 @@ export interface NexusGenFieldTypes {
     createOneDevice: NexusGenRootTypes['Device']; // Device!
     createOnePage: NexusGenRootTypes['Page']; // Page!
     createOneReport: NexusGenRootTypes['Report']; // Report!
+    createOneSparkline: NexusGenRootTypes['Sparkline']; // Sparkline!
   }
   Page: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
@@ -429,6 +442,7 @@ export interface NexusGenFieldTypes {
     device: NexusGenRootTypes['Device'] | null; // Device
     page: NexusGenRootTypes['Page'] | null; // Page
     report: NexusGenRootTypes['Report'] | null; // Report
+    sparkline: NexusGenRootTypes['Sparkline'] | null; // Sparkline
   }
   Report: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
@@ -438,6 +452,12 @@ export interface NexusGenFieldTypes {
     pagecount: number | null; // Int
     pages: NexusGenRootTypes['Page'][]; // [Page!]!
     slug: string; // String!
+  }
+  Sparkline: { // field return type
+    data: string[]; // [String!]!
+    device: NexusGenRootTypes['Device']; // Device!
+    id: string; // String!
+    page: NexusGenRootTypes['Page']; // Page!
   }
 }
 
@@ -461,6 +481,9 @@ export interface NexusGenArgTypes {
     createOneReport: { // args
       data: NexusGenInputs['ReportCreateInput']; // ReportCreateInput!
     }
+    createOneSparkline: { // args
+      data: NexusGenInputs['SparklineCreateInput']; // SparklineCreateInput!
+    }
   }
   Page: {
     captures: { // args
@@ -483,6 +506,9 @@ export interface NexusGenArgTypes {
     report: { // args
       where: NexusGenInputs['ReportWhereUniqueInput']; // ReportWhereUniqueInput!
     }
+    sparkline: { // args
+      where: NexusGenInputs['SparklineWhereUniqueInput']; // SparklineWhereUniqueInput!
+    }
   }
   Report: {
     captures: { // args
@@ -499,9 +525,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Capture" | "Device" | "Mutation" | "Page" | "Query" | "Report";
+export type NexusGenObjectNames = "Capture" | "Device" | "Mutation" | "Page" | "Query" | "Report" | "Sparkline";
 
-export type NexusGenInputNames = "CaptureCreateInput" | "CaptureCreateManyWithoutDeviceInput" | "CaptureCreateManyWithoutPageInput" | "CaptureCreateManyWithoutReportInput" | "CaptureCreateManyWithoutSparklineInput" | "CaptureCreateWithoutDeviceInput" | "CaptureCreateWithoutPageInput" | "CaptureCreateWithoutReportInput" | "CaptureCreateWithoutSparklineInput" | "CaptureWhereUniqueInput" | "DeviceCapturesOrderByInput" | "DeviceCreateInput" | "DeviceCreateOneWithoutCapturesInput" | "DeviceCreateOneWithoutSparklineInput" | "DeviceCreateWithoutCapturesInput" | "DeviceCreateWithoutSparklineInput" | "DeviceWhereUniqueInput" | "PageCreateInput" | "PageCreateManyWithoutReportsInput" | "PageCreateOneWithoutCapturesInput" | "PageCreateOneWithoutSparklineInput" | "PageCreateWithoutCapturesInput" | "PageCreateWithoutReportsInput" | "PageCreateWithoutSparklineInput" | "PageWhereUniqueInput" | "ReportCreateInput" | "ReportCreateManyWithoutPagesInput" | "ReportCreateOneWithoutCapturesInput" | "ReportCreateWithoutCapturesInput" | "ReportCreateWithoutPagesInput" | "ReportWhereUniqueInput" | "SparklineCreateManyWithoutDeviceInput" | "SparklineCreateManyWithoutPageInput" | "SparklineCreateOneWithoutCapturesInput" | "SparklineCreateWithoutCapturesInput" | "SparklineCreateWithoutDeviceInput" | "SparklineCreateWithoutPageInput" | "SparklineCreatedataInput" | "SparklineWhereUniqueInput";
+export type NexusGenInputNames = "CaptureCreateInput" | "CaptureCreateManyWithoutDeviceInput" | "CaptureCreateManyWithoutPageInput" | "CaptureCreateManyWithoutReportInput" | "CaptureCreateManyWithoutSparklineInput" | "CaptureCreateWithoutDeviceInput" | "CaptureCreateWithoutPageInput" | "CaptureCreateWithoutReportInput" | "CaptureCreateWithoutSparklineInput" | "CaptureWhereUniqueInput" | "DeviceCapturesOrderByInput" | "DeviceCreateInput" | "DeviceCreateOneWithoutCapturesInput" | "DeviceCreateOneWithoutSparklineInput" | "DeviceCreateWithoutCapturesInput" | "DeviceCreateWithoutSparklineInput" | "DeviceWhereUniqueInput" | "PageCreateInput" | "PageCreateManyWithoutReportsInput" | "PageCreateOneWithoutCapturesInput" | "PageCreateOneWithoutSparklineInput" | "PageCreateWithoutCapturesInput" | "PageCreateWithoutReportsInput" | "PageCreateWithoutSparklineInput" | "PageWhereUniqueInput" | "ReportCreateInput" | "ReportCreateManyWithoutPagesInput" | "ReportCreateOneWithoutCapturesInput" | "ReportCreateWithoutCapturesInput" | "ReportCreateWithoutPagesInput" | "ReportWhereUniqueInput" | "SparklineCreateInput" | "SparklineCreateManyWithoutDeviceInput" | "SparklineCreateManyWithoutPageInput" | "SparklineCreateOneWithoutCapturesInput" | "SparklineCreateWithoutCapturesInput" | "SparklineCreateWithoutDeviceInput" | "SparklineCreateWithoutPageInput" | "SparklineCreatedataInput" | "SparklineWhereUniqueInput";
 
 export type NexusGenEnumNames = "OrderByArg";
 

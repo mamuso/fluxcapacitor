@@ -2,8 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "private": true,
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/graphql",
+    "start": "micro",
     "clean": "rm -rf dist",
     "buildo": "npm -s run generate",
     "build-local": "npm -s run clean && npm -s run generate && tsc",

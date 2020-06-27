@@ -185,6 +185,7 @@ type Mutation {
   createOneDevice(data: DeviceCreateInput!): Device!
   createOnePage(data: PageCreateInput!): Page!
   createOneReport(data: ReportCreateInput!): Report!
+  createOneSparkline(data: SparklineCreateInput!): Sparkline!
 }
 
 enum OrderByArg {
@@ -277,6 +278,7 @@ type Query {
   device(where: DeviceWhereUniqueInput!): Device
   page(where: PageWhereUniqueInput!): Page
   report(where: ReportWhereUniqueInput!): Report
+  sparkline(where: SparklineWhereUniqueInput!): Sparkline
 }
 
 type Report {
@@ -335,8 +337,23 @@ input ReportWhereUniqueInput {
   slug: String
 }
 
+type Sparkline {
+  data: [String!]!
+  device: Device!
+  id: String!
+  page: Page!
+}
+
 input SparklineCreatedataInput {
   set: [String!]
+}
+
+input SparklineCreateInput {
+  captures: CaptureCreateManyWithoutSparklineInput
+  data: SparklineCreatedataInput
+  device: DeviceCreateOneWithoutSparklineInput!
+  id: String
+  page: PageCreateOneWithoutSparklineInput!
 }
 
 input SparklineCreateManyWithoutDeviceInput {

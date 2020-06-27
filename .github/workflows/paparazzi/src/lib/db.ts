@@ -130,6 +130,21 @@ export default class DB {
   }
 
   /**
+   * Get a page from the database.
+   */
+  getPage = async (page: Page) => {
+    const slug = slugify(page.id)
+
+    const p = await this.prisma.page.findOne({
+      where: {
+        slug: slug
+      }
+    })
+
+    return p
+  }
+
+  /**
    * Inserts or updates a capture in the database.
    */
   createCapture = async (
@@ -229,6 +244,34 @@ export default class DB {
       data: {
         reportcount: p.length,
         endsAt: report.slug
+      }
+    })
+  }
+
+  /**
+   * SetSparkline.
+   */
+  setSparkline = async (device: Device, page: Page) => {
+    return await this.prisma.sparkline.upsert({
+      where: {
+        deviceId: device.id,
+        page: page
+      },
+      create: {
+        device: {
+          connect: {id: device.id}
+        },
+        page: {
+          connect: {id: page.id}
+        },
+        data: {
+          set: ['pa', 'ta', 'ta']
+        }
+      },
+      update: {
+        data: {
+          set: ['pa', 'ta', 'ta']
+        }
       }
     })
   }

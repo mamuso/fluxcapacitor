@@ -1,0 +1,23 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Sparkline",
+      "field": "slug",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Sparkline",
+          "field": "slug"
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

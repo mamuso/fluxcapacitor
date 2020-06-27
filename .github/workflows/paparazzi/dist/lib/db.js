@@ -124,6 +124,18 @@ class DB {
             return p;
         });
         /**
+         * Get a page from the database.
+         */
+        this.getPage = (page) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(page.id);
+            const p = yield this.prisma.page.findOne({
+                where: {
+                    slug: slug
+                }
+            });
+            return p;
+        });
+        /**
          * Inserts or updates a capture in the database.
          */
         this.createCapture = (report, device, page, capture) => __awaiter(this, void 0, void 0, function* () {
@@ -211,6 +223,33 @@ class DB {
                 data: {
                     reportcount: p.length,
                     endsAt: report.slug
+                }
+            });
+        });
+        /**
+         * SetSparkline.
+         */
+        this.setSparkline = (device, page) => __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.sparkline.upsert({
+                where: {
+                    deviceId: device.id,
+                    page: page
+                },
+                create: {
+                    device: {
+                        connect: { id: device.id }
+                    },
+                    page: {
+                        connect: { id: page.id }
+                    },
+                    data: {
+                        set: ['pa', 'ta', 'ta']
+                    }
+                },
+                update: {
+                    data: {
+                        set: ['pa', 'ta', 'ta']
+                    }
                 }
             });
         });

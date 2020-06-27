@@ -10,10 +10,3 @@ var server = new apollo_server_micro_1.ApolloServer({
     introspection: true
 });
 exports["default"] = server.createHandler({ path: "/api" });
-if (process.env.NODE_ENV !== "production") {
-    // The `listen` method launches a web server.
-    server.listen().then(function (_a) {
-        var url = _a.url;
-        console.log("\uD83D\uDE80  Server ready at " + url);
-    });
-}
