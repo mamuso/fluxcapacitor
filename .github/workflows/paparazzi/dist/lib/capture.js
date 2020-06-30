@@ -358,14 +358,12 @@ class Capture {
             const iMax = this.config.devices.length;
             for (; i < iMax; i++) {
                 const device = yield this.db.getDevice(this.config.devices[i]);
+                const pages = yield this.db.getPages();
                 /** Looping through URLs */
                 let j = 0;
-                const jMax = this.config.pages.length;
+                const jMax = pages.length;
                 for (; j < jMax; j++) {
-                    const page = this.config.pages[j];
-                    const dbPage = yield this.db.getPage(page);
-                    const spark = yield this.db.setSparkline(device, dbPage);
-                    console.log(spark);
+                    const spark = yield this.db.setSparkline(device, pages[j]);
                 }
             }
         });

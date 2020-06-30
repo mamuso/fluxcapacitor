@@ -226,11 +226,28 @@ class DB {
                 }
             });
         });
+        this.getPages = () => __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.page.findMany();
+        });
         /**
          * SetSparkline.
          */
         this.setSparkline = (device, page) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(`${device.slug}-${page.slug}`);
+            const points = yield this.prisma.capture.findMany({
+                where: {
+                    deviceId: device.id,
+                    pageId: page.id
+                },
+                orderBy: {
+                    createdAt: 'desc'
+                },
+                take: 10
+            });
+            const dataline = points.map(p => {
+                const di = parseInt(p.diffindex);
+                return di > 0 ? `${di}` : '0';
+            });
             return yield this.prisma.sparkline.upsert({
                 where: {
                     slug: slug
@@ -244,12 +261,12 @@ class DB {
                         connect: { id: page.id }
                     },
                     data: {
-                        set: ['pa', 'ta', 'ta']
+                        set: dataline
                     }
                 },
                 update: {
                     data: {
-                        set: ['pa', 'ta', 'ta']
+                        set: dataline
                     }
                 }
             });

@@ -431,7 +431,7 @@ interface NexusPrismaTypes {
     page: 'Page'
     pageId: 'String'
     captures: 'Capture'
-    data: 'String'
+    data: 'Int'
 
 }
 }
