@@ -2,6 +2,7 @@ import { nexusPrismaPlugin } from "nexus-prisma";
 import { intArg, makeSchema, objectType, stringArg } from "@nexus/schema";
 
 import path from "path";
+import { type } from "os";
 
 export const Report = objectType({
   name: "Report",
@@ -66,6 +67,17 @@ export const Device = objectType({
   },
 });
 
+export const Sparkline = objectType({
+  name: "Sparkline",
+  definition(t) {
+    t.model.id();
+    t.model.slug();
+    t.model.device({ type: "Device" });
+    t.model.page({ type: "Page" });
+    t.model.data();
+  },
+});
+
 const Query = objectType({
   name: "Query",
   definition(t) {
@@ -73,6 +85,7 @@ const Query = objectType({
     t.crud.page();
     t.crud.capture();
     t.crud.device();
+    t.crud.sparkline();
   },
 });
 
@@ -83,13 +96,14 @@ const Mutation = objectType({
     t.crud.createOnePage();
     t.crud.createOneDevice();
     t.crud.createOneCapture();
+    t.crud.createOneSparkline();
   },
 });
 
 const generateArtifacts = Boolean(process.env.GENERATE_ARTIFACTS);
 
 export const schema = makeSchema({
-  types: [Query, Mutation, Report, Page, Capture, Device],
+  types: [Query, Mutation, Report, Page, Capture, Device, Sparkline],
   plugins: [
     nexusPrismaPlugin({
       shouldGenerateArtifacts: generateArtifacts,

@@ -252,6 +252,7 @@ interface ModelTypes {
   Page: prisma.Page
   Device: prisma.Device
   Capture: prisma.Capture
+  Sparkline: prisma.Sparkline
 }
   
 interface NexusPrismaInputs {
@@ -261,47 +262,65 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
 }
     pages: {
-  filtering: 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
 }
     devices: {
-  filtering: 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'deviceScaleFactor' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'deviceScaleFactor' | 'createdAt' | 'Sparkline' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'slug' | 'name' | 'specs' | 'deviceScaleFactor' | 'createdAt'
 }
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+}
+    sparklines: {
+  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
 }
 
   },
     Report: {
     pages: {
-  filtering: 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
 }
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
 
   },  Page: {
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
     reports: {
   filtering: 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
 }
+    Sparkline: {
+  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
+}
 
   },  Device: {
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'createdAt'
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+}
+    Sparkline: {
+  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
 }
 
   },  Capture: {
 
+
+  },  Sparkline: {
+    captures: {
+  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+}
 
   }
 }
@@ -316,6 +335,8 @@ interface NexusPrismaTypes {
     devices: 'Device'
     capture: 'Capture'
     captures: 'Capture'
+    sparkline: 'Sparkline'
+    sparklines: 'Sparkline'
 
   },
   Mutation: {
@@ -343,6 +364,12 @@ interface NexusPrismaTypes {
     deleteOneCapture: 'Capture'
     deleteManyCapture: 'BatchPayload'
     upsertOneCapture: 'Capture'
+    createOneSparkline: 'Sparkline'
+    updateOneSparkline: 'Sparkline'
+    updateManySparkline: 'BatchPayload'
+    deleteOneSparkline: 'Sparkline'
+    deleteManySparkline: 'BatchPayload'
+    upsertOneSparkline: 'Sparkline'
 
   },
   Report: {
@@ -365,6 +392,7 @@ interface NexusPrismaTypes {
     startsAt: 'String'
     endsAt: 'String'
     createdAt: 'DateTime'
+    Sparkline: 'Sparkline'
 
 },  Device: {
     id: 'String'
@@ -374,6 +402,7 @@ interface NexusPrismaTypes {
     captures: 'Capture'
     deviceScaleFactor: 'Int'
     createdAt: 'DateTime'
+    Sparkline: 'Sparkline'
 
 },  Capture: {
     id: 'String'
@@ -390,7 +419,19 @@ interface NexusPrismaTypes {
     reportId: 'String'
     device: 'Device'
     deviceId: 'String'
+    sparkline: 'Sparkline'
+    sparklineId: 'String'
     createdAt: 'DateTime'
+
+},  Sparkline: {
+    id: 'String'
+    slug: 'String'
+    device: 'Device'
+    deviceId: 'String'
+    page: 'Page'
+    pageId: 'String'
+    captures: 'Capture'
+    data: 'String'
 
 }
 }
@@ -400,6 +441,7 @@ interface NexusPrismaMethods {
   Page: NexusPrismaFields<'Page'>
   Device: NexusPrismaFields<'Device'>
   Capture: NexusPrismaFields<'Capture'>
+  Sparkline: NexusPrismaFields<'Sparkline'>
   Query: NexusPrismaFields<'Query'>
   Mutation: NexusPrismaFields<'Mutation'>
 }

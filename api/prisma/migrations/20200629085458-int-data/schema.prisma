@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  url = "***"
 }
 
 generator client {
@@ -68,5 +68,5 @@ model Sparkline {
   page            Page      @relation(fields: [pageId], references: [id])
   pageId          String
   captures        Capture[]
-  data            String[]
+  data            Int[]
 }

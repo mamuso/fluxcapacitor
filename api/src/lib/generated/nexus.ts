@@ -29,6 +29,7 @@ export interface NexusGenInputs {
     page: NexusGenInputs['PageCreateOneWithoutCapturesInput']; // PageCreateOneWithoutCapturesInput!
     report: NexusGenInputs['ReportCreateOneWithoutCapturesInput']; // ReportCreateOneWithoutCapturesInput!
     slug: string; // String!
+    sparkline?: NexusGenInputs['SparklineCreateOneWithoutCapturesInput'] | null; // SparklineCreateOneWithoutCapturesInput
     url?: string | null; // String
     urldiff?: string | null; // String
     urlmin?: string | null; // String
@@ -45,6 +46,10 @@ export interface NexusGenInputs {
     connect?: NexusGenInputs['CaptureWhereUniqueInput'][] | null; // [CaptureWhereUniqueInput!]
     create?: NexusGenInputs['CaptureCreateWithoutReportInput'][] | null; // [CaptureCreateWithoutReportInput!]
   }
+  CaptureCreateManyWithoutSparklineInput: { // input type
+    connect?: NexusGenInputs['CaptureWhereUniqueInput'][] | null; // [CaptureWhereUniqueInput!]
+    create?: NexusGenInputs['CaptureCreateWithoutSparklineInput'][] | null; // [CaptureCreateWithoutSparklineInput!]
+  }
   CaptureCreateWithoutDeviceInput: { // input type
     createdAt?: any | null; // DateTime
     deviceScaleFactor?: number | null; // Int
@@ -54,6 +59,7 @@ export interface NexusGenInputs {
     page: NexusGenInputs['PageCreateOneWithoutCapturesInput']; // PageCreateOneWithoutCapturesInput!
     report: NexusGenInputs['ReportCreateOneWithoutCapturesInput']; // ReportCreateOneWithoutCapturesInput!
     slug: string; // String!
+    sparkline?: NexusGenInputs['SparklineCreateOneWithoutCapturesInput'] | null; // SparklineCreateOneWithoutCapturesInput
     url?: string | null; // String
     urldiff?: string | null; // String
     urlmin?: string | null; // String
@@ -67,6 +73,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     report: NexusGenInputs['ReportCreateOneWithoutCapturesInput']; // ReportCreateOneWithoutCapturesInput!
     slug: string; // String!
+    sparkline?: NexusGenInputs['SparklineCreateOneWithoutCapturesInput'] | null; // SparklineCreateOneWithoutCapturesInput
     url?: string | null; // String
     urldiff?: string | null; // String
     urlmin?: string | null; // String
@@ -79,6 +86,21 @@ export interface NexusGenInputs {
     diffindex?: number | null; // Float
     id?: string | null; // String
     page: NexusGenInputs['PageCreateOneWithoutCapturesInput']; // PageCreateOneWithoutCapturesInput!
+    slug: string; // String!
+    sparkline?: NexusGenInputs['SparklineCreateOneWithoutCapturesInput'] | null; // SparklineCreateOneWithoutCapturesInput
+    url?: string | null; // String
+    urldiff?: string | null; // String
+    urlmin?: string | null; // String
+  }
+  CaptureCreateWithoutSparklineInput: { // input type
+    createdAt?: any | null; // DateTime
+    device: NexusGenInputs['DeviceCreateOneWithoutCapturesInput']; // DeviceCreateOneWithoutCapturesInput!
+    deviceScaleFactor?: number | null; // Int
+    diff?: boolean | null; // Boolean
+    diffindex?: number | null; // Float
+    id?: string | null; // String
+    page: NexusGenInputs['PageCreateOneWithoutCapturesInput']; // PageCreateOneWithoutCapturesInput!
+    report: NexusGenInputs['ReportCreateOneWithoutCapturesInput']; // ReportCreateOneWithoutCapturesInput!
     slug: string; // String!
     url?: string | null; // String
     urldiff?: string | null; // String
@@ -98,13 +120,28 @@ export interface NexusGenInputs {
     id?: string | null; // String
     name: string; // String!
     slug: string; // String!
+    Sparkline?: NexusGenInputs['SparklineCreateManyWithoutDeviceInput'] | null; // SparklineCreateManyWithoutDeviceInput
     specs: string; // String!
   }
   DeviceCreateOneWithoutCapturesInput: { // input type
     connect?: NexusGenInputs['DeviceWhereUniqueInput'] | null; // DeviceWhereUniqueInput
     create?: NexusGenInputs['DeviceCreateWithoutCapturesInput'] | null; // DeviceCreateWithoutCapturesInput
   }
+  DeviceCreateOneWithoutSparklineInput: { // input type
+    connect?: NexusGenInputs['DeviceWhereUniqueInput'] | null; // DeviceWhereUniqueInput
+    create?: NexusGenInputs['DeviceCreateWithoutSparklineInput'] | null; // DeviceCreateWithoutSparklineInput
+  }
   DeviceCreateWithoutCapturesInput: { // input type
+    createdAt?: any | null; // DateTime
+    deviceScaleFactor?: number | null; // Int
+    id?: string | null; // String
+    name: string; // String!
+    slug: string; // String!
+    Sparkline?: NexusGenInputs['SparklineCreateManyWithoutDeviceInput'] | null; // SparklineCreateManyWithoutDeviceInput
+    specs: string; // String!
+  }
+  DeviceCreateWithoutSparklineInput: { // input type
+    captures?: NexusGenInputs['CaptureCreateManyWithoutDeviceInput'] | null; // CaptureCreateManyWithoutDeviceInput
     createdAt?: any | null; // DateTime
     deviceScaleFactor?: number | null; // Int
     id?: string | null; // String
@@ -124,6 +161,7 @@ export interface NexusGenInputs {
     reportcount?: number | null; // Int
     reports?: NexusGenInputs['ReportCreateManyWithoutPagesInput'] | null; // ReportCreateManyWithoutPagesInput
     slug: string; // String!
+    Sparkline?: NexusGenInputs['SparklineCreateManyWithoutPageInput'] | null; // SparklineCreateManyWithoutPageInput
     startsAt?: string | null; // String
     url: string; // String!
   }
@@ -135,6 +173,10 @@ export interface NexusGenInputs {
     connect?: NexusGenInputs['PageWhereUniqueInput'] | null; // PageWhereUniqueInput
     create?: NexusGenInputs['PageCreateWithoutCapturesInput'] | null; // PageCreateWithoutCapturesInput
   }
+  PageCreateOneWithoutSparklineInput: { // input type
+    connect?: NexusGenInputs['PageWhereUniqueInput'] | null; // PageWhereUniqueInput
+    create?: NexusGenInputs['PageCreateWithoutSparklineInput'] | null; // PageCreateWithoutSparklineInput
+  }
   PageCreateWithoutCapturesInput: { // input type
     createdAt?: any | null; // DateTime
     endsAt?: string | null; // String
@@ -142,6 +184,7 @@ export interface NexusGenInputs {
     reportcount?: number | null; // Int
     reports?: NexusGenInputs['ReportCreateManyWithoutPagesInput'] | null; // ReportCreateManyWithoutPagesInput
     slug: string; // String!
+    Sparkline?: NexusGenInputs['SparklineCreateManyWithoutPageInput'] | null; // SparklineCreateManyWithoutPageInput
     startsAt?: string | null; // String
     url: string; // String!
   }
@@ -151,6 +194,18 @@ export interface NexusGenInputs {
     endsAt?: string | null; // String
     id?: string | null; // String
     reportcount?: number | null; // Int
+    slug: string; // String!
+    Sparkline?: NexusGenInputs['SparklineCreateManyWithoutPageInput'] | null; // SparklineCreateManyWithoutPageInput
+    startsAt?: string | null; // String
+    url: string; // String!
+  }
+  PageCreateWithoutSparklineInput: { // input type
+    captures?: NexusGenInputs['CaptureCreateManyWithoutPageInput'] | null; // CaptureCreateManyWithoutPageInput
+    createdAt?: any | null; // DateTime
+    endsAt?: string | null; // String
+    id?: string | null; // String
+    reportcount?: number | null; // Int
+    reports?: NexusGenInputs['ReportCreateManyWithoutPagesInput'] | null; // ReportCreateManyWithoutPagesInput
     slug: string; // String!
     startsAt?: string | null; // String
     url: string; // String!
@@ -199,6 +254,54 @@ export interface NexusGenInputs {
     id?: string | null; // String
     slug?: string | null; // String
   }
+  SparklineCreateInput: { // input type
+    captures?: NexusGenInputs['CaptureCreateManyWithoutSparklineInput'] | null; // CaptureCreateManyWithoutSparklineInput
+    data?: NexusGenInputs['SparklineCreatedataInput'] | null; // SparklineCreatedataInput
+    device: NexusGenInputs['DeviceCreateOneWithoutSparklineInput']; // DeviceCreateOneWithoutSparklineInput!
+    id?: string | null; // String
+    page: NexusGenInputs['PageCreateOneWithoutSparklineInput']; // PageCreateOneWithoutSparklineInput!
+    slug: string; // String!
+  }
+  SparklineCreateManyWithoutDeviceInput: { // input type
+    connect?: NexusGenInputs['SparklineWhereUniqueInput'][] | null; // [SparklineWhereUniqueInput!]
+    create?: NexusGenInputs['SparklineCreateWithoutDeviceInput'][] | null; // [SparklineCreateWithoutDeviceInput!]
+  }
+  SparklineCreateManyWithoutPageInput: { // input type
+    connect?: NexusGenInputs['SparklineWhereUniqueInput'][] | null; // [SparklineWhereUniqueInput!]
+    create?: NexusGenInputs['SparklineCreateWithoutPageInput'][] | null; // [SparklineCreateWithoutPageInput!]
+  }
+  SparklineCreateOneWithoutCapturesInput: { // input type
+    connect?: NexusGenInputs['SparklineWhereUniqueInput'] | null; // SparklineWhereUniqueInput
+    create?: NexusGenInputs['SparklineCreateWithoutCapturesInput'] | null; // SparklineCreateWithoutCapturesInput
+  }
+  SparklineCreateWithoutCapturesInput: { // input type
+    data?: NexusGenInputs['SparklineCreatedataInput'] | null; // SparklineCreatedataInput
+    device: NexusGenInputs['DeviceCreateOneWithoutSparklineInput']; // DeviceCreateOneWithoutSparklineInput!
+    id?: string | null; // String
+    page: NexusGenInputs['PageCreateOneWithoutSparklineInput']; // PageCreateOneWithoutSparklineInput!
+    slug: string; // String!
+  }
+  SparklineCreateWithoutDeviceInput: { // input type
+    captures?: NexusGenInputs['CaptureCreateManyWithoutSparklineInput'] | null; // CaptureCreateManyWithoutSparklineInput
+    data?: NexusGenInputs['SparklineCreatedataInput'] | null; // SparklineCreatedataInput
+    id?: string | null; // String
+    page: NexusGenInputs['PageCreateOneWithoutSparklineInput']; // PageCreateOneWithoutSparklineInput!
+    slug: string; // String!
+  }
+  SparklineCreateWithoutPageInput: { // input type
+    captures?: NexusGenInputs['CaptureCreateManyWithoutSparklineInput'] | null; // CaptureCreateManyWithoutSparklineInput
+    data?: NexusGenInputs['SparklineCreatedataInput'] | null; // SparklineCreatedataInput
+    device: NexusGenInputs['DeviceCreateOneWithoutSparklineInput']; // DeviceCreateOneWithoutSparklineInput!
+    id?: string | null; // String
+    slug: string; // String!
+  }
+  SparklineCreatedataInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  SparklineWhereUniqueInput: { // input type
+    id?: string | null; // String
+    slug?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -242,6 +345,11 @@ export interface NexusGenRootTypes {
     pagecount?: number | null; // Int
     slug: string; // String!
   }
+  Sparkline: { // root type
+    data: string[]; // [String!]!
+    id: string; // String!
+    slug: string; // String!
+  }
   String: string;
   Int: number;
   Float: number;
@@ -255,20 +363,26 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   CaptureCreateManyWithoutDeviceInput: NexusGenInputs['CaptureCreateManyWithoutDeviceInput'];
   CaptureCreateManyWithoutPageInput: NexusGenInputs['CaptureCreateManyWithoutPageInput'];
   CaptureCreateManyWithoutReportInput: NexusGenInputs['CaptureCreateManyWithoutReportInput'];
+  CaptureCreateManyWithoutSparklineInput: NexusGenInputs['CaptureCreateManyWithoutSparklineInput'];
   CaptureCreateWithoutDeviceInput: NexusGenInputs['CaptureCreateWithoutDeviceInput'];
   CaptureCreateWithoutPageInput: NexusGenInputs['CaptureCreateWithoutPageInput'];
   CaptureCreateWithoutReportInput: NexusGenInputs['CaptureCreateWithoutReportInput'];
+  CaptureCreateWithoutSparklineInput: NexusGenInputs['CaptureCreateWithoutSparklineInput'];
   CaptureWhereUniqueInput: NexusGenInputs['CaptureWhereUniqueInput'];
   DeviceCapturesOrderByInput: NexusGenInputs['DeviceCapturesOrderByInput'];
   DeviceCreateInput: NexusGenInputs['DeviceCreateInput'];
   DeviceCreateOneWithoutCapturesInput: NexusGenInputs['DeviceCreateOneWithoutCapturesInput'];
+  DeviceCreateOneWithoutSparklineInput: NexusGenInputs['DeviceCreateOneWithoutSparklineInput'];
   DeviceCreateWithoutCapturesInput: NexusGenInputs['DeviceCreateWithoutCapturesInput'];
+  DeviceCreateWithoutSparklineInput: NexusGenInputs['DeviceCreateWithoutSparklineInput'];
   DeviceWhereUniqueInput: NexusGenInputs['DeviceWhereUniqueInput'];
   PageCreateInput: NexusGenInputs['PageCreateInput'];
   PageCreateManyWithoutReportsInput: NexusGenInputs['PageCreateManyWithoutReportsInput'];
   PageCreateOneWithoutCapturesInput: NexusGenInputs['PageCreateOneWithoutCapturesInput'];
+  PageCreateOneWithoutSparklineInput: NexusGenInputs['PageCreateOneWithoutSparklineInput'];
   PageCreateWithoutCapturesInput: NexusGenInputs['PageCreateWithoutCapturesInput'];
   PageCreateWithoutReportsInput: NexusGenInputs['PageCreateWithoutReportsInput'];
+  PageCreateWithoutSparklineInput: NexusGenInputs['PageCreateWithoutSparklineInput'];
   PageWhereUniqueInput: NexusGenInputs['PageWhereUniqueInput'];
   ReportCreateInput: NexusGenInputs['ReportCreateInput'];
   ReportCreateManyWithoutPagesInput: NexusGenInputs['ReportCreateManyWithoutPagesInput'];
@@ -276,6 +390,15 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   ReportCreateWithoutCapturesInput: NexusGenInputs['ReportCreateWithoutCapturesInput'];
   ReportCreateWithoutPagesInput: NexusGenInputs['ReportCreateWithoutPagesInput'];
   ReportWhereUniqueInput: NexusGenInputs['ReportWhereUniqueInput'];
+  SparklineCreateInput: NexusGenInputs['SparklineCreateInput'];
+  SparklineCreateManyWithoutDeviceInput: NexusGenInputs['SparklineCreateManyWithoutDeviceInput'];
+  SparklineCreateManyWithoutPageInput: NexusGenInputs['SparklineCreateManyWithoutPageInput'];
+  SparklineCreateOneWithoutCapturesInput: NexusGenInputs['SparklineCreateOneWithoutCapturesInput'];
+  SparklineCreateWithoutCapturesInput: NexusGenInputs['SparklineCreateWithoutCapturesInput'];
+  SparklineCreateWithoutDeviceInput: NexusGenInputs['SparklineCreateWithoutDeviceInput'];
+  SparklineCreateWithoutPageInput: NexusGenInputs['SparklineCreateWithoutPageInput'];
+  SparklineCreatedataInput: NexusGenInputs['SparklineCreatedataInput'];
+  SparklineWhereUniqueInput: NexusGenInputs['SparklineWhereUniqueInput'];
   OrderByArg: NexusGenEnums['OrderByArg'];
 }
 
@@ -308,6 +431,7 @@ export interface NexusGenFieldTypes {
     createOneDevice: NexusGenRootTypes['Device']; // Device!
     createOnePage: NexusGenRootTypes['Page']; // Page!
     createOneReport: NexusGenRootTypes['Report']; // Report!
+    createOneSparkline: NexusGenRootTypes['Sparkline']; // Sparkline!
   }
   Page: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
@@ -324,6 +448,7 @@ export interface NexusGenFieldTypes {
     device: NexusGenRootTypes['Device'] | null; // Device
     page: NexusGenRootTypes['Page'] | null; // Page
     report: NexusGenRootTypes['Report'] | null; // Report
+    sparkline: NexusGenRootTypes['Sparkline'] | null; // Sparkline
   }
   Report: { // field return type
     captures: NexusGenRootTypes['Capture'][]; // [Capture!]!
@@ -334,15 +459,18 @@ export interface NexusGenFieldTypes {
     pages: NexusGenRootTypes['Page'][]; // [Page!]!
     slug: string; // String!
   }
+  Sparkline: { // field return type
+    data: string[]; // [String!]!
+    device: NexusGenRootTypes['Device']; // Device!
+    id: string; // String!
+    page: NexusGenRootTypes['Page']; // Page!
+    slug: string; // String!
+  }
 }
 
 export interface NexusGenArgTypes {
   Device: {
     captures: { // args
-      after?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      before?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       orderBy?: NexusGenInputs['DeviceCapturesOrderByInput'] | null; // DeviceCapturesOrderByInput
       skip?: number | null; // Int
     }
@@ -360,20 +488,15 @@ export interface NexusGenArgTypes {
     createOneReport: { // args
       data: NexusGenInputs['ReportCreateInput']; // ReportCreateInput!
     }
+    createOneSparkline: { // args
+      data: NexusGenInputs['SparklineCreateInput']; // SparklineCreateInput!
+    }
   }
   Page: {
     captures: { // args
-      after?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      before?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
     reports: { // args
-      after?: NexusGenInputs['ReportWhereUniqueInput'] | null; // ReportWhereUniqueInput
-      before?: NexusGenInputs['ReportWhereUniqueInput'] | null; // ReportWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
   }
@@ -390,20 +513,15 @@ export interface NexusGenArgTypes {
     report: { // args
       where: NexusGenInputs['ReportWhereUniqueInput']; // ReportWhereUniqueInput!
     }
+    sparkline: { // args
+      where: NexusGenInputs['SparklineWhereUniqueInput']; // SparklineWhereUniqueInput!
+    }
   }
   Report: {
     captures: { // args
-      after?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      before?: NexusGenInputs['CaptureWhereUniqueInput'] | null; // CaptureWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
     pages: { // args
-      after?: NexusGenInputs['PageWhereUniqueInput'] | null; // PageWhereUniqueInput
-      before?: NexusGenInputs['PageWhereUniqueInput'] | null; // PageWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
       skip?: number | null; // Int
     }
   }
@@ -414,9 +532,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Capture" | "Device" | "Mutation" | "Page" | "Query" | "Report";
+export type NexusGenObjectNames = "Capture" | "Device" | "Mutation" | "Page" | "Query" | "Report" | "Sparkline";
 
-export type NexusGenInputNames = "CaptureCreateInput" | "CaptureCreateManyWithoutDeviceInput" | "CaptureCreateManyWithoutPageInput" | "CaptureCreateManyWithoutReportInput" | "CaptureCreateWithoutDeviceInput" | "CaptureCreateWithoutPageInput" | "CaptureCreateWithoutReportInput" | "CaptureWhereUniqueInput" | "DeviceCapturesOrderByInput" | "DeviceCreateInput" | "DeviceCreateOneWithoutCapturesInput" | "DeviceCreateWithoutCapturesInput" | "DeviceWhereUniqueInput" | "PageCreateInput" | "PageCreateManyWithoutReportsInput" | "PageCreateOneWithoutCapturesInput" | "PageCreateWithoutCapturesInput" | "PageCreateWithoutReportsInput" | "PageWhereUniqueInput" | "ReportCreateInput" | "ReportCreateManyWithoutPagesInput" | "ReportCreateOneWithoutCapturesInput" | "ReportCreateWithoutCapturesInput" | "ReportCreateWithoutPagesInput" | "ReportWhereUniqueInput";
+export type NexusGenInputNames = "CaptureCreateInput" | "CaptureCreateManyWithoutDeviceInput" | "CaptureCreateManyWithoutPageInput" | "CaptureCreateManyWithoutReportInput" | "CaptureCreateManyWithoutSparklineInput" | "CaptureCreateWithoutDeviceInput" | "CaptureCreateWithoutPageInput" | "CaptureCreateWithoutReportInput" | "CaptureCreateWithoutSparklineInput" | "CaptureWhereUniqueInput" | "DeviceCapturesOrderByInput" | "DeviceCreateInput" | "DeviceCreateOneWithoutCapturesInput" | "DeviceCreateOneWithoutSparklineInput" | "DeviceCreateWithoutCapturesInput" | "DeviceCreateWithoutSparklineInput" | "DeviceWhereUniqueInput" | "PageCreateInput" | "PageCreateManyWithoutReportsInput" | "PageCreateOneWithoutCapturesInput" | "PageCreateOneWithoutSparklineInput" | "PageCreateWithoutCapturesInput" | "PageCreateWithoutReportsInput" | "PageCreateWithoutSparklineInput" | "PageWhereUniqueInput" | "ReportCreateInput" | "ReportCreateManyWithoutPagesInput" | "ReportCreateOneWithoutCapturesInput" | "ReportCreateWithoutCapturesInput" | "ReportCreateWithoutPagesInput" | "ReportWhereUniqueInput" | "SparklineCreateInput" | "SparklineCreateManyWithoutDeviceInput" | "SparklineCreateManyWithoutPageInput" | "SparklineCreateOneWithoutCapturesInput" | "SparklineCreateWithoutCapturesInput" | "SparklineCreateWithoutDeviceInput" | "SparklineCreateWithoutPageInput" | "SparklineCreatedataInput" | "SparklineWhereUniqueInput";
 
 export type NexusGenEnumNames = "OrderByArg";
 

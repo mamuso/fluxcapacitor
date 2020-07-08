@@ -454,6 +454,28 @@ export default class Capture {
   /**
    *  TODO
    */
+  populateSparklines = async () => {
+    this.printer.header(`📷 populateSparklines`)
+
+    let i = 0
+    const iMax = this.config.devices.length
+    for (; i < iMax; i++) {
+      const device = await this.db.getDevice(this.config.devices[i])
+
+      const pages = await this.db.getPages()
+
+      /** Looping through URLs */
+      let j = 0
+      const jMax = pages.length
+      for (; j < jMax; j++) {
+        const spark = await this.db.setSparkline(device, pages[j])
+      }
+    }
+  }
+
+  /**
+   *  TODO
+   */
   setDevice = async (configdevice: Device) => {
     let device = (configdevice.device
       ? puppeteer.devices[configdevice.device]

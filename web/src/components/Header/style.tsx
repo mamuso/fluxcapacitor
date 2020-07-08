@@ -6,5 +6,4 @@ export const HeaderContainer = styled.header`
   grid-template-columns: 60px auto;
   grid-template-rows: 60px;
   margin: 0;
-  border-bottom: 1px solid ${theme.colors["border-primary"]};
 `;

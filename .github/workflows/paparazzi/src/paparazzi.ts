@@ -117,6 +117,20 @@ class Paparazzi {
   }
 
   /**
+   *  TODO
+   */
+  sparkline = async () => {
+    try {
+      this.printer.subHeader(`🤔 Compare images`)
+      const capture = new Capture(this.config)
+      await capture.populateSparklines()
+      await capture.close()
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /**
    *  Create the folder structure needed for capturing the screens
    */
   createScaffold = async () => {
@@ -170,6 +184,10 @@ switch (process.argv[2]) {
   }
   case 'setcurrent': {
     paparazzi.setCurrent()
+    break
+  }
+  case 'sparkline': {
+    paparazzi.sparkline()
     break
   }
   default: {

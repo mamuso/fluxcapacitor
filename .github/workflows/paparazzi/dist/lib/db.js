@@ -124,6 +124,18 @@ class DB {
             return p;
         });
         /**
+         * Get a page from the database.
+         */
+        this.getPage = (page) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(page.id);
+            const p = yield this.prisma.page.findOne({
+                where: {
+                    slug: slug
+                }
+            });
+            return p;
+        });
+        /**
          * Inserts or updates a capture in the database.
          */
         this.createCapture = (report, device, page, capture) => __awaiter(this, void 0, void 0, function* () {
@@ -211,6 +223,51 @@ class DB {
                 data: {
                     reportcount: p.length,
                     endsAt: report.slug
+                }
+            });
+        });
+        this.getPages = () => __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.page.findMany();
+        });
+        /**
+         * SetSparkline.
+         */
+        this.setSparkline = (device, page) => __awaiter(this, void 0, void 0, function* () {
+            const slug = slugify_1.default(`${device.slug}-${page.slug}`);
+            const points = yield this.prisma.capture.findMany({
+                where: {
+                    deviceId: device.id,
+                    pageId: page.id
+                },
+                orderBy: {
+                    createdAt: 'desc'
+                },
+                take: 10
+            });
+            const dataline = points.map(p => {
+                const di = parseInt(p.diffindex);
+                return di > 0 ? `${di}` : '0';
+            });
+            return yield this.prisma.sparkline.upsert({
+                where: {
+                    slug: slug
+                },
+                create: {
+                    slug: slug,
+                    device: {
+                        connect: { id: device.id }
+                    },
+                    page: {
+                        connect: { id: page.id }
+                    },
+                    data: {
+                        set: dataline
+                    }
+                },
+                update: {
+                    data: {
+                        set: dataline
+                    }
                 }
             });
         });

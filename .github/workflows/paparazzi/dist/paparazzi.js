@@ -114,6 +114,20 @@ class Paparazzi {
             }
         });
         /**
+         *  TODO
+         */
+        this.sparkline = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`🤔 Compare images`);
+                const capture = new capture_1.default(this.config);
+                yield capture.populateSparklines();
+                yield capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
          *  Create the folder structure needed for capturing the screens
          */
         this.createScaffold = () => __awaiter(this, void 0, void 0, function* () {
@@ -168,6 +182,10 @@ switch (process.argv[2]) {
     }
     case 'setcurrent': {
         paparazzi.setCurrent();
+        break;
+    }
+    case 'sparkline': {
+        paparazzi.sparkline();
         break;
     }
     default: {

@@ -13,6 +13,7 @@
     "resize": "node dist/paparazzi.js resize",
     "compare": "node dist/paparazzi.js compare",
     "setcurrent": "node dist/paparazzi.js setcurrent",
+    "sparkline": "node dist/paparazzi.js sparkline",
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
