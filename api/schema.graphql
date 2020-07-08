@@ -338,7 +338,7 @@ input ReportWhereUniqueInput {
 }
 
 type Sparkline {
-  data: [Int!]!
+  data: [String!]!
   device: Device!
   id: String!
   page: Page!
@@ -346,7 +346,7 @@ type Sparkline {
 }
 
 input SparklineCreatedataInput {
-  set: [Int!]
+  set: [String!]
 }
 
 input SparklineCreateInput {

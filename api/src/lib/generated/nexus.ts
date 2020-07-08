@@ -296,7 +296,7 @@ export interface NexusGenInputs {
     slug: string; // String!
   }
   SparklineCreatedataInput: { // input type
-    set?: number[] | null; // [Int!]
+    set?: string[] | null; // [String!]
   }
   SparklineWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -346,7 +346,7 @@ export interface NexusGenRootTypes {
     slug: string; // String!
   }
   Sparkline: { // root type
-    data: number[]; // [Int!]!
+    data: string[]; // [String!]!
     id: string; // String!
     slug: string; // String!
   }
@@ -460,7 +460,7 @@ export interface NexusGenFieldTypes {
     slug: string; // String!
   }
   Sparkline: { // field return type
-    data: number[]; // [Int!]!
+    data: string[]; // [String!]!
     device: NexusGenRootTypes['Device']; // Device!
     id: string; // String!
     page: NexusGenRootTypes['Page']; // Page!
