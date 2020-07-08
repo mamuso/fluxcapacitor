@@ -1,5 +1,6 @@
 import React from "react";
 import App from "next/app";
+import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import theme from "~/components/Theme";
 
@@ -18,6 +19,9 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <ThemeProvider theme={theme}>
+        <Head>
+          <title>Fluxcapacitor</title>
+        </Head>
         <Component {...pageProps} />
       </ThemeProvider>
     );

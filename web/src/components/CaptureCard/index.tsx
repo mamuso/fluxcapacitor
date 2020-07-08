@@ -19,6 +19,9 @@ export default function Layout(props: Props) {
     <CaptureContainer key={props.capture.id}>
       <Link href="/page/[slug]" as={`/page/${props.capture.page.slug}`}>
         <a>
+          <CaptureImageContainer>
+            <img src={props.capture.urlmin} />
+          </CaptureImageContainer>
           <CaptureContentContainer>
             <strong>{props.capture.page.slug}</strong>
             <CaptureCount
@@ -38,9 +41,6 @@ export default function Layout(props: Props) {
               {props.capture.page.reportcount}
             </CaptureCount>
           </CaptureContentContainer>
-          <CaptureImageContainer>
-            <img src={props.capture.urlmin} />
-          </CaptureImageContainer>
         </a>
       </Link>
     </CaptureContainer>
