@@ -97,7 +97,11 @@ export default class Capture {
       this.browser = await puppeteer.launch({
         headless: true,
         defaultViewport: null,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage'
+        ]
       })
 
       /** Looping through devices */
