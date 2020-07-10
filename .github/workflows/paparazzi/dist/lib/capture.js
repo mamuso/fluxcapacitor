@@ -81,7 +81,7 @@ class Capture {
                 this.browser = yield puppeteer_1.default.launch({
                     headless: true,
                     defaultViewport: null,
-                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
                 });
                 /** Looping through devices */
                 let i = 0;
