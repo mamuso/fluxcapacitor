@@ -153,7 +153,7 @@ class Capture {
                                 yield puppet.evaluate(({ scrollTo }) => {
                                     window.scrollTo(0, scrollTo);
                                 }, { scrollTo });
-                                yield puppet.waitFor(250);
+                                yield puppet.waitFor(400);
                                 const buffer = yield puppet.screenshot({
                                     fullPage: false
                                 });
@@ -162,7 +162,8 @@ class Capture {
                                 });
                                 s += 1;
                                 scrollTo += scrollSafe;
-                                console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`);
+                                yield console.log(fs.existsSync(this.config.tmpDatePath));
+                                yield console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`);
                             }
                             let composite = new Array();
                             let topComposite = 0;

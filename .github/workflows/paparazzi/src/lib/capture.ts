@@ -190,7 +190,7 @@ export default class Capture {
                 },
                 {scrollTo}
               )
-              await puppet.waitFor(250)
+              await puppet.waitFor(400)
 
               const buffer = await puppet.screenshot({
                 fullPage: false
@@ -205,7 +205,8 @@ export default class Capture {
               )
               s += 1
               scrollTo += scrollSafe
-              console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`)
+              await console.log(fs.existsSync(this.config.tmpDatePath))
+              await console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`)
             }
 
             let composite = new Array()
