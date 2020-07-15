@@ -29,7 +29,7 @@
     "glob": "^7.1.6",
     "pixelmatch": "^5.1.0",
     "pngjs": "^5.0.0",
-    "puppeteer": "^3.0.3",
+    "puppeteer": "^2.1.1",
     "request-promise": "^4.2.5",
     "sharp": "^0.25.2",
     "tar": "^6.0.1"
