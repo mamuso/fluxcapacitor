@@ -27,7 +27,6 @@
     { "id": "error-500", "url": "https://github.com/500" },
     { "id": "error-502", "url": "https://github.com/502" },
     { "id": "gh-cli", "url": "https://cli.github.com/" },
-    { "id": "home", "url": "https://github.com" },
     { "id": "auth-login", "url": "https://github.com/login" },
     {
       "id": "learning-lab",
@@ -45,6 +44,7 @@
       "id": "learning-lab-course",
       "url": "https://lab.github.com/githubtraining/introduction-to-github"
     },
+    { "id": "home", "url": "https://github.com" },
     { "id": "home-logged-in", "url": "https://github.com/", "auth": true },
     { "id": "team", "url": "https://github.com/team", "auth": true },
     {
