@@ -196,6 +196,8 @@ export default class Capture {
                 fullPage: false
               })
 
+              console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`)
+
               await fs.promises.writeFile(
                 `${this.config.tmpDatePath}/tmpshot-${s}.png`,
                 buffer,

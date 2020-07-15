@@ -157,6 +157,7 @@ class Capture {
                                 const buffer = yield puppet.screenshot({
                                     fullPage: false
                                 });
+                                console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`);
                                 yield fs.promises.writeFile(`${this.config.tmpDatePath}/tmpshot-${s}.png`, buffer, {
                                     encoding: null
                                 });
