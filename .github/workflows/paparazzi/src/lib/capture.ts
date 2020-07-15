@@ -97,7 +97,7 @@ export default class Capture {
       this.browser = await puppeteer.launch({
         headless: true,
         defaultViewport: null,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
       })
 
       /** Looping through devices */
@@ -180,7 +180,7 @@ export default class Capture {
           if (scrollHeight > 2 * device.viewport.height) {
             let s = 0
             let scrollTo = 0
-            const safeSpace = 440
+            const safeSpace = 400
             // We leave a few pixels between snapshots to stich free of header duplications
             const scrollSafe = device.viewport.height - safeSpace
             while (scrollTo <= scrollHeight) {
@@ -190,13 +190,11 @@ export default class Capture {
                 },
                 {scrollTo}
               )
-              await puppet.waitFor(300)
+              await puppet.waitFor(250)
 
               const buffer = await puppet.screenshot({
                 fullPage: false
               })
-
-              console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`)
 
               await fs.promises.writeFile(
                 `${this.config.tmpDatePath}/tmpshot-${s}.png`,
@@ -207,6 +205,7 @@ export default class Capture {
               )
               s += 1
               scrollTo += scrollSafe
+              console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`)
             }
 
             let composite = new Array()

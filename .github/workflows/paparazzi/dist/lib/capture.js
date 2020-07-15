@@ -81,7 +81,7 @@ class Capture {
                 this.browser = yield puppeteer_1.default.launch({
                     headless: true,
                     defaultViewport: null,
-                    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
                 });
                 /** Looping through devices */
                 let i = 0;
@@ -146,23 +146,23 @@ class Capture {
                         if (scrollHeight > 2 * device.viewport.height) {
                             let s = 0;
                             let scrollTo = 0;
-                            const safeSpace = 440;
+                            const safeSpace = 400;
                             // We leave a few pixels between snapshots to stich free of header duplications
                             const scrollSafe = device.viewport.height - safeSpace;
                             while (scrollTo <= scrollHeight) {
                                 yield puppet.evaluate(({ scrollTo }) => {
                                     window.scrollTo(0, scrollTo);
                                 }, { scrollTo });
-                                yield puppet.waitFor(300);
+                                yield puppet.waitFor(250);
                                 const buffer = yield puppet.screenshot({
                                     fullPage: false
                                 });
-                                console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`);
                                 yield fs.promises.writeFile(`${this.config.tmpDatePath}/tmpshot-${s}.png`, buffer, {
                                     encoding: null
                                 });
                                 s += 1;
                                 scrollTo += scrollSafe;
+                                console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`);
                             }
                             let composite = new Array();
                             let topComposite = 0;
