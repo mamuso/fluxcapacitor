@@ -2,6 +2,7 @@ import {Config, Device, Report, Page, CaptureType} from './types'
 import slugify from '@sindresorhus/slugify'
 import {PrismaClient} from '../../../../../node_modules/@prisma/client'
 import {createTableServiceWithSas} from 'azure-storage'
+import Capture from './capture'
 
 export default class DB {
   config
@@ -253,10 +254,19 @@ export default class DB {
     return await this.prisma.page.findMany()
   }
 
+  getCaptures = async () => {
+    return await this.prisma.capture.findMany({
+      include: {
+        device: true,
+        page: true
+      }
+    })
+  }
+
   /**
    * SetSparkline.
    */
-  setSparkline = async (device: Device, page: Page) => {
+  setSparkline = async (device: Device, page: Page, capture: CaptureType) => {
     const slug = slugify(`${device.slug}-${page.slug}`)
 
     const points = await this.prisma.capture.findMany({
@@ -275,7 +285,7 @@ export default class DB {
       return di > 0 ? `${di}` : '0'
     })
 
-    return await this.prisma.sparkline.upsert({
+    const sparkline = await this.prisma.sparkline.upsert({
       where: {
         slug: slug
       },
@@ -297,5 +307,18 @@ export default class DB {
         }
       }
     })
+
+    if (capture) {
+      await this.prisma.capture.update({
+        where: {id: capture.id},
+        data: {
+          sparkline: {
+            connect: {id: sparkline.id}
+          }
+        }
+      })
+    }
+
+    return sparkline
   }
 }

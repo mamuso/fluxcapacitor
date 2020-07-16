@@ -118,7 +118,7 @@ class Paparazzi {
          */
         this.sparkline = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                this.printer.subHeader(`🤔 Compare images`);
+                this.printer.subHeader(`📈 Sparklines`);
                 const capture = new capture_1.default(this.config);
                 yield capture.populateSparklines();
                 yield capture.close();

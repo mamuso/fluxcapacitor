@@ -121,7 +121,7 @@ class Paparazzi {
    */
   sparkline = async () => {
     try {
-      this.printer.subHeader(`🤔 Compare images`)
+      this.printer.subHeader(`📈 Sparklines`)
       const capture = new Capture(this.config)
       await capture.populateSparklines()
       await capture.close()
