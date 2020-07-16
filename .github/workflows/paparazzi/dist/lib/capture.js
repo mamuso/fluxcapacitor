@@ -146,20 +146,24 @@ class Capture {
                         if (scrollHeight > 2 * device.viewport.height) {
                             let s = 0;
                             let scrollTo = 0;
-                            const safeSpace = 440;
+                            const safeSpace = 400;
                             // We leave a few pixels between snapshots to stich free of header duplications
                             const scrollSafe = device.viewport.height - safeSpace;
                             while (scrollTo <= scrollHeight) {
+                                yield console.log(`eval`);
                                 yield puppet.evaluate(({ scrollTo }) => {
                                     window.scrollTo(0, scrollTo);
                                 }, { scrollTo });
-                                yield puppet.waitFor(300);
+                                yield puppet.waitFor(400);
+                                yield console.log(`screenshot`);
                                 const buffer = yield puppet.screenshot({
                                     fullPage: false
                                 });
+                                yield console.log(`write`);
                                 yield fs.promises.writeFile(`${this.config.tmpDatePath}/tmpshot-${s}.png`, buffer, {
                                     encoding: null
                                 });
+                                yield console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`);
                                 s += 1;
                                 scrollTo += scrollSafe;
                             }
