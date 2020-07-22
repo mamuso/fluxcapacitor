@@ -254,8 +254,11 @@ export default class DB {
     return await this.prisma.page.findMany()
   }
 
-  getCaptures = async () => {
+  getSparklineCaptures = async () => {
     return await this.prisma.capture.findMany({
+      where: {
+        sparklineId: null
+      },
       include: {
         device: true,
         page: true

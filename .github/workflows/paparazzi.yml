@@ -51,6 +51,10 @@ jobs:
         run: yarn workspace paparazzi compare --production
         env:
           TIME: ${{ steps.current-time.outputs.formattedTime }}
+      - name: Sparklines
+        run: yarn workspace paparazzi sparklines --production
+        env:
+          TIME: ${{ steps.current-time.outputs.formattedTime }}
       - name: Cleanup
         run: yarn workspace paparazzi setcurrent --production
         env:

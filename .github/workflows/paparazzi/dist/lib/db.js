@@ -229,8 +229,11 @@ class DB {
         this.getPages = () => __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.page.findMany();
         });
-        this.getCaptures = () => __awaiter(this, void 0, void 0, function* () {
+        this.getSparklineCaptures = () => __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.capture.findMany({
+                where: {
+                    sparklineId: null
+                },
                 include: {
                     device: true,
                     page: true

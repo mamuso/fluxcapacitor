@@ -342,8 +342,6 @@ class Capture {
                         // }
                         /** Write capture in the DB */
                         const dbCapture = yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
-                        /** Set sparkline */
-                        const sparkline = yield this.db.setSparkline(this.dbDevice, dbpage, dbCapture);
                     }
                 }
             }
@@ -356,7 +354,7 @@ class Capture {
          */
         this.populateSparklines = () => __awaiter(this, void 0, void 0, function* () {
             this.printer.header(`✏️ populateSparklines`);
-            const captures = yield this.db.getCaptures();
+            const captures = yield this.db.getSparklineCaptures();
             let i = 0;
             const iMax = captures.length;
             for (; i < iMax; i++) {

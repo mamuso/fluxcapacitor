@@ -116,7 +116,7 @@ class Paparazzi {
         /**
          *  TODO
          */
-        this.sparkline = () => __awaiter(this, void 0, void 0, function* () {
+        this.sparklines = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 this.printer.subHeader(`📈 Sparklines`);
                 const capture = new capture_1.default(this.config);
@@ -184,8 +184,8 @@ switch (process.argv[2]) {
         paparazzi.setCurrent();
         break;
     }
-    case 'sparkline': {
-        paparazzi.sparkline();
+    case 'sparklines': {
+        paparazzi.sparklines();
         break;
     }
     default: {

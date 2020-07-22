@@ -444,13 +444,6 @@ export default class Capture {
             dbpage,
             capture
           )
-
-          /** Set sparkline */
-          const sparkline = await this.db.setSparkline(
-            this.dbDevice,
-            dbpage,
-            dbCapture
-          )
         }
       }
     } catch (e) {
@@ -464,7 +457,7 @@ export default class Capture {
   populateSparklines = async () => {
     this.printer.header(`✏️ populateSparklines`)
 
-    const captures = await this.db.getCaptures()
+    const captures = await this.db.getSparklineCaptures()
     let i = 0
     const iMax = captures.length
     for (; i < iMax; i++) {
