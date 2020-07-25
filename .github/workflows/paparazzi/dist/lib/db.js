@@ -229,10 +229,21 @@ class DB {
         this.getPages = () => __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.page.findMany();
         });
+        this.getSparklineCaptures = () => __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.capture.findMany({
+                where: {
+                    sparklineId: null
+                },
+                include: {
+                    device: true,
+                    page: true
+                }
+            });
+        });
         /**
          * SetSparkline.
          */
-        this.setSparkline = (device, page) => __awaiter(this, void 0, void 0, function* () {
+        this.setSparkline = (device, page, capture) => __awaiter(this, void 0, void 0, function* () {
             const slug = slugify_1.default(`${device.slug}-${page.slug}`);
             const points = yield this.prisma.capture.findMany({
                 where: {
@@ -248,7 +259,7 @@ class DB {
                 const di = parseInt(p.diffindex);
                 return di > 0 ? `${di}` : '0';
             });
-            return yield this.prisma.sparkline.upsert({
+            const sparkline = yield this.prisma.sparkline.upsert({
                 where: {
                     slug: slug
                 },
@@ -270,6 +281,17 @@ class DB {
                     }
                 }
             });
+            if (capture) {
+                yield this.prisma.capture.update({
+                    where: { id: capture.id },
+                    data: {
+                        sparkline: {
+                            connect: { id: sparkline.id }
+                        }
+                    }
+                });
+            }
+            return sparkline;
         });
         this.prisma = new client_1.PrismaClient();
         this.config = Object.assign({}, config);

@@ -81,7 +81,7 @@ class Capture {
                 this.browser = yield puppeteer_1.default.launch({
                     headless: true,
                     defaultViewport: null,
-                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
                 });
                 /** Looping through devices */
                 let i = 0;
@@ -150,20 +150,16 @@ class Capture {
                             // We leave a few pixels between snapshots to stich free of header duplications
                             const scrollSafe = device.viewport.height - safeSpace;
                             while (scrollTo <= scrollHeight) {
-                                yield console.log(`eval`);
                                 yield puppet.evaluate(({ scrollTo }) => {
                                     window.scrollTo(0, scrollTo);
                                 }, { scrollTo });
                                 yield puppet.waitFor(400);
-                                yield console.log(`screenshot`);
                                 const buffer = yield puppet.screenshot({
                                     fullPage: false
                                 });
-                                yield console.log(`write`);
                                 yield fs.promises.writeFile(`${this.config.tmpDatePath}/tmpshot-${s}.png`, buffer, {
                                     encoding: null
                                 });
-                                yield console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`);
                                 s += 1;
                                 scrollTo += scrollSafe;
                             }
@@ -345,7 +341,7 @@ class Capture {
                         //   )
                         // }
                         /** Write capture in the DB */
-                        yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
+                        const dbCapture = yield this.db.createCapture(this.dbReport, this.dbDevice, dbpage, capture);
                     }
                 }
             }
@@ -357,18 +353,12 @@ class Capture {
          *  TODO
          */
         this.populateSparklines = () => __awaiter(this, void 0, void 0, function* () {
-            this.printer.header(`📷 populateSparklines`);
+            this.printer.header(`✏️ populateSparklines`);
+            const captures = yield this.db.getSparklineCaptures();
             let i = 0;
-            const iMax = this.config.devices.length;
+            const iMax = captures.length;
             for (; i < iMax; i++) {
-                const device = yield this.db.getDevice(this.config.devices[i]);
-                const pages = yield this.db.getPages();
-                /** Looping through URLs */
-                let j = 0;
-                const jMax = pages.length;
-                for (; j < jMax; j++) {
-                    const spark = yield this.db.setSparkline(device, pages[j]);
-                }
+                yield this.db.setSparkline(captures[i].device, captures[i].page, captures[i]);
             }
         });
         /**

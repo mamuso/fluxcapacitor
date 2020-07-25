@@ -97,7 +97,7 @@ export default class Capture {
       this.browser = await puppeteer.launch({
         headless: true,
         defaultViewport: null,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
       })
 
       /** Looping through devices */
@@ -184,7 +184,6 @@ export default class Capture {
             // We leave a few pixels between snapshots to stich free of header duplications
             const scrollSafe = device.viewport.height - safeSpace
             while (scrollTo <= scrollHeight) {
-              await console.log(`eval`)
               await puppet.evaluate(
                 ({scrollTo}) => {
                   window.scrollTo(0, scrollTo)
@@ -193,13 +192,10 @@ export default class Capture {
               )
               await puppet.waitFor(400)
 
-              await console.log(`screenshot`)
-
               const buffer = await puppet.screenshot({
                 fullPage: false
               })
 
-              await console.log(`write`)
               await fs.promises.writeFile(
                 `${this.config.tmpDatePath}/tmpshot-${s}.png`,
                 buffer,
@@ -207,7 +203,6 @@ export default class Capture {
                   encoding: null
                 }
               )
-              await console.log(`${this.config.tmpDatePath}/tmpshot-${s}.png`)
               s += 1
               scrollTo += scrollSafe
             }
@@ -443,7 +438,7 @@ export default class Capture {
           // }
 
           /** Write capture in the DB */
-          await this.db.createCapture(
+          const dbCapture = await this.db.createCapture(
             this.dbReport,
             this.dbDevice,
             dbpage,
@@ -460,21 +455,17 @@ export default class Capture {
    *  TODO
    */
   populateSparklines = async () => {
-    this.printer.header(`📷 populateSparklines`)
+    this.printer.header(`✏️ populateSparklines`)
 
+    const captures = await this.db.getSparklineCaptures()
     let i = 0
-    const iMax = this.config.devices.length
+    const iMax = captures.length
     for (; i < iMax; i++) {
-      const device = await this.db.getDevice(this.config.devices[i])
-
-      const pages = await this.db.getPages()
-
-      /** Looping through URLs */
-      let j = 0
-      const jMax = pages.length
-      for (; j < jMax; j++) {
-        const spark = await this.db.setSparkline(device, pages[j])
-      }
+      await this.db.setSparkline(
+        captures[i].device,
+        captures[i].page,
+        captures[i]
+      )
     }
   }
 

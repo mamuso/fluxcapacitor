@@ -119,9 +119,9 @@ class Paparazzi {
   /**
    *  TODO
    */
-  sparkline = async () => {
+  sparklines = async () => {
     try {
-      this.printer.subHeader(`🤔 Compare images`)
+      this.printer.subHeader(`📈 Sparklines`)
       const capture = new Capture(this.config)
       await capture.populateSparklines()
       await capture.close()
@@ -186,8 +186,8 @@ switch (process.argv[2]) {
     paparazzi.setCurrent()
     break
   }
-  case 'sparkline': {
-    paparazzi.sparkline()
+  case 'sparklines': {
+    paparazzi.sparklines()
     break
   }
   default: {
