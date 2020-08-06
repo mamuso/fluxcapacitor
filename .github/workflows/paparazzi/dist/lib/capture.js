@@ -142,6 +142,8 @@ class Capture {
                         const scrollHeight = yield puppet.evaluate(_ => {
                             return document.body.scrollHeight;
                         });
+                        // Let's wait before the first shot
+                        yield puppet.waitFor(400);
                         // If the page is bigger than two times the viewport
                         if (scrollHeight > 2 * device.viewport.height) {
                             let s = 0;

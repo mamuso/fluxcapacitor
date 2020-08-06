@@ -176,6 +176,9 @@ export default class Capture {
             return document.body.scrollHeight
           })
 
+          // Let's wait before the first shot
+          await puppet.waitFor(400)
+
           // If the page is bigger than two times the viewport
           if (scrollHeight > 2 * device.viewport.height) {
             let s = 0
