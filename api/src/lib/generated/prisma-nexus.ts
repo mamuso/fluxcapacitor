@@ -258,59 +258,59 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     reports: {
-  filtering: 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt'
   ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
 }
     pages: {
-  filtering: 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline' | 'AND' | 'OR' | 'NOT'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline'
   ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
 }
     devices: {
-  filtering: 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'deviceScaleFactor' | 'createdAt' | 'Sparkline' | 'AND' | 'OR' | 'NOT'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'deviceScaleFactor' | 'createdAt' | 'Sparkline'
   ordering: 'id' | 'slug' | 'name' | 'specs' | 'deviceScaleFactor' | 'createdAt'
 }
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
   ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
     sparklines: {
-  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
-  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
 }
 
   },
     Report: {
     pages: {
-  filtering: 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline' | 'AND' | 'OR' | 'NOT'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline'
   ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
 }
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
   ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
 
   },  Page: {
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
   ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
     reports: {
-  filtering: 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt' | 'AND' | 'OR' | 'NOT'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt'
   ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
 }
     Sparkline: {
-  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
-  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
 }
 
   },  Device: {
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
   ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
     Sparkline: {
-  filtering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'captures' | 'AND' | 'OR' | 'NOT' | 'device' | 'page'
-  ordering: 'id' | 'slug' | 'deviceId' | 'pageId'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
+  ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
 }
 
   },  Capture: {
@@ -318,7 +318,7 @@ interface NexusPrismaInputs {
 
   },  Sparkline: {
     captures: {
-  filtering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'page' | 'report' | 'device' | 'sparkline'
+  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
   ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
 }
 

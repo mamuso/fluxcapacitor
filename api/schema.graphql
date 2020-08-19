@@ -121,7 +121,7 @@ input CaptureWhereUniqueInput {
 scalar DateTime
 
 type Device {
-  captures(orderBy: DeviceCapturesOrderByInput, skip: Int): [Capture!]!
+  captures(orderBy: [DeviceCapturesOrderByInput!], skip: Int): [Capture!]!
   createdAt: DateTime!
   deviceScaleFactor: Int
   id: String!
@@ -131,7 +131,7 @@ type Device {
 }
 
 input DeviceCapturesOrderByInput {
-  slug: OrderByArg
+  slug: SortOrder
 }
 
 input DeviceCreateInput {
@@ -186,11 +186,6 @@ type Mutation {
   createOnePage(data: PageCreateInput!): Page!
   createOneReport(data: ReportCreateInput!): Report!
   createOneSparkline(data: SparklineCreateInput!): Sparkline!
-}
-
-enum OrderByArg {
-  asc
-  desc
 }
 
 type Page {
@@ -335,6 +330,11 @@ input ReportCreateWithoutPagesInput {
 input ReportWhereUniqueInput {
   id: String
   slug: String
+}
+
+enum SortOrder {
+  asc
+  desc
 }
 
 type Sparkline {
