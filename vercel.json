@@ -13,7 +13,7 @@
   "builds": [
     {
       "src": "web/next.config.js",
-      "use": "@now/next"
+      "use": "@vercel/next"
     }
   ],
   "routes": [
