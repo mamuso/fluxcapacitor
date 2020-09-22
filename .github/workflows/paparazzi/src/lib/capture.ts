@@ -177,7 +177,7 @@ export default class Capture {
           })
 
           // Let's wait before the first shot
-          await puppet.waitFor(400)
+          await puppet.waitForTimeout(400)
 
           // If the page is bigger than two times the viewport
           if (scrollHeight > 2 * device.viewport.height) {
@@ -193,7 +193,7 @@ export default class Capture {
                 },
                 {scrollTo}
               )
-              await puppet.waitFor(400)
+              await puppet.waitForTimeout(400)
 
               const buffer = await puppet.screenshot({
                 fullPage: false

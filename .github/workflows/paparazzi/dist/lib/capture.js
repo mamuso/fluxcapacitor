@@ -143,7 +143,7 @@ class Capture {
                             return document.body.scrollHeight;
                         });
                         // Let's wait before the first shot
-                        yield puppet.waitFor(400);
+                        yield puppet.waitForTimeout(400);
                         // If the page is bigger than two times the viewport
                         if (scrollHeight > 2 * device.viewport.height) {
                             let s = 0;
@@ -155,7 +155,7 @@ class Capture {
                                 yield puppet.evaluate(({ scrollTo }) => {
                                     window.scrollTo(0, scrollTo);
                                 }, { scrollTo });
-                                yield puppet.waitFor(400);
+                                yield puppet.waitForTimeout(400);
                                 const buffer = yield puppet.screenshot({
                                     fullPage: false
                                 });
