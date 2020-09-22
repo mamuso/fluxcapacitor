@@ -23,6 +23,14 @@
     "cookie": true
   },
   "pages": [
+    {
+      "id": "guides-github-com",
+      "url": "https://guides.github.com/"
+    },
+    {
+      "id": "guides-github-com-guide",
+      "url": "https://guides.github.com/activities/hello-world/"
+    },
     { "id": "error-404", "url": "https://github.com/404" },
     { "id": "error-500", "url": "https://github.com/500" },
     { "id": "error-502", "url": "https://github.com/502" },
@@ -888,10 +896,6 @@
     {
       "id": "services-github-com",
       "url": "https://services.github.com"
-    },
-    {
-      "id": "guides-github-com-guide",
-      "url": "https://guides.github.com/activities/hello-world/"
     },
     {
       "id": "opensource-guide",

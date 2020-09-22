@@ -61,4 +61,5 @@ tmp/
 .next
 .DS_Store
 .now
+.vercel
 .env.build
