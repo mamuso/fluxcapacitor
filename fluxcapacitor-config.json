@@ -23,6 +23,34 @@
     "cookie": true
   },
   "pages": [
+    {
+      "id": "primer",
+      "url": "https://primer.style"
+    },
+    {
+      "id": "primer-whats-new",
+      "url": "https://primer.style/news/"
+    },
+    {
+      "id": "primer-design",
+      "url": "https://primer.style/design/"
+    },
+    {
+      "id": "primer-design-node",
+      "url": "https://primer.style/design/foundations/typography"
+    },
+    {
+      "id": "primer-octicons",
+      "url": "https://primer.style/octicons"
+    },
+    {
+      "id": "primer-css",
+      "url": "https://primer.style/css"
+    },
+    {
+      "id": "primer-about",
+      "url": "https://primer.style/about"
+    },
     { "id": "error-404", "url": "https://github.com/404" },
     { "id": "error-500", "url": "https://github.com/500" },
     { "id": "error-502", "url": "https://github.com/502" },
@@ -972,34 +1000,6 @@
     {
       "id": "myoctocat-build",
       "url": "https://myoctocat.com/build-your-octocat/"
-    },
-    {
-      "id": "primer",
-      "url": "https://primer.style"
-    },
-    {
-      "id": "primer-whats-new",
-      "url": "https://primer.style/news/"
-    },
-    {
-      "id": "primer-design",
-      "url": "https://primer.style/design/"
-    },
-    {
-      "id": "primer-design-node",
-      "url": "https://primer.style/design/foundations/typography"
-    },
-    {
-      "id": "primer-octicons",
-      "url": "https://primer.style/octicons"
-    },
-    {
-      "id": "primer-css",
-      "url": "https://primer.style/css"
-    },
-    {
-      "id": "primer-about",
-      "url": "https://primer.style/about"
     },
     {
       "id": "socialimpact-github-com",
