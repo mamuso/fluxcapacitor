@@ -13,12 +13,12 @@
   "builds": [
     {
       "src": "api/src/index.ts",
-      "use": "@now/node",
+      "use": "@vercel/node",
       "config": { "maxLambdaSize": "20mb" }
     },
     {
       "src": "web/next.config.js",
-      "use": "@now/next"
+      "use": "@vercel/next"
     }
   ],
   "routes": [
