@@ -385,7 +385,7 @@ class Capture {
             }
             if (this.db.prisma) {
                 /** Disconnect from the DB */
-                yield this.db.prisma.disconnect();
+                yield this.db.prisma.$disconnect();
             }
         });
         this.printer = new utils_1.default();

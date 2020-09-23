@@ -497,7 +497,7 @@ export default class Capture {
 
     if (this.db.prisma) {
       /** Disconnect from the DB */
-      await this.db.prisma.disconnect()
+      await this.db.prisma.$disconnect()
     }
   }
 }
