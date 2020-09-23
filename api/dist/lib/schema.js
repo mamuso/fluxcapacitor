@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var nexus_prisma_1 = require("nexus-prisma");
-var schema_1 = require("@nexus/schema");
+exports.schema = exports.Sparkline = exports.Device = exports.Capture = exports.Page = exports.Report = void 0;
+var schema_1 = require("nexus-plugin-prisma/schema");
+var schema_2 = require("@nexus/schema");
 var path_1 = __importDefault(require("path"));
-exports.Report = schema_1.objectType({
+exports.Report = schema_2.objectType({
     name: "Report",
     definition: function (t) {
         t.model.id();
@@ -18,7 +19,7 @@ exports.Report = schema_1.objectType({
         t.model.createdAt();
     }
 });
-exports.Page = schema_1.objectType({
+exports.Page = schema_2.objectType({
     name: "Page",
     definition: function (t) {
         t.model.id();
@@ -31,7 +32,7 @@ exports.Page = schema_1.objectType({
         t.model.createdAt();
     }
 });
-exports.Capture = schema_1.objectType({
+exports.Capture = schema_2.objectType({
     name: "Capture",
     definition: function (t) {
         t.model.id();
@@ -48,7 +49,7 @@ exports.Capture = schema_1.objectType({
         t.model.createdAt();
     }
 });
-exports.Device = schema_1.objectType({
+exports.Device = schema_2.objectType({
     name: "Device",
     definition: function (t) {
         t.model.id();
@@ -65,16 +66,17 @@ exports.Device = schema_1.objectType({
         t.model.createdAt();
     }
 });
-exports.Sparkline = schema_1.objectType({
+exports.Sparkline = schema_2.objectType({
     name: "Sparkline",
     definition: function (t) {
         t.model.id();
+        t.model.slug();
         t.model.device({ type: "Device" });
         t.model.page({ type: "Page" });
         t.model.data();
     }
 });
-var Query = schema_1.objectType({
+var Query = schema_2.objectType({
     name: "Query",
     definition: function (t) {
         t.crud.report();
@@ -84,7 +86,7 @@ var Query = schema_1.objectType({
         t.crud.sparkline();
     }
 });
-var Mutation = schema_1.objectType({
+var Mutation = schema_2.objectType({
     name: "Mutation",
     definition: function (t) {
         t.crud.createOneReport();
@@ -95,10 +97,10 @@ var Mutation = schema_1.objectType({
     }
 });
 var generateArtifacts = Boolean(process.env.GENERATE_ARTIFACTS);
-exports.schema = schema_1.makeSchema({
+exports.schema = schema_2.makeSchema({
     types: [Query, Mutation, exports.Report, exports.Page, exports.Capture, exports.Device, exports.Sparkline],
     plugins: [
-        nexus_prisma_1.nexusPrismaPlugin({
+        schema_1.nexusSchemaPrisma({
             shouldGenerateArtifacts: generateArtifacts,
             outputs: {
                 typegen: path_1["default"].join(__dirname, "/generated/prisma-nexus.ts")

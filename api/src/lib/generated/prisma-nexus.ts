@@ -1,331 +1,97 @@
-import * as prisma from '@prisma/client';
-import { core } from '@nexus/schema';
-import { GraphQLResolveInfo } from 'graphql';
+import * as Typegen from 'nexus-plugin-prisma/typegen'
+import * as Prisma from '@prisma/client';
 
-// Types helpers
-  type IsModelNameExistsInGraphQLTypes<
-  ReturnType extends any
-> = ReturnType extends core.GetGen<'objectNames'> ? true : false;
-
-type NexusPrismaScalarOpts = {
-  alias?: string;
-};
-
+// Pagination type
 type Pagination = {
-  first?: boolean;
-  last?: boolean;
-  before?: boolean;
-  after?: boolean;
-  skip?: boolean;
-};
-
-type RootObjectTypes = Pick<
-  core.GetGen<'rootTypes'>,
-  core.GetGen<'objectNames'>
->;
-
-/**
- * Determine if `B` is a subset (or equivalent to) of `A`.
-*/
-type IsSubset<A, B> = keyof A extends never
-  ? false
-  : B extends A
-  ? true
-  : false;
-
-type OmitByValue<T, ValueType> = Pick<
-  T,
-  { [Key in keyof T]: T[Key] extends ValueType ? never : Key }[keyof T]
->;
-
-type GetSubsetTypes<ModelName extends any> = keyof OmitByValue<
-  {
-    [P in keyof RootObjectTypes]: ModelName extends keyof ModelTypes
-      ? IsSubset<RootObjectTypes[P], ModelTypes[ModelName]> extends true
-        ? RootObjectTypes[P]
-        : never
-      : never;
-  },
-  never
->;
-
-type SubsetTypes<ModelName extends any> = GetSubsetTypes<
-  ModelName
-> extends never
-  ? `ERROR: No subset types are available. Please make sure that one of your GraphQL type is a subset of your t.model('<ModelName>')`
-  : GetSubsetTypes<ModelName>;
-
-type DynamicRequiredType<ReturnType extends any> = IsModelNameExistsInGraphQLTypes<
-  ReturnType
-> extends true
-  ? { type?: SubsetTypes<ReturnType> }
-  : { type: SubsetTypes<ReturnType> };
-
-type GetNexusPrismaInput<
-  ModelName extends any,
-  MethodName extends any,
-  InputName extends 'filtering' | 'ordering'
-> = ModelName extends keyof NexusPrismaInputs
-  ? MethodName extends keyof NexusPrismaInputs[ModelName]
-    ? NexusPrismaInputs[ModelName][MethodName][InputName]
-    : never
-  : never;
-
-/**
- *  Represents arguments required by Prisma Client JS that will
- *  be derived from a request's input (args, context, and info)
- *  and omitted from the GraphQL API. The object itself maps the
- *  names of these args to a function that takes an object representing
- *  the request's input and returns the value to pass to the prisma
- *  arg of the same name.
- */
-export type LocalComputedInputs<MethodName extends any> = Record<
-  string,
-  (params: LocalMutationResolverParams<MethodName>) => unknown
->
-
-export type GlobalComputedInputs = Record<
-  string,
-  (params: GlobalMutationResolverParams) => unknown
->
-
-type BaseMutationResolverParams = {
-  info: GraphQLResolveInfo
-  ctx: Context
+  first?: boolean
+  last?: boolean
+  before?: boolean
+  after?: boolean
 }
 
-export type GlobalMutationResolverParams = BaseMutationResolverParams & {
-  args: Record<string, any> & { data: unknown }
+// Prisma custom scalar names
+type CustomScalars = 'DateTime'
+
+// Prisma model type definitions
+interface PrismaModels {
+  Report: Prisma.Report
+  Page: Prisma.Page
+  Device: Prisma.Device
+  Capture: Prisma.Capture
+  Sparkline: Prisma.Sparkline
 }
 
-export type LocalMutationResolverParams<
-  MethodName extends any
-> = BaseMutationResolverParams & {
-  args: MethodName extends keyof core.GetGen2<'argTypes', 'Mutation'>
-    ? core.GetGen3<'argTypes', 'Mutation', MethodName>
-    : any
-}
-
-export type Context = core.GetGen<'context'>
-
-type NexusPrismaRelationOpts<
-  ModelName extends any,
-  MethodName extends any,
-  ReturnType extends any
-> = GetNexusPrismaInput<
-  // If GetNexusPrismaInput returns never, it means there are no filtering/ordering args for it.
-  ModelName,
-  MethodName,
-  'filtering'
-> extends never
-  ? {
-      alias?: string;
-      computedInputs?: LocalComputedInputs<MethodName>;
-    } & DynamicRequiredType<ReturnType>
-  : {
-      alias?: string;
-      computedInputs?: LocalComputedInputs<MethodName>;
-      filtering?:
-        | boolean
-        | Partial<
-            Record<
-              GetNexusPrismaInput<ModelName, MethodName, 'filtering'>,
-              boolean
-            >
-          >;
-      ordering?:
-        | boolean
-        | Partial<
-            Record<
-              GetNexusPrismaInput<ModelName, MethodName, 'ordering'>,
-              boolean
-            >
-          >;
-      pagination?: boolean | Pagination;
-    } & DynamicRequiredType<ReturnType>;
-
-type IsScalar<TypeName extends any> = TypeName extends core.GetGen<'scalarNames'>
-  ? true
-  : false;
-
-type IsObject<Name extends any> = Name extends core.GetGen<'objectNames'>
-  ? true
-  : false
-
-type IsEnum<Name extends any> = Name extends core.GetGen<'enumNames'>
-  ? true
-  : false
-
-type IsInputObject<Name extends any> = Name extends core.GetGen<'inputNames'>
-  ? true
-  : false
-
-/**
- * The kind that a GraphQL type may be.
- */
-type Kind = 'Enum' | 'Object' | 'Scalar' | 'InputObject'
-
-/**
- * Helper to safely reference a Kind type. For example instead of the following
- * which would admit a typo:
- *
- * ```ts
- * type Foo = Bar extends 'scalar' ? ...
- * ```
- *
- * You can do this which guarantees a correct reference:
- *
- * ```ts
- * type Foo = Bar extends AKind<'Scalar'> ? ...
- * ```
- *
- */
-type AKind<T extends Kind> = T
-
-type GetKind<Name extends any> = IsEnum<Name> extends true
-  ? 'Enum'
-  : IsScalar<Name> extends true
-  ? 'Scalar'
-  : IsObject<Name> extends true
-  ? 'Object'
-  : IsInputObject<Name> extends true
-  ? 'InputObject'
-  // FIXME should be `never`, but GQL objects named differently
-  // than backing type fall into this branch
-  : 'Object'
-
-type NexusPrismaFields<ModelName extends keyof NexusPrismaTypes> = {
-  [MethodName in keyof NexusPrismaTypes[ModelName]]: NexusPrismaMethod<
-    ModelName,
-    MethodName,
-    GetKind<NexusPrismaTypes[ModelName][MethodName]> // Is the return type a scalar?
-  >;
-};
-
-type NexusPrismaMethod<
-  ModelName extends keyof NexusPrismaTypes,
-  MethodName extends keyof NexusPrismaTypes[ModelName],
-  ThisKind extends Kind,
-  ReturnType extends any = NexusPrismaTypes[ModelName][MethodName]
-> =
-  ThisKind extends AKind<'Enum'>
-  ? () => NexusPrismaFields<ModelName>
-  : ThisKind extends AKind<'Scalar'>
-  ? (opts?: NexusPrismaScalarOpts) => NexusPrismaFields<ModelName> // Return optional scalar opts
-  : IsModelNameExistsInGraphQLTypes<ReturnType> extends true // If model name has a mapped graphql types
-  ? (
-      opts?: NexusPrismaRelationOpts<ModelName, MethodName, ReturnType>
-    ) => NexusPrismaFields<ModelName> // Then make opts optional
-  : (
-      opts: NexusPrismaRelationOpts<ModelName, MethodName, ReturnType>
-    ) => NexusPrismaFields<ModelName>; // Else force use input the related graphql type -> { type: '...' }
-
-type GetNexusPrismaMethod<
-  TypeName extends string
-> = TypeName extends keyof NexusPrismaMethods
-  ? NexusPrismaMethods[TypeName]
-  : <CustomTypeName extends keyof ModelTypes>(
-      typeName: CustomTypeName
-    ) => NexusPrismaMethods[CustomTypeName];
-
-type GetNexusPrisma<
-  TypeName extends string,
-  ModelOrCrud extends 'model' | 'crud'
-> = ModelOrCrud extends 'model'
-  ? TypeName extends 'Mutation'
-    ? never
-    : TypeName extends 'Query'
-    ? never
-    : GetNexusPrismaMethod<TypeName>
-  : ModelOrCrud extends 'crud'
-  ? TypeName extends 'Mutation'
-    ? GetNexusPrismaMethod<TypeName>
-    : TypeName extends 'Query'
-    ? GetNexusPrismaMethod<TypeName>
-    : never
-  : never;
-  
-
-// Generated
-interface ModelTypes {
-  Report: prisma.Report
-  Page: prisma.Page
-  Device: prisma.Device
-  Capture: prisma.Capture
-  Sparkline: prisma.Sparkline
-}
-  
+// Prisma input types metadata
 interface NexusPrismaInputs {
   Query: {
     reports: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt'
-  ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt'
+      ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
+    }
     pages: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline'
-  ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline'
+      ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
+    }
     devices: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'deviceScaleFactor' | 'createdAt' | 'Sparkline'
-  ordering: 'id' | 'slug' | 'name' | 'specs' | 'deviceScaleFactor' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'name' | 'specs' | 'captures' | 'deviceScaleFactor' | 'createdAt' | 'Sparkline'
+      ordering: 'id' | 'slug' | 'name' | 'specs' | 'deviceScaleFactor' | 'createdAt'
+    }
     captures: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
+      ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+    }
     sparklines: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
-  ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
-}
-
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
+      ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
+    }
   },
-    Report: {
+  Report: {
     pages: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline'
-  ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'captures' | 'reports' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt' | 'Sparkline'
+      ordering: 'id' | 'slug' | 'url' | 'reportcount' | 'startsAt' | 'endsAt' | 'createdAt'
+    }
     captures: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
-}
-
-  },  Page: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
+      ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+    }
+  }
+  Page: {
     captures: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
+      ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+    }
     reports: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt'
-  ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'current' | 'visible' | 'pages' | 'pagecount' | 'captures' | 'createdAt'
+      ordering: 'id' | 'slug' | 'current' | 'visible' | 'pagecount' | 'createdAt'
+    }
     Sparkline: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
-  ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
-}
-
-  },  Device: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
+      ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
+    }
+  }
+  Device: {
     captures: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
+      ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+    }
     Sparkline: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
-  ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
-}
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'device' | 'deviceId' | 'page' | 'pageId' | 'captures' | 'data'
+      ordering: 'id' | 'slug' | 'deviceId' | 'pageId' | 'data'
+    }
+  }
+  Capture: {
 
-  },  Capture: {
-
-
-  },  Sparkline: {
+  }
+  Sparkline: {
     captures: {
-  filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
-  ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
-}
-
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'page' | 'pageId' | 'report' | 'reportId' | 'device' | 'deviceId' | 'sparkline' | 'sparklineId' | 'createdAt'
+      ordering: 'id' | 'slug' | 'url' | 'urlmin' | 'urldiff' | 'diff' | 'diffindex' | 'deviceScaleFactor' | 'pageId' | 'reportId' | 'deviceId' | 'sparklineId' | 'createdAt'
+    }
   }
 }
 
-interface NexusPrismaTypes {
+// Prisma output types metadata
+interface NexusPrismaOutputs {
   Query: {
     report: 'Report'
     reports: 'Report'
@@ -337,7 +103,6 @@ interface NexusPrismaTypes {
     captures: 'Capture'
     sparkline: 'Sparkline'
     sparklines: 'Sparkline'
-
   },
   Mutation: {
     createOneReport: 'Report'
@@ -370,7 +135,6 @@ interface NexusPrismaTypes {
     deleteOneSparkline: 'Sparkline'
     deleteManySparkline: 'BatchPayload'
     upsertOneSparkline: 'Sparkline'
-
   },
   Report: {
     id: 'String'
@@ -381,8 +145,8 @@ interface NexusPrismaTypes {
     pagecount: 'Int'
     captures: 'Capture'
     createdAt: 'DateTime'
-
-},  Page: {
+  }
+  Page: {
     id: 'String'
     slug: 'String'
     url: 'String'
@@ -393,8 +157,8 @@ interface NexusPrismaTypes {
     endsAt: 'String'
     createdAt: 'DateTime'
     Sparkline: 'Sparkline'
-
-},  Device: {
+  }
+  Device: {
     id: 'String'
     slug: 'String'
     name: 'String'
@@ -403,8 +167,8 @@ interface NexusPrismaTypes {
     deviceScaleFactor: 'Int'
     createdAt: 'DateTime'
     Sparkline: 'Sparkline'
-
-},  Capture: {
+  }
+  Capture: {
     id: 'String'
     slug: 'String'
     url: 'String'
@@ -422,8 +186,8 @@ interface NexusPrismaTypes {
     sparkline: 'Sparkline'
     sparklineId: 'String'
     createdAt: 'DateTime'
-
-},  Sparkline: {
+  }
+  Sparkline: {
     id: 'String'
     slug: 'String'
     device: 'Device'
@@ -432,25 +196,35 @@ interface NexusPrismaTypes {
     pageId: 'String'
     captures: 'Capture'
     data: 'String'
-
+  }
 }
-}
 
+// Helper to gather all methods relative to a model
 interface NexusPrismaMethods {
-  Report: NexusPrismaFields<'Report'>
-  Page: NexusPrismaFields<'Page'>
-  Device: NexusPrismaFields<'Device'>
-  Capture: NexusPrismaFields<'Capture'>
-  Sparkline: NexusPrismaFields<'Sparkline'>
-  Query: NexusPrismaFields<'Query'>
-  Mutation: NexusPrismaFields<'Mutation'>
+  Report: Typegen.NexusPrismaFields<'Report'>
+  Page: Typegen.NexusPrismaFields<'Page'>
+  Device: Typegen.NexusPrismaFields<'Device'>
+  Capture: Typegen.NexusPrismaFields<'Capture'>
+  Sparkline: Typegen.NexusPrismaFields<'Sparkline'>
+  Query: Typegen.NexusPrismaFields<'Query'>
+  Mutation: Typegen.NexusPrismaFields<'Mutation'>
 }
-  
+
+interface NexusPrismaGenTypes {
+  inputs: NexusPrismaInputs
+  outputs: NexusPrismaOutputs
+  methods: NexusPrismaMethods
+  models: PrismaModels
+  pagination: Pagination
+  scalars: CustomScalars
+}
 
 declare global {
+  interface NexusPrismaGen extends NexusPrismaGenTypes {}
+
   type NexusPrisma<
     TypeName extends string,
     ModelOrCrud extends 'model' | 'crud'
-  > = GetNexusPrisma<TypeName, ModelOrCrud>;
+  > = Typegen.GetNexusPrisma<TypeName, ModelOrCrud>;
 }
   

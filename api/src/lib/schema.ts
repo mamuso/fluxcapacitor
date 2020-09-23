@@ -1,4 +1,4 @@
-import { nexusPrismaPlugin } from "nexus-prisma";
+import { nexusSchemaPrisma } from "nexus-plugin-prisma/schema";
 import { intArg, makeSchema, objectType, stringArg } from "@nexus/schema";
 
 import path from "path";
@@ -105,8 +105,9 @@ const generateArtifacts = Boolean(process.env.GENERATE_ARTIFACTS);
 export const schema = makeSchema({
   types: [Query, Mutation, Report, Page, Capture, Device, Sparkline],
   plugins: [
-    nexusPrismaPlugin({
+    nexusSchemaPrisma({
       shouldGenerateArtifacts: generateArtifacts,
+      experimentalCRUD: true,
       outputs: {
         typegen: path.join(__dirname, "/generated/prisma-nexus.ts"),
       },
