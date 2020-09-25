@@ -13,7 +13,6 @@ jobs:
   step:
     name: Take screenshots
     runs-on: ubuntu-latest
-    container: mamuso/fluxcapacitor:latest
     steps:
       - name: Set current time
         uses: srfrnk/current-time@master
