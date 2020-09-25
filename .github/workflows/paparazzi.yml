@@ -30,7 +30,7 @@ jobs:
       - name: Dependencies
         run: yarn install --production
       - name: Prisma
-        run: yarn workspace api run prisma2 generate
+        run: yarn workspace api run prisma generate
       - name: Set up
         run: yarn workspace paparazzi setup --production
         env:
