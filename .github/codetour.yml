@@ -1,0 +1,22 @@
+name: Get started with fluxcapacitor
+steps:
+
+  - name: Define your target devices and resolutions
+    description: >
+      You have a wide arrange of predefined options
+      in the [wiki](url). If you want to get more specific
+      you can always define your own.
+    file: fluxcapacitor-config.json
+    line: [5,13]
+
+  - name: List of the urls that you want to capture
+    description: >
+      The more, the merrier!
+    file: fluxcapacitor-config.json
+    line: [27,29]
+
+  - name: Tweak your capture frequency
+    description: >
+      By default, the action runs every three days.
+    file: .github/workflows/paparazzi.yml
+    line: 5
