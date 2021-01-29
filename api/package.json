@@ -18,7 +18,7 @@
     "migrate:up": "prisma migrate up --experimental --verbose"
   },
   "dependencies": {
-    "@nexus/schema": "0.15.0",
+    "@nexus/schema": "0.20.0",
     "nexus-plugin-prisma": "0.18.2",
     "@prisma/cli": "2.13.1",
     "@prisma/client": "2.13.1",
