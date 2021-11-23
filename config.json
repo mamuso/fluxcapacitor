@@ -1,0 +1,36 @@
+{
+  "format": "png",
+  "compare": true,
+
+  "devices": [
+    {
+      "id": "desktop",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "deviceScaleFactor": 2
+      }
+    },
+    { "id": "tablet", "device": "iPad" },
+    { "id": "mobile", "device": "iPhone X" }
+  ],
+
+  "pages": [
+    {
+      "id": "nextjs",
+      "url": "https://nextjs.org"
+    },
+    {
+      "id": "gatsby",
+      "url": "https://www.gatsbyjs.com"
+    },
+    {
+      "id": "hugo",
+      "url": "https://gohugo.io"
+    },
+    {
+      "id": "nuxt",
+      "url": "https://nuxtjs.org"
+    }
+  ]
+}

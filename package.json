@@ -6,7 +6,7 @@
   "workspaces": [
     "web",
     "api",
-    ".github/workflows/*"
+    "paparazzi"
   ],
   "scripts": {
     "paparazzi": "yarn workspace paparazzi run paparazzi",

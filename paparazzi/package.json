@@ -1,0 +1,32 @@
+{
+  "name": "paparazzi",
+  "private": true,
+  "keywords": [],
+  "author": "Manuel Muñoz Solera <mamuso@mamuso.net>",
+  "license": "MIT",
+  "main": "dist/papparazi.js",
+  "description": "",
+  "scripts": {
+    "setup": "node dist/paparazzi.js setup",
+    "getcurrent": "node dist/paparazzi.js getcurrent",
+    "capture": "node dist/paparazzi.js capture",
+    "resize": "node dist/paparazzi.js resize",
+    "compare": "node dist/paparazzi.js compare",
+    "setcurrent": "node dist/paparazzi.js setcurrent",
+    "sparklines": "node dist/paparazzi.js sparklines",
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "test": "jest",
+    "all": "npm run format && npm run lint && npm run build "
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "pixelmatch": "^5.2.1",
+    "pngjs": "^6.0.0",
+    "puppeteer": "^11.0.0",
+    "sharp": "^0.29.3"
+  },
+  "devDependencies": {}
+}

@@ -63,3 +63,6 @@ tmp/
 .now
 .vercel
 .env.build
+
+paparazzi_ref
+~packagejson
