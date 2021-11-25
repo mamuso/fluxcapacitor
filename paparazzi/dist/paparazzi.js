@@ -20,8 +20,24 @@ require("./lib/env");
 const utils_1 = __importDefault(require("./lib/utils"));
 class Paparazzi {
     constructor(date) {
-        this.setup = () => __awaiter(this, void 0, void 0, function* () { });
+        // Run all the tasks needed to kick off the process.
+        this.setup = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.createScaffold();
+                this.printer.header(`✨ Setting up the folder structure - ${this.date}`);
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+        /**
+         *  Create the folder structure needed for capturing the screens
+         */
+        this.createScaffold = () => __awaiter(this, void 0, void 0, function* () { });
         this.printer = new utils_1.default();
+        this.config = {
+            date: this.date,
+        };
     }
 }
 const paparazzi = new Paparazzi(process.env.TIME ? process.env.TIME : new Date().toISOString().split('T')[0] // date
