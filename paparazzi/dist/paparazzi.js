@@ -42,13 +42,8 @@ class Paparazzi {
     constructor(date, tmpPath = 'tmp') {
         // Run all the tasks needed to kick off the process.
         this.setup = () => __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.createScaffold();
-                this.printer.header(`✨ Setting up the folder structure - ${this.config.date}`);
-            }
-            catch (e) {
-                throw e;
-            }
+            this.createScaffold();
+            this.printer.header(`✨ Setting up the folder structure - ${this.config.date}`);
         });
         /**
          *  Create the folder structure needed for capturing the screens

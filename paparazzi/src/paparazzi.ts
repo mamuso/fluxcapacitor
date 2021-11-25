@@ -24,14 +24,10 @@ class Paparazzi {
 
   // Run all the tasks needed to kick off the process.
   setup = async () => {
-    try {
-      this.createScaffold();
-      this.printer.header(
-        `✨ Setting up the folder structure - ${this.config.date}`
-      );
-    } catch (e) {
-      throw e;
-    }
+    this.createScaffold();
+    this.printer.header(
+      `✨ Setting up the folder structure - ${this.config.date}`
+    );
   };
 
   /**
