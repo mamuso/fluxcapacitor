@@ -36,6 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./lib/env");
+const capture_1 = __importDefault(require("./lib/capture"));
 const utils_1 = __importDefault(require("./lib/utils"));
 const fs = __importStar(require("fs"));
 class Paparazzi {
@@ -66,6 +67,20 @@ class Paparazzi {
          */
         this.cleanup = () => __awaiter(this, void 0, void 0, function* () {
             yield fs.promises.rmdir(this.config.tmpPath, { recursive: true });
+        });
+        /**
+         *  Capture screenshots of all the endpoints in the config file
+         */
+        this.capture = () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.printer.subHeader(`🤓 Creating a new caputre session`);
+                const capture = new capture_1.default(this.config);
+                // await capture.capture();
+                // await capture.close();
+            }
+            catch (e) {
+                throw e;
+            }
         });
         this.printer = new utils_1.default();
         this.config = {

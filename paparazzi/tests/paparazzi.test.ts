@@ -20,6 +20,13 @@ describe('A paparazzi instance', () => {
       ).toBeTruthy();
     });
   });
+  describe('when calling paparazzi.capture', () => {
+    it('should create log a subheader', async () => {
+      const spy = jest.spyOn(console, 'log');
+      await paparazzi.capture();
+      expect(spy).toHaveBeenCalledWith('🤓 Creating a new caputre session');
+    });
+  });
   describe('when calling paparazzi.cleanup', () => {
     it('should clean the tmp folders', async () => {
       await paparazzi.cleanup();

@@ -7,7 +7,6 @@ describe('A Printer instance', () => {
 
   it('should be able to log a header', async () => {
     printer.header(test);
-    expect(consoleSpy).toHaveBeenCalledWith('');
     expect(consoleSpy).toHaveBeenCalledWith(
       '-----------------------------------------------------------------------'
     );
@@ -18,7 +17,6 @@ describe('A Printer instance', () => {
   });
   it('should be able to log a subheader', async () => {
     printer.subHeader(test);
-    expect(consoleSpy).toHaveBeenCalledWith('');
     expect(consoleSpy).toHaveBeenCalledWith(
       '-----------------------------------------------------------------------'
     );

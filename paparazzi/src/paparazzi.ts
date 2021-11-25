@@ -4,6 +4,7 @@
  */
 
 import './lib/env';
+import Capture from './lib/capture';
 import { Config } from './lib/types';
 import Printer from './lib/utils';
 import * as fs from 'fs';
@@ -52,6 +53,20 @@ class Paparazzi {
    */
   cleanup = async () => {
     await fs.promises.rmdir(this.config.tmpPath, { recursive: true });
+  };
+
+  /**
+   *  Capture screenshots of all the endpoints in the config file
+   */
+  capture = async () => {
+    try {
+      this.printer.subHeader(`🤓 Creating a new caputre session`);
+      const capture = new Capture(this.config);
+      await capture.capture();
+      await capture.close();
+    } catch (e) {
+      throw e;
+    }
   };
 }
 
