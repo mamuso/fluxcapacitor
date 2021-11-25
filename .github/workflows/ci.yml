@@ -1,0 +1,18 @@
+name: 🤖 CI
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        uses: actions/setup-node@v2
+        run: npm install -g yarn && yarn
+        with:
+          node-version: '16.x'
+      - name: Run Paparazzi tests
+        run: yarn workspace paparazzi run test

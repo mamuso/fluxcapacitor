@@ -22,7 +22,9 @@ class Paparazzi {
     } as Config;
   }
 
-  // Run all the tasks needed to kick off the process.
+  /**
+   *  Run all the tasks needed to kick off the process
+   */
   setup = async () => {
     this.createScaffold();
     this.printer.header(

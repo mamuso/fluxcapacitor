@@ -40,7 +40,9 @@ const utils_1 = __importDefault(require("./lib/utils"));
 const fs = __importStar(require("fs"));
 class Paparazzi {
     constructor(date, tmpPath = 'tmp') {
-        // Run all the tasks needed to kick off the process.
+        /**
+         *  Run all the tasks needed to kick off the process
+         */
         this.setup = () => __awaiter(this, void 0, void 0, function* () {
             this.createScaffold();
             this.printer.header(`✨ Setting up the folder structure - ${this.config.date}`);
