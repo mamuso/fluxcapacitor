@@ -6,37 +6,37 @@
 
 export default class Printer {
   header = (text: string): void => {
-    console.log('')
+    console.log('');
     console.log(
       '-----------------------------------------------------------------------'
-    )
-    console.log(`${text}`)
+    );
+    console.log(`${text}`);
     console.log(
       '-----------------------------------------------------------------------'
-    )
-  }
+    );
+  };
 
   subHeader = (text: string): void => {
-    console.log('')
-    console.log(`${text}`)
+    console.log('');
+    console.log(`${text}`);
     console.log(
       '-----------------------------------------------------------------------'
-    )
-  }
+    );
+  };
 
   download = (text: string): void => {
-    console.log(`  └ ⬇️  ${text}`)
-  }
+    console.log(`  └ ⬇️  ${text}`);
+  };
 
   capture = (text: string): void => {
-    console.log(`  └ 🏙  ${text}`)
-  }
+    console.log(`  └ 🏙  ${text}`);
+  };
 
   resize = (text: string): void => {
-    console.log(`  └ 🌉  ${text}`)
-  }
+    console.log(`  └ 🌉  ${text}`);
+  };
 
   compare = (text: string): void => {
-    console.log(`  └ 🎆  ${text}`)
-  }
+    console.log(`  └ 🎆  ${text}`);
+  };
 }
