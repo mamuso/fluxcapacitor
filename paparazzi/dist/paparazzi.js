@@ -16,6 +16,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("./lib/env");
 const utils_1 = __importDefault(require("./lib/utils"));
 class Paparazzi {
     constructor(date) {
@@ -25,6 +26,7 @@ class Paparazzi {
 }
 const paparazzi = new Paparazzi(process.env.TIME ? process.env.TIME : new Date().toISOString().split('T')[0] // date
 );
+// Switch logic
 switch (process.argv[2]) {
     case 'setup': {
         paparazzi.setup();
