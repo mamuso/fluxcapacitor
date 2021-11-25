@@ -11,8 +11,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Install dependencies
         uses: actions/setup-node@v2
-        run: npm install -g yarn && yarn
         with:
           node-version: '16.x'
+      - name: Install dependencies
+        run: npm install -g yarn && yarn install
       - name: Run Paparazzi tests
         run: yarn workspace paparazzi run test
