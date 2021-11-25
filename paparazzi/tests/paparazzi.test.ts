@@ -15,6 +15,15 @@ describe('A paparazzi instance', () => {
       await paparazzi.setup();
       expect(await fs.promises.stat(paparazzi.config.tmpPath)).toBeTruthy();
       expect(await fs.promises.stat(paparazzi.config.tmpDatePath)).toBeTruthy();
+      expect(
+        await fs.promises.stat(paparazzi.config.tmpCurrentPath)
+      ).toBeTruthy();
+    });
+  });
+  describe('when calling paparazzi.cleanup', () => {
+    it('should clean the tmp folders', async () => {
+      await paparazzi.cleanup();
+      expect(fs.existsSync(paparazzi.config.tmpPath)).toBeFalsy();
     });
   });
 });

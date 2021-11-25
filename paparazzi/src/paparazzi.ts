@@ -46,6 +46,13 @@ class Paparazzi {
       await fs.promises.mkdir(this.config.tmpCurrentPath);
     }
   };
+
+  /**
+   *  Remove the folder structure needed for capturing the screens
+   */
+  cleanup = async () => {
+    await fs.promises.rmdir(this.config.tmpPath, { recursive: true });
+  };
 }
 
 export default Paparazzi;

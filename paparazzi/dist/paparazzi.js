@@ -61,6 +61,12 @@ class Paparazzi {
                 yield fs.promises.mkdir(this.config.tmpCurrentPath);
             }
         });
+        /**
+         *  Remove the folder structure needed for capturing the screens
+         */
+        this.cleanup = () => __awaiter(this, void 0, void 0, function* () {
+            yield fs.promises.rmdir(this.config.tmpPath, { recursive: true });
+        });
         this.printer = new utils_1.default();
         this.config = {
             date: date,
