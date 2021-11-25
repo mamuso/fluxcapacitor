@@ -64,8 +64,6 @@ class Paparazzi {
                 yield fs.promises.mkdir(this.config.tmpCurrentPath);
             }
         });
-        console.log(date);
-        console.log('date');
         this.printer = new utils_1.default();
         this.config = {
             date: date,
@@ -75,15 +73,4 @@ class Paparazzi {
         };
     }
 }
-const paparazzi = new Paparazzi(process.env.TIME ? process.env.TIME : new Date().toISOString().split('T')[0]);
-console.log(new Date().toISOString().split('T')[0]);
-// Switch logic
-switch (process.argv[2]) {
-    case 'setup': {
-        paparazzi.setup();
-        break;
-    }
-    default: {
-        break;
-    }
-}
+exports.default = Paparazzi;
