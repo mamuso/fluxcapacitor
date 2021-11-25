@@ -75,20 +75,15 @@ class Paparazzi {
             try {
                 this.printer.subHeader(`🤓 Creating a new caputre session`);
                 const capture = new capture_1.default(this.config);
-                // await capture.capture();
-                // await capture.close();
+                yield capture.capture();
+                yield capture.close();
             }
             catch (e) {
                 throw e;
             }
         });
         this.printer = new utils_1.default();
-        this.config = {
-            date: date,
-            tmpPath: tmpPath,
-            tmpDatePath: `${tmpPath}/${date}`,
-            tmpCurrentPath: `${tmpPath}/current`,
-        };
+        this.config = Object.assign({ date: date, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`../../config`));
     }
 }
 exports.default = Paparazzi;

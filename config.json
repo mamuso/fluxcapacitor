@@ -15,7 +15,7 @@
     { "id": "mobile", "device": "iPhone X" }
   ],
 
-  "pages": [
+  "endpoints": [
     {
       "id": "nextjs",
       "url": "https://nextjs.org"

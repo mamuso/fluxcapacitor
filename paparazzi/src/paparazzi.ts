@@ -20,6 +20,7 @@ class Paparazzi {
       tmpPath: tmpPath,
       tmpDatePath: `${tmpPath}/${date}`,
       tmpCurrentPath: `${tmpPath}/current`,
+      ...require(`../../config`),
     } as Config;
   }
 

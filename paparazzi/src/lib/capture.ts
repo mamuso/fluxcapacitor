@@ -1,8 +1,11 @@
+/* eslint-disable no-console */
+
 /**
  * Capture a list of urls with puppeteer.
  */
 
 import { Config } from './types';
+// import Printer from './utils';
 
 export default class Capture {
   config;
@@ -10,6 +13,10 @@ export default class Capture {
     this.config = { ...config } as Config;
   }
 
-  capture = async () => {};
-  close = async () => {};
+  capture = async () => {
+    console.log('capture');
+  };
+  close = async () => {
+    console.log('close');
+  };
 }
