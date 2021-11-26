@@ -1,12 +1,12 @@
 import Paparazzi from '../src/paparazzi';
 import * as fs from 'fs';
 
+const date = '2021-04-13';
+
+// mocking configuration file
 jest.mock(
   '../../config.json',
   () => ({
-    format: 'png',
-    compare: true,
-
     devices: [
       {
         id: 'desktop',
@@ -16,33 +16,13 @@ jest.mock(
           deviceScaleFactor: 2,
         },
       },
-      { id: 'mobile', device: 'iPhone X' },
-    ],
-
-    endpoints: [
-      {
-        id: 'nextjs',
-        url: 'https://nextjs.org',
-      },
-      {
-        id: 'gatsby',
-        url: 'https://www.gatsbyjs.com',
-      },
-      {
-        id: 'hugo',
-        url: 'https://gohugo.io',
-      },
-      {
-        id: 'nuxt',
-        url: 'https://nuxtjs.org',
-      },
+      { id: 'mobile', device: 'iPhone 11 Pro Max' },
     ],
   }),
   { virtual: true }
 );
 
 describe('A paparazzi instance', () => {
-  const date = '2021-04-13';
   const paparazzi = new Paparazzi(date);
   it('should create a config object', async () => {
     expect(paparazzi.config.date).toBe('2021-04-13');
@@ -65,6 +45,17 @@ describe('A paparazzi instance', () => {
       const spy = jest.spyOn(console, 'log');
       await paparazzi.capture();
       expect(spy).toHaveBeenCalledWith('🤓 Creating a new caputre session');
+      expect(spy).toHaveBeenCalledWith('📷 Capture URLs');
+      // Loop through the devices
+      expect(spy).toHaveBeenCalledWith('🖥  desktop (1920x1080)');
+      expect(spy).toHaveBeenCalledWith('🖥  mobile (414x896)');
+      // We expect folders to be created for each device
+      expect(
+        await fs.promises.stat(`${paparazzi.config.tmpDatePath}/desktop`)
+      ).toBeTruthy();
+      expect(
+        await fs.promises.stat(`${paparazzi.config.tmpDatePath}/mobile`)
+      ).toBeTruthy();
     });
   });
   describe('when calling paparazzi.cleanup', () => {

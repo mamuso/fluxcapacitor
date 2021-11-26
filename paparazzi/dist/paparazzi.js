@@ -36,11 +36,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./lib/env");
+const fs = __importStar(require("fs"));
 const capture_1 = __importDefault(require("./lib/capture"));
 const utils_1 = __importDefault(require("./lib/utils"));
-const fs = __importStar(require("fs"));
 class Paparazzi {
-    constructor(date, tmpPath = 'tmp') {
+    constructor(date, tmpPath = 'tmp', configFile = '../../config') {
         /**
          *  Run all the tasks needed to kick off the process
          */
@@ -83,7 +83,7 @@ class Paparazzi {
             }
         });
         this.printer = new utils_1.default();
-        this.config = Object.assign({ date: date, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${date}`, tmpCurrentPath: `${tmpPath}/current` }, require(`../../config`));
+        this.config = Object.assign({ date: date, tmpPath: tmpPath, tmpDatePath: `${tmpPath}/${date}`, tmpCurrentPath: `${tmpPath}/current` }, require(configFile));
     }
 }
 exports.default = Paparazzi;

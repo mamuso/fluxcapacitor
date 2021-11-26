@@ -4,23 +4,27 @@
  */
 
 import './lib/env';
+import * as fs from 'fs';
 import Capture from './lib/capture';
 import { Config } from './lib/types';
 import Printer from './lib/utils';
-import * as fs from 'fs';
 
 class Paparazzi {
   config;
   printer;
 
-  constructor(date: string, tmpPath: string = 'tmp') {
+  constructor(
+    date: string,
+    tmpPath: string = 'tmp',
+    configFile: string = '../../config'
+  ) {
     this.printer = new Printer();
     this.config = {
       date: date,
       tmpPath: tmpPath,
       tmpDatePath: `${tmpPath}/${date}`,
       tmpCurrentPath: `${tmpPath}/current`,
-      ...require(`../../config`),
+      ...require(configFile),
     } as Config;
   }
 

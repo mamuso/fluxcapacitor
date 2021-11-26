@@ -2,6 +2,7 @@
  * Screenshot and store all the things.
  */
 
+import * as fs from 'fs';
 import { Config, Device } from './types';
 import Printer from './utils';
 import puppeteer from 'puppeteer';
@@ -37,6 +38,11 @@ export default class Capture {
         this.printer.subHeader(
           `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
         );
+
+        // Make device folder
+        if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
+          await fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
+        }
       }
     } catch (e) {
       throw e;
