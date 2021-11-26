@@ -38,4 +38,8 @@ describe('A Printer instance', () => {
     printer.compare(test);
     expect(consoleSpy).toHaveBeenCalledWith('  └ 🌉  Wadus');
   });
+  it('should be able to log', async () => {
+    printer.log(test);
+    expect(consoleSpy).toHaveBeenCalledWith('Wadus');
+  });
 });

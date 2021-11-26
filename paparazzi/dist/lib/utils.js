@@ -29,6 +29,9 @@ class Printer {
         this.compare = (text) => {
             console.log(`  └ 🎆  ${text}`);
         };
+        this.log = (text) => {
+            console.log(`${text}`);
+        };
     }
 }
 exports.default = Printer;

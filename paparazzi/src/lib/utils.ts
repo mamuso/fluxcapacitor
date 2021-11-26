@@ -39,4 +39,8 @@ export default class Printer {
   compare = (text: string): void => {
     console.log(`  └ 🎆  ${text}`);
   };
+
+  log = (text: string): void => {
+    console.log(`${text}`);
+  };
 }
