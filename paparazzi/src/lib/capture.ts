@@ -52,6 +52,7 @@ export default class Capture {
         ? puppeteer.devices[deviceConfig.device]
         : deviceConfig
     ) as Device;
+
     device.userAgent = device.userAgent || (await this.browser.userAgent());
     device.id = deviceConfig.id;
     device.deviceScaleFactor = device.viewport.deviceScaleFactor;
