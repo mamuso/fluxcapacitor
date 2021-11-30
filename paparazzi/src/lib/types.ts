@@ -15,3 +15,41 @@ export type Device = {
     deviceScaleFactor: number;
   };
 };
+
+export type Endpoint = {
+  id: string;
+  slug: string;
+  url: string;
+  captures: [CaptureType];
+  reports: [Report];
+  reportcount: number;
+  startsAt: string;
+  endsAt: string;
+  auth: boolean;
+};
+
+export type CaptureType = {
+  id: string;
+  slug: string;
+  deviceScaleFactor: number;
+  url: string;
+  urlmin: string;
+  urldiff: string;
+  diff: boolean;
+  diffindex: number;
+  endpoint: Endpoint;
+  endpointId: string;
+  report: Report;
+  reportId: string;
+  device: Device;
+  devideId: string;
+};
+
+export type Report = {
+  id: string;
+  slug: string;
+  current: boolean;
+  endpoints: [Endpoint];
+  count: number;
+  captures: [CaptureType];
+};

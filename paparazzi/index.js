@@ -1,6 +1,6 @@
 'use strict';
 
-import Paparazzi from './dist/paparazzi';
+import { Paparazzi } from './dist/paparazzi.js';
 
 const paparazzi = new Paparazzi(
   process.env.TIME ? process.env.TIME : new Date().toISOString().split('T')[0]

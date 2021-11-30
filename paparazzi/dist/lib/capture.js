@@ -37,6 +37,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs"));
 const utils_1 = __importDefault(require("./utils"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
+const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 class Capture {
     constructor(config) {
         /**
@@ -55,15 +56,29 @@ class Capture {
                 for (const deviceConfig of this.config.devices) {
                     const device = yield this.setDevice(deviceConfig);
                     this.printer.subHeader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
-                    // Make device folder
+                    // Create device folder
                     if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
                         yield fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
+                    }
+                    // Loop through endpoints
+                    for (const endpointObject of this.config.endpoints) {
+                        const endpoint = endpointObject;
+                        yield this.takeScreenshot(endpoint, device);
                     }
                 }
             }
             catch (e) {
                 throw e;
             }
+        });
+        /**
+         *  Take a screenshot and save it.
+         */
+        this.takeScreenshot = (endpoint, device) => __awaiter(this, void 0, void 0, function* () {
+            const filename = `${(0, slugify_1.default)(endpoint.id)}.${this.config.format}`;
+            // const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+            // const capture = {} as CaptureType;
+            this.printer.capture(`${endpoint.id} – ${filename} – ${device.id}`);
         });
         /**
          *  Configure device for capture.

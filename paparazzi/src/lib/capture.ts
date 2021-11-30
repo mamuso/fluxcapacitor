@@ -3,9 +3,10 @@
  */
 
 import * as fs from 'fs';
-import { Config, Device } from './types';
+import { Config, Device, Endpoint } from './types';
 import Printer from './utils';
 import puppeteer from 'puppeteer';
+import slugify from '@sindresorhus/slugify';
 
 export default class Capture {
   browser;
@@ -39,14 +40,31 @@ export default class Capture {
           `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
         );
 
-        // Make device folder
+        // Create device folder
         if (!fs.existsSync(`${this.config.tmpDatePath}/${device.id}`)) {
           await fs.promises.mkdir(`${this.config.tmpDatePath}/${device.id}`);
+        }
+
+        // Loop through endpoints
+        for (const endpointObject of this.config.endpoints) {
+          const endpoint: Endpoint = endpointObject;
+          await this.takeScreenshot(endpoint, device);
         }
       }
     } catch (e) {
       throw e;
     }
+  };
+
+  /**
+   *  Take a screenshot and save it.
+   */
+  takeScreenshot = async (endpoint: Endpoint, device: Device) => {
+    const filename = `${slugify(endpoint.id)}.${this.config.format}`;
+    // const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+    // const capture = {} as CaptureType;
+
+    this.printer.capture(`${endpoint.id} – ${filename} – ${device.id}`);
   };
 
   /**
