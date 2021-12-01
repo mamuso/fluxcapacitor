@@ -3,6 +3,10 @@
     "node": true,
     "es6": true
   },
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "eslint-plugin-tsdoc"
+  ],
   "extends": [
     "plugin:github/recommended",
     "plugin:github/typescript"
@@ -11,13 +15,14 @@
   "parserOptions": {
     "ecmaVersion": 9,
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "tsconfig.json"
   },
   "rules": {
     "eslint-comments/no-use": "off",
     "import/no-namespace": "off",
     "no-unused-vars": "off",
     "camelcase": "off",
-    "semi": "off"
+    "semi": "off",
+    "tsdoc/syntax": "warn"
   }
 }

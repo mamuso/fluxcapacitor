@@ -3,19 +3,17 @@
  */
 
 import * as fs from 'fs';
+import * as puppeteer from 'puppeteer';
 import { Config, Device, Endpoint } from './types';
-import Printer from './utils';
-import puppeteer from 'puppeteer';
-import slugify from '@sindresorhus/slugify';
+import { Printer } from './utils';
 
 export default class Capture {
-  browser;
-  config;
-  printer;
+  public config: Config;
+  private printer: Printer;
 
   constructor(config: Config) {
     this.printer = new Printer();
-    this.config = { ...config } as Config;
+    this.config = { ...config };
   }
 
   /**
@@ -26,7 +24,7 @@ export default class Capture {
       this.printer.header(`📷 Capture URLs`);
 
       // Create a new browser instance
-      this.browser = await puppeteer.launch({
+      const browser = await puppeteer.launch({
         headless: true,
         defaultViewport: null,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
@@ -34,7 +32,7 @@ export default class Capture {
 
       // Loop through devices
       for (const deviceConfig of this.config.devices) {
-        const device = await this.setDevice(deviceConfig);
+        const device = await this.setDevice(deviceConfig, browser);
 
         this.printer.subHeader(
           `🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`
@@ -51,6 +49,9 @@ export default class Capture {
           await this.takeScreenshot(endpoint, device);
         }
       }
+
+      // Close puppeteer browser instance
+      browser.close();
     } catch (e) {
       throw e;
     }
@@ -60,7 +61,7 @@ export default class Capture {
    *  Take a screenshot and save it.
    */
   takeScreenshot = async (endpoint: Endpoint, device: Device) => {
-    const filename = `${slugify(endpoint.id)}.${this.config.format}`;
+    const filename = `${endpoint.id}.${this.config.format}`;
     // const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
     // const capture = {} as CaptureType;
 
@@ -70,27 +71,19 @@ export default class Capture {
   /**
    *  Configure device for capture.
    */
-  setDevice = async (deviceConfig: Device) => {
+  setDevice = async (
+    deviceConfig: Device,
+    browser: puppeteer.Browser
+  ): Promise<Device> => {
     const device = (
       deviceConfig.device
         ? puppeteer.devices[deviceConfig.device]
         : deviceConfig
     ) as Device;
 
-    device.userAgent = device.userAgent || (await this.browser.userAgent());
+    device.userAgent = device.userAgent || (await browser.userAgent());
     device.id = deviceConfig.id;
     device.deviceScaleFactor = device.viewport.deviceScaleFactor;
-
     return device;
-  };
-
-  /**
-   *  Close sessions.
-   */
-  close = async () => {
-    /** Close browser session */
-    if (this.browser) {
-      await this.browser.close();
-    }
   };
 }

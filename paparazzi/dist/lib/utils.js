@@ -1,6 +1,7 @@
 "use strict";
 /* eslint-disable no-console */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Printer = void 0;
 /**
  * Silly utilities, mostly for logging.
  */
@@ -34,4 +35,4 @@ class Printer {
         };
     }
 }
-exports.default = Printer;
+exports.Printer = Printer;

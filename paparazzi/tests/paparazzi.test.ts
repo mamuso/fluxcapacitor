@@ -1,4 +1,4 @@
-import Paparazzi from '../src/paparazzi';
+import { Paparazzi } from '../src/paparazzi';
 import * as fs from 'fs';
 
 const date = '2021-04-13';
@@ -17,6 +17,24 @@ jest.mock(
         },
       },
       { id: 'mobile', device: 'iPhone 11 Pro Max' },
+    ],
+    endpoints: [
+      {
+        id: 'nextjs',
+        url: 'https://nextjs.org',
+      },
+      {
+        id: 'gatsby',
+        url: 'https://www.gatsbyjs.com',
+      },
+      {
+        id: 'hugo',
+        url: 'https://gohugo.io',
+      },
+      {
+        id: 'nuxt',
+        url: 'https://nuxtjs.org',
+      },
     ],
   }),
   { virtual: true }

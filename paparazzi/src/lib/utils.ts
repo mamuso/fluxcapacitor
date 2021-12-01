@@ -4,7 +4,7 @@
  * Silly utilities, mostly for logging.
  */
 
-export default class Printer {
+export class Printer {
   header = (text: string): void => {
     console.log('');
     console.log(

@@ -1,5 +1,24 @@
 export type Config = {
   date: string;
+  basePath: string;
+  tmpPath: string;
+  tmpDatePath: string;
+  tmpCurrentPath: string;
+  format: string;
+  minify: boolean;
+  compare: boolean;
+  storage: string;
+  devices: [Device];
+  endpoints: [Endpoint];
+  auth: [Auth];
+};
+
+export type Auth = {
+  url: string;
+  username: string;
+  password: string;
+  submit: string;
+  cookie: boolean;
 };
 
 export type Device = {

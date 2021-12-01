@@ -1,4 +1,4 @@
-import Printer from '../src/lib/utils';
+import { Printer } from '../src/lib/utils';
 
 describe('A Printer instance', () => {
   const test = 'Wadus';
