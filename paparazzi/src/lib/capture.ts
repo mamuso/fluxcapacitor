@@ -1,10 +1,12 @@
+/* eslint-disable no-console */
+
 /**
  * Screenshot and store all the things.
  */
 
 import * as fs from 'fs';
 import * as puppeteer from 'puppeteer';
-import { Config, Device, Endpoint } from './types';
+import { CaptureType, Config, Device, Endpoint } from './types';
 import { Printer, slugify } from './utils';
 
 export default class Capture {
@@ -19,7 +21,7 @@ export default class Capture {
   /**
    *  Logic to capture the list of endpoints.
    */
-  capture = async () => {
+  capture = async (): Promise<void> => {
     try {
       this.printer.header(`📷 Capture URLs`);
 
@@ -46,7 +48,7 @@ export default class Capture {
         // Loop through endpoints
         for (const endpointObject of this.config.endpoints) {
           const endpoint: Endpoint = endpointObject;
-          await this.takeScreenshot(endpoint, device);
+          await this.takeScreenshot(endpoint, device, browser);
         }
       }
 
@@ -58,18 +60,62 @@ export default class Capture {
   };
 
   /**
-   *  Take a screenshot and save it.
+   * Take a screenshot and save it.
+   *
+   * @param endpoint - URL to capture
+   * @param device - Device configuration object
+   * @param browser - Puppeteer browser instance
+   * @returns Promise
+   *
    */
-  takeScreenshot = async (endpoint: Endpoint, device: Device) => {
+  takeScreenshot = async (
+    endpoint: Endpoint,
+    device: Device,
+    browser: puppeteer.Browser
+  ): Promise<void> => {
     const filename = `${slugify(endpoint.id)}.${this.config.format}`;
-    // const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
-    // const capture = {} as CaptureType;
+    const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
 
     this.printer.capture(`${endpoint.id} – ${filename} – ${device.id}`);
+
+    // Set up the device emulation
+    const puppet = await browser.newPage();
+    await puppet.emulate(device);
+
+    // TODO: Add auth
+
+    await puppet.goto(endpoint.url, {
+      waitUntil: 'networkidle2',
+      timeout: 30000,
+    });
+
+    // Speed up animations
+    const client = await puppet.target().createCDPSession();
+    await client.send('Animation.setPlaybackRate', {
+      playbackRate: 2,
+    });
+
+    // Check scroll height
+    const scrollHeight = await puppet.evaluate((): number => {
+      return document.body.scrollHeight;
+    });
+
+    // Let's wait before the first shot
+    await puppet.waitForTimeout(400);
+
+    const test = {} as CaptureType;
+    console.log(test);
+    console.log(scrollHeight);
+    console.log(localfilepath);
   };
 
   /**
    *  Configure device for capture.
+   *
+   * @param device - Device configuration object
+   * @param browser - Puppeteer browser instance
+   * @returns Puppeteer device instance
+   *
    */
   setDevice = async (
     deviceConfig: Device,
@@ -84,6 +130,7 @@ export default class Capture {
     device.userAgent = device.userAgent || (await browser.userAgent());
     device.id = deviceConfig.id;
     device.deviceScaleFactor = device.viewport.deviceScaleFactor;
+
     return device;
   };
 }

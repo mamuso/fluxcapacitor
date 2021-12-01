@@ -1,7 +1,5 @@
 "use strict";
-/**
- * Screenshot and store all the things.
- */
+/* eslint-disable no-console */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,6 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Screenshot and store all the things.
+ */
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 const utils_1 = require("./utils");
@@ -40,7 +41,7 @@ class Capture {
                     // Loop through endpoints
                     for (const endpointObject of this.config.endpoints) {
                         const endpoint = endpointObject;
-                        yield this.takeScreenshot(endpoint, device);
+                        yield this.takeScreenshot(endpoint, device, browser);
                     }
                 }
                 // Close puppeteer browser instance
@@ -51,16 +52,49 @@ class Capture {
             }
         });
         /**
-         *  Take a screenshot and save it.
+         * Take a screenshot and save it.
+         *
+         * @param endpoint - URL to capture
+         * @param device - Device configuration object
+         * @param browser - Puppeteer browser instance
+         * @returns Promise
+         *
          */
-        this.takeScreenshot = (endpoint, device) => __awaiter(this, void 0, void 0, function* () {
+        this.takeScreenshot = (endpoint, device, browser) => __awaiter(this, void 0, void 0, function* () {
             const filename = `${(0, utils_1.slugify)(endpoint.id)}.${this.config.format}`;
-            // const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
-            // const capture = {} as CaptureType;
+            const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
             this.printer.capture(`${endpoint.id} – ${filename} – ${device.id}`);
+            // Set up the device emulation
+            const puppet = yield browser.newPage();
+            yield puppet.emulate(device);
+            // TODO: Add auth
+            yield puppet.goto(endpoint.url, {
+                waitUntil: 'networkidle2',
+                timeout: 30000,
+            });
+            // Speed up animations
+            const client = yield puppet.target().createCDPSession();
+            yield client.send('Animation.setPlaybackRate', {
+                playbackRate: 2,
+            });
+            // Check scroll height
+            const scrollHeight = yield puppet.evaluate(() => {
+                return document.body.scrollHeight;
+            });
+            // Let's wait before the first shot
+            yield puppet.waitForTimeout(400);
+            const test = {};
+            console.log(test);
+            console.log(scrollHeight);
+            console.log(localfilepath);
         });
         /**
          *  Configure device for capture.
+         *
+         * @param device - Device configuration object
+         * @param browser - Puppeteer browser instance
+         * @returns Puppeteer device instance
+         *
          */
         this.setDevice = (deviceConfig, browser) => __awaiter(this, void 0, void 0, function* () {
             const device = (deviceConfig.device

@@ -7,6 +7,9 @@ const date = '2021-04-13';
 jest.mock(
   '../../config.json',
   () => ({
+    format: 'png',
+    compare: true,
+
     devices: [
       {
         id: 'desktop',
@@ -20,20 +23,16 @@ jest.mock(
     ],
     endpoints: [
       {
-        id: 'nextjs',
-        url: 'https://nextjs.org',
+        id: '12factor',
+        url: 'https://12factor.net',
       },
       {
-        id: 'gatsby',
-        url: 'https://www.gatsbyjs.com',
+        id: 'adams-heroku-values.md',
+        url: 'https://gist.github.com/adamwiggins/5687294',
       },
       {
-        id: 'hugo',
-        url: 'https://gohugo.io',
-      },
-      {
-        id: 'nuxt',
-        url: 'https://nuxtjs.org',
+        id: 'Pure UI',
+        url: 'https://rauchg.com/2015/pure-ui',
       },
     ],
   }),
