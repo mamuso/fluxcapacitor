@@ -36,7 +36,7 @@ class Printer {
     }
 }
 exports.Printer = Printer;
-const slugify = (text, separator = '-') => {
+const slugify = (text, separator) => {
     text = text.toString().toLowerCase().trim();
     const sets = [
         { to: 'a', from: '[ÀÁÂÃÅÆĀĂĄẠẢẤẦẨẪẬẮẰẲẴẶ]' },

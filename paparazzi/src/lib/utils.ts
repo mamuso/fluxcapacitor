@@ -45,7 +45,7 @@ export class Printer {
   };
 }
 
-export const slugify = (text: string, separator = '-'): string => {
+export const slugify = (text: string, separator?: string): string => {
   text = text.toString().toLowerCase().trim();
 
   const sets = [

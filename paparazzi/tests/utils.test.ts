@@ -71,4 +71,8 @@ describe('Slugify', () => {
       'natuerlich-ist-das-moeglich-entdecke-wie-dieses-geschwisterpaar-das-wunderbar-auf-die-reihe-bekommt-die-gemeinsame-zeit-geniesst-und-auch-fuer-sich-sein-kann'
     );
   });
+
+  it('should take a custom separator', async () => {
+    expect(slugify('Wadus wadus', '*')).toBe('wadus*wadus');
+  });
 });
