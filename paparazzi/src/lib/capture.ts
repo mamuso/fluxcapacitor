@@ -5,7 +5,7 @@
 import * as fs from 'fs';
 import * as puppeteer from 'puppeteer';
 import { Config, Device, Endpoint } from './types';
-import { Printer } from './utils';
+import { Printer, slugify } from './utils';
 
 export default class Capture {
   public config: Config;
@@ -61,7 +61,7 @@ export default class Capture {
    *  Take a screenshot and save it.
    */
   takeScreenshot = async (endpoint: Endpoint, device: Device) => {
-    const filename = `${endpoint.id}.${this.config.format}`;
+    const filename = `${slugify(endpoint.id)}.${this.config.format}`;
     // const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
     // const capture = {} as CaptureType;
 

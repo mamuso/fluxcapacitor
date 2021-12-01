@@ -54,7 +54,7 @@ class Capture {
          *  Take a screenshot and save it.
          */
         this.takeScreenshot = (endpoint, device) => __awaiter(this, void 0, void 0, function* () {
-            const filename = `${endpoint.id}.${this.config.format}`;
+            const filename = `${(0, utils_1.slugify)(endpoint.id)}.${this.config.format}`;
             // const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
             // const capture = {} as CaptureType;
             this.printer.capture(`${endpoint.id} – ${filename} – ${device.id}`);
