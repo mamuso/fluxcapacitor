@@ -6,6 +6,7 @@
 
 import * as fs from 'fs';
 import * as puppeteer from 'puppeteer';
+import * as sharp from 'sharp';
 import { CaptureType, Config, Device, Endpoint } from './types';
 import { Printer, slugify } from './utils';
 
@@ -107,7 +108,7 @@ export default class Capture {
     // Let's wait before the first shot
     await puppet.waitForTimeout(400);
 
-    // Scroll to the bottom
+    // Capturing the page as we scroll down
     if (scrollHeight > 2 * device.viewport.height) {
       let s: number = 0;
       let scrollTo: number = 0;
@@ -140,11 +141,93 @@ export default class Capture {
         s += 1;
         scrollTo += scrollSafe;
       }
+
+      // Let's loop through the shots and stitch them together
+      let composite: Object[] = [];
+      let topComposite: number = 0;
+
+      for (let i: number = 0; i < s; i++) {
+        const fileIn: string = `${this.config.tmpDatePath}/tmpshot-${i}.png`;
+        const fileOut: string = `${this.config.tmpDatePath}/tmpshot-${i}r.png`;
+        let height: number = 0;
+        let image: sharp.Sharp = await sharp(fileIn);
+
+        // Treating first and last shots differently
+        switch (i) {
+          // First shot
+          case 0:
+            height =
+              (device.viewport.height - safeSpace / 2) *
+              device.deviceScaleFactor;
+
+            await image
+              .resize({
+                width: device.viewport.width * device.deviceScaleFactor,
+                height: height,
+                position: 'top',
+              })
+              .toFile(fileOut);
+
+            composite.push({
+              input: fileOut,
+              top: 0,
+              left: 0,
+            });
+
+            break;
+
+          // Last shot
+          case s - 1:
+            height =
+              (device.viewport.height - safeSpace / 2) *
+              device.deviceScaleFactor;
+
+            await image
+              .resize({
+                width: device.viewport.width * device.deviceScaleFactor,
+                height: height,
+                position: 'bottom',
+              })
+              .toFile(fileOut);
+
+            composite.push({
+              input: fileOut,
+              gravity: 'southwest',
+            });
+
+            break;
+
+          // All other shots
+          default:
+            height =
+              (device.viewport.height - safeSpace) * device.deviceScaleFactor;
+
+            await image
+              .resize({
+                width: device.viewport.width * device.deviceScaleFactor,
+                height: height,
+              })
+              .toFile(fileOut);
+
+            composite.push({
+              input: fileOut,
+              top: topComposite,
+              left: 0,
+            });
+            break;
+        }
+        topComposite += height;
+      }
+
+      // Stitching the shots together
+      await sharp(`blank.png`)
+        .resize(
+          device.viewport.width * device.deviceScaleFactor,
+          scrollHeight * device.deviceScaleFactor
+        )
+        .composite(composite)
+        .toFile(localfilepath);
     }
-    const test = {} as CaptureType;
-    console.log(test);
-    console.log(scrollHeight);
-    console.log(localfilepath);
   };
 
   /**

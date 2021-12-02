@@ -47,7 +47,7 @@ describe('A paparazzi instance', () => {
     expect(paparazzi.config.tmpDatePath).toBe('tmp/2021-04-13');
     expect(paparazzi.config.tmpCurrentPath).toBe('tmp/current');
   });
-  describe('when calling paparazzi.setup', async () => {
+  describe('when calling paparazzi.setup', () => {
     it('should create a scaffold with folders', async () => {
       await paparazzi.setup();
       expect(await fs.promises.stat(paparazzi.config.tmpPath)).toBeTruthy();
@@ -57,7 +57,7 @@ describe('A paparazzi instance', () => {
       ).toBeTruthy();
     });
   });
-  describe('when calling paparazzi.capture', async () => {
+  describe('when calling paparazzi.capture', () => {
     it('should create log a subheader', async () => {
       const spy = jest.spyOn(console, 'log');
       await paparazzi.capture();
@@ -97,7 +97,7 @@ describe('A paparazzi instance', () => {
       ).toBeTruthy();
     });
   });
-  describe('when calling paparazzi.cleanup', async () => {
+  describe('when calling paparazzi.cleanup', () => {
     it('should clean the tmp folders', async () => {
       await paparazzi.cleanup();
       expect(fs.existsSync(paparazzi.config.tmpPath)).toBeFalsy();
