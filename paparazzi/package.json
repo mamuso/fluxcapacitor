@@ -39,6 +39,7 @@
     "eslint-plugin-github": "^4.3.5",
     "eslint-plugin-tsdoc": "^0.2.14",
     "jest": "^27.4.2",
+    "jest-puppeteer": "^6.0.2",
     "prettier": "^2.5.0",
     "ts-jest": "^27.0.7",
     "tsc-watch": "^4.5.0",

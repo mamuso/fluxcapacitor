@@ -25,15 +25,16 @@ export default class Capture {
     try {
       this.printer.header(`📷 Capture URLs`);
 
-      // Create a new browser instance
-      const browser = await puppeteer.launch({
-        headless: true,
-        defaultViewport: null,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
-      });
-
       // Loop through devices
       for (const deviceConfig of this.config.devices) {
+        // Create a new browser instance
+
+        const browser = await puppeteer.launch({
+          headless: true,
+          defaultViewport: null,
+          args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+        });
+
         const device = await this.setDevice(deviceConfig, browser);
 
         this.printer.subHeader(
@@ -50,10 +51,10 @@ export default class Capture {
           const endpoint: Endpoint = endpointObject;
           await this.takeScreenshot(endpoint, device, browser);
         }
-      }
 
-      // Close puppeteer browser instance
-      browser.close();
+        // Close puppeteer browser instance
+        await browser.close();
+      }
     } catch (e) {
       throw e;
     }
@@ -96,7 +97,8 @@ export default class Capture {
     });
 
     // Check scroll height
-    const scrollHeight = await puppet.evaluate((): number => {
+    /* istanbul ignore next */
+    const scrollHeight = await puppet.evaluate((_): number => {
       return document.body.scrollHeight;
     });
 

@@ -24,14 +24,14 @@ class Capture {
         this.capture = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 this.printer.header(`📷 Capture URLs`);
-                // Create a new browser instance
-                const browser = yield puppeteer.launch({
-                    headless: true,
-                    defaultViewport: null,
-                    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
-                });
                 // Loop through devices
                 for (const deviceConfig of this.config.devices) {
+                    // Create a new browser instance
+                    const browser = yield puppeteer.launch({
+                        headless: true,
+                        defaultViewport: null,
+                        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+                    });
                     const device = yield this.setDevice(deviceConfig, browser);
                     this.printer.subHeader(`🖥  ${device.id} (${device.viewport.width}x${device.viewport.height})`);
                     // Create device folder
@@ -43,9 +43,9 @@ class Capture {
                         const endpoint = endpointObject;
                         yield this.takeScreenshot(endpoint, device, browser);
                     }
+                    // Close puppeteer browser instance
+                    yield browser.close();
                 }
-                // Close puppeteer browser instance
-                browser.close();
             }
             catch (e) {
                 throw e;
@@ -78,7 +78,8 @@ class Capture {
                 playbackRate: 2,
             });
             // Check scroll height
-            const scrollHeight = yield puppet.evaluate(() => {
+            /* istanbul ignore next */
+            const scrollHeight = yield puppet.evaluate((_) => {
                 return document.body.scrollHeight;
             });
             // Let's wait before the first shot
