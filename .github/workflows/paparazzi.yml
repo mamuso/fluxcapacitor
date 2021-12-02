@@ -22,9 +22,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: '16.x'
       - name: Yarn
         run: npm install -g yarn
       - name: Dependencies

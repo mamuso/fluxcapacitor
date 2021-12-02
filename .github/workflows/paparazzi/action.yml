@@ -1,4 +1,0 @@
-name: Paparazzi
-description: ''
-runs: using: 'node12'
-main: 'dist/paparazzi.js'

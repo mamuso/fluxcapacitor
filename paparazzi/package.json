@@ -1,0 +1,48 @@
+{
+  "name": "paparazzi",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "jest --coverage",
+    "build": "tsc",
+    "build:lint": "eslint src/**/*.ts --fix",
+    "build:format": "prettier --write **/*.ts",
+    "build:all": "npm run build:format && npm run build:lint && npm run build",
+    "watch": "tsc-watch",
+    "setup": "node dist/index.js setup",
+    "getcurrent": "node dist/index.js getcurrent",
+    "capture": "node dist/index.js capture",
+    "resize": "node dist/index.js resize",
+    "compare": "node dist/index.js compare",
+    "setcurrent": "node dist/index.js setcurrent",
+    "sparklines": "node dist/index.js sparklines"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "pixelmatch": "^5.2.1",
+    "pngjs": "^6.0.0",
+    "puppeteer": "^12.0.1",
+    "sharp": "^0.29.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.11",
+    "@types/puppeteer": "^5.4.4",
+    "@typescript-eslint/parser": "^5.5.0",
+    "eslint": "^8.3.0",
+    "eslint-plugin-github": "^4.3.5",
+    "eslint-plugin-tsdoc": "^0.2.14",
+    "jest": "^27.4.2",
+    "jest-puppeteer": "^6.0.2",
+    "prettier": "^2.5.0",
+    "ts-jest": "^27.0.7",
+    "tsc-watch": "^4.5.0",
+    "typescript": "^4.5.2"
+  }
+}

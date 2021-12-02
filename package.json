@@ -6,21 +6,20 @@
   "workspaces": [
     "web",
     "api",
-    ".github/workflows/*"
+    "paparazzi"
   ],
   "scripts": {
     "paparazzi": "yarn workspace paparazzi run paparazzi",
     "dev": "now dev"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mamuso/fluxcapacitor.git"
+  "author": "@mamuso",
+  "license": "MIT",
+  "homepage": "https://github.com/mamuso/fluxcapacitor#readme",
+  "lint-staged": {
+    "*.+(ts|tsx)": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mamuso/fluxcapacitor/issues"
-  },
-  "homepage": "https://github.com/mamuso/fluxcapacitor#readme"
+  "pre-commit": "lint:staged && generate"
 }
