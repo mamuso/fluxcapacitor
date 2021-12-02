@@ -74,13 +74,13 @@ export default class Capture {
     device: Device,
     browser: puppeteer.Browser
   ): Promise<void> => {
-    const filename = `${slugify(endpoint.id)}.${this.config.format}`;
-    const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+    const filename: string = `${slugify(endpoint.id)}.${this.config.format}`;
+    const localfilepath: string = `${this.config.tmpDatePath}/${device.id}/${filename}`;
 
     this.printer.capture(`${endpoint.id} – ${filename} – ${device.id}`);
 
     // Set up the device emulation
-    const puppet = await browser.newPage();
+    const puppet: puppeteer.Page = await browser.newPage();
     await puppet.emulate(device);
 
     // TODO: Add auth
@@ -91,20 +91,56 @@ export default class Capture {
     });
 
     // Speed up animations
-    const client = await puppet.target().createCDPSession();
+    const client: puppeteer.CDPSession = await puppet
+      .target()
+      .createCDPSession();
     await client.send('Animation.setPlaybackRate', {
       playbackRate: 2,
     });
 
     // Check scroll height
     /* istanbul ignore next */
-    const scrollHeight = await puppet.evaluate((_): number => {
+    const scrollHeight: number = await puppet.evaluate((_): number => {
       return document.body.scrollHeight;
     });
 
     // Let's wait before the first shot
     await puppet.waitForTimeout(400);
 
+    // Scroll to the bottom
+    if (scrollHeight > 2 * device.viewport.height) {
+      let s: number = 0;
+      let scrollTo: number = 0;
+      const safeSpace: number = 400;
+
+      // Leaving a few pixels between snapshots to stich free of sticky headers
+      const scrollSafe: number = device.viewport.height - safeSpace;
+
+      while (scrollTo <= scrollHeight) {
+        /* istanbul ignore next */
+        await puppet.evaluate(
+          ({ scrollTo }) => {
+            window.scrollTo(0, scrollTo);
+          },
+          { scrollTo }
+        );
+        await puppet.waitForTimeout(400);
+
+        const buffer: string | Buffer = await puppet.screenshot({
+          fullPage: false,
+        });
+
+        await fs.promises.writeFile(
+          `${this.config.tmpDatePath}/tmpshot-${s}.png`,
+          buffer,
+          {
+            encoding: null,
+          }
+        );
+        s += 1;
+        scrollTo += scrollSafe;
+      }
+    }
     const test = {} as CaptureType;
     console.log(test);
     console.log(scrollHeight);

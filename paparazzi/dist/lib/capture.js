@@ -73,7 +73,9 @@ class Capture {
                 timeout: 30000,
             });
             // Speed up animations
-            const client = yield puppet.target().createCDPSession();
+            const client = yield puppet
+                .target()
+                .createCDPSession();
             yield client.send('Animation.setPlaybackRate', {
                 playbackRate: 2,
             });
@@ -84,6 +86,29 @@ class Capture {
             });
             // Let's wait before the first shot
             yield puppet.waitForTimeout(400);
+            // Scroll to the bottom
+            if (scrollHeight > 2 * device.viewport.height) {
+                let s = 0;
+                let scrollTo = 0;
+                const safeSpace = 400;
+                // Leaving a few pixels between snapshots to stich free of sticky headers
+                const scrollSafe = device.viewport.height - safeSpace;
+                while (scrollTo <= scrollHeight) {
+                    /* istanbul ignore next */
+                    yield puppet.evaluate(({ scrollTo }) => {
+                        window.scrollTo(0, scrollTo);
+                    }, { scrollTo });
+                    yield puppet.waitForTimeout(400);
+                    const buffer = yield puppet.screenshot({
+                        fullPage: false,
+                    });
+                    yield fs.promises.writeFile(`${this.config.tmpDatePath}/tmpshot-${s}.png`, buffer, {
+                        encoding: null,
+                    });
+                    s += 1;
+                    scrollTo += scrollSafe;
+                }
+            }
             const test = {};
             console.log(test);
             console.log(scrollHeight);

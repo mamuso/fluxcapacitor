@@ -47,7 +47,7 @@ describe('A paparazzi instance', () => {
     expect(paparazzi.config.tmpDatePath).toBe('tmp/2021-04-13');
     expect(paparazzi.config.tmpCurrentPath).toBe('tmp/current');
   });
-  describe('when calling paparazzi.setup', () => {
+  describe('when calling paparazzi.setup', async () => {
     it('should create a scaffold with folders', async () => {
       await paparazzi.setup();
       expect(await fs.promises.stat(paparazzi.config.tmpPath)).toBeTruthy();
@@ -57,15 +57,37 @@ describe('A paparazzi instance', () => {
       ).toBeTruthy();
     });
   });
-  describe('when calling paparazzi.capture', () => {
+  describe('when calling paparazzi.capture', async () => {
     it('should create log a subheader', async () => {
       const spy = jest.spyOn(console, 'log');
       await paparazzi.capture();
+      // Check all the log messages
+      // Headings
       expect(spy).toHaveBeenCalledWith('🤓 Creating a new caputre session');
       expect(spy).toHaveBeenCalledWith('📷 Capture URLs');
-      // Loop through the devices
+
+      // Devices
       expect(spy).toHaveBeenCalledWith('🖥  desktop (1920x1080)');
       expect(spy).toHaveBeenCalledWith('🖥  mobile (414x896)');
+
+      // Endpoints
+      expect(spy).toHaveBeenCalledWith(
+        '  └ 🏙  12factor – 12factor.png – desktop'
+      );
+      expect(spy).toHaveBeenCalledWith(
+        '  └ 🏙  12factor – 12factor.png – mobile'
+      );
+      expect(spy).toHaveBeenCalledWith(
+        '  └ 🏙  adams-heroku-values.md – adams-heroku-valuesmd.png – desktop'
+      );
+      expect(spy).toHaveBeenCalledWith(
+        '  └ 🏙  adams-heroku-values.md – adams-heroku-valuesmd.png – mobile'
+      );
+      expect(spy).toHaveBeenCalledWith(
+        '  └ 🏙  Pure UI – pure-ui.png – desktop'
+      );
+      expect(spy).toHaveBeenCalledWith('  └ 🏙  Pure UI – pure-ui.png – mobile');
+
       // We expect folders to be created for each device
       expect(
         await fs.promises.stat(`${paparazzi.config.tmpDatePath}/desktop`)
@@ -75,7 +97,7 @@ describe('A paparazzi instance', () => {
       ).toBeTruthy();
     });
   });
-  describe('when calling paparazzi.cleanup', () => {
+  describe('when calling paparazzi.cleanup', async () => {
     it('should clean the tmp folders', async () => {
       await paparazzi.cleanup();
       expect(fs.existsSync(paparazzi.config.tmpPath)).toBeFalsy();
