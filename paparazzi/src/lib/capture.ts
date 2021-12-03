@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 /**
  * Screenshot and store all the things.
  */
@@ -7,6 +5,7 @@
 import * as fs from 'fs';
 import * as puppeteer from 'puppeteer';
 import * as sharp from 'sharp';
+import * as glob from 'glob';
 import { CaptureType, Config, Device, Endpoint } from './types';
 import { Printer, slugify } from './utils';
 
@@ -75,8 +74,8 @@ export default class Capture {
     device: Device,
     browser: puppeteer.Browser
   ): Promise<void> => {
-    const filename: string = `${slugify(endpoint.id)}.${this.config.format}`;
-    const localfilepath: string = `${this.config.tmpDatePath}/${device.id}/${filename}`;
+    const filename = `${slugify(endpoint.id)}.${this.config.format}`;
+    const localfilepath = `${this.config.tmpDatePath}/${device.id}/${filename}`;
 
     this.printer.capture(`${endpoint.id} – ${filename} – ${device.id}`);
 
@@ -110,9 +109,9 @@ export default class Capture {
 
     // Capturing the page as we scroll down
     if (scrollHeight > 2 * device.viewport.height) {
-      let s: number = 0;
-      let scrollTo: number = 0;
-      const safeSpace: number = 400;
+      let s = 0;
+      let scrollTo = 0;
+      const safeSpace = 400;
 
       // Leaving a few pixels between snapshots to stich free of sticky headers
       const scrollSafe: number = device.viewport.height - safeSpace;
@@ -143,14 +142,14 @@ export default class Capture {
       }
 
       // Let's loop through the shots and stitch them together
-      let composite: Object[] = [];
-      let topComposite: number = 0;
+      const composite: Object[] = [];
+      let topComposite = 0;
 
-      for (let i: number = 0; i < s; i++) {
-        const fileIn: string = `${this.config.tmpDatePath}/tmpshot-${i}.png`;
-        const fileOut: string = `${this.config.tmpDatePath}/tmpshot-${i}r.png`;
-        let height: number = 0;
-        let image: sharp.Sharp = await sharp(fileIn);
+      for (let i = 0; i < s; i++) {
+        const fileIn = `${this.config.tmpDatePath}/tmpshot-${i}.png`;
+        const fileOut = `${this.config.tmpDatePath}/tmpshot-${i}r.png`;
+        let height = 0;
+        const image: sharp.Sharp = await sharp(fileIn);
 
         // Treating first and last shots differently
         switch (i) {
@@ -163,7 +162,7 @@ export default class Capture {
             await image
               .resize({
                 width: device.viewport.width * device.deviceScaleFactor,
-                height: height,
+                height,
                 position: 'top',
               })
               .toFile(fileOut);
@@ -185,7 +184,7 @@ export default class Capture {
             await image
               .resize({
                 width: device.viewport.width * device.deviceScaleFactor,
-                height: height,
+                height,
                 position: 'bottom',
               })
               .toFile(fileOut);
@@ -205,7 +204,7 @@ export default class Capture {
             await image
               .resize({
                 width: device.viewport.width * device.deviceScaleFactor,
-                height: height,
+                height,
               })
               .toFile(fileOut);
 
@@ -227,6 +226,16 @@ export default class Capture {
         )
         .composite(composite)
         .toFile(localfilepath);
+
+      // Delete all the temporary files
+      await glob(
+        '**/tmpshot-*.png',
+        async function (er: Error | null, files: string[]) {
+          for (const file of files) {
+            await fs.promises.unlink(file);
+          }
+        }
+      );
     }
   };
 
