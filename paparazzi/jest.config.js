@@ -6,4 +6,5 @@ module.exports = {
   ...puppeteerPreset,
   testEnvironment: 'node',
   testTimeout: 180000,
+  reporters: ['default', 'jest-junit'],
 };

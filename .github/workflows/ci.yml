@@ -17,3 +17,8 @@ jobs:
         run: npm install -g yarn && yarn install
       - name: Run Paparazzi tests
         run: yarn workspace paparazzi run test
+      - uses: testspace-com/setup-testspace@v1
+        with:
+          domain: ${{github.repository_owner}}
+      - name: Publish Results to Testspace
+        run: testspace junit.xml
