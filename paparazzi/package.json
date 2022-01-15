@@ -9,7 +9,7 @@
     "/dist"
   ],
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --ci --reporters=default --reporters=jest-junit",
     "build": "tsc",
     "build:lint": "eslint src/**/*.ts --fix",
     "build:format": "prettier --write **/*.ts",
@@ -25,12 +25,14 @@
   },
   "dependencies": {
     "dotenv": "^10.0.0",
+    "glob": "^7.2.0",
     "pixelmatch": "^5.2.1",
     "pngjs": "^6.0.0",
     "puppeteer": "^12.0.1",
     "sharp": "^0.29.3"
   },
   "devDependencies": {
+    "@types/glob": "^7.2.0",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.4",
@@ -40,6 +42,7 @@
     "eslint-plugin-github": "^4.3.5",
     "eslint-plugin-tsdoc": "^0.2.14",
     "jest": "^27.4.2",
+    "jest-junit": "^13.0.0",
     "jest-puppeteer": "^6.0.2",
     "prettier": "^2.5.0",
     "ts-jest": "^27.0.7",

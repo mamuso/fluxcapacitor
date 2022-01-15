@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 const sharp = require("sharp");
+const glob = require("glob");
 const utils_1 = require("./utils");
 class Capture {
     constructor(config) {
@@ -178,6 +179,14 @@ class Capture {
                     .resize(device.viewport.width * device.deviceScaleFactor, scrollHeight * device.deviceScaleFactor)
                     .composite(composite)
                     .toFile(localfilepath);
+                // Delete all the temporary files
+                yield glob('**/tmpshot-*.png', function (er, files) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        for (const file of files) {
+                            yield fs.promises.unlink(file);
+                        }
+                    });
+                });
             }
         });
         /**
