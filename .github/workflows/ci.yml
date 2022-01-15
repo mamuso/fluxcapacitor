@@ -22,5 +22,5 @@ jobs:
           domain: ${{github.repository_owner}}
         if: always()
       - name: Publish Results to Testspace
-        run: testspace junit.xml
+        run: testspace /home/runner/work/fluxcapacitor/fluxcapacitor/paparazzi/junit.xml
         if: always()
